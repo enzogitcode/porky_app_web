@@ -1,10 +1,15 @@
-import React from 'react'
+import PorkCard from '../ui/PorkCard';
+import type { Hembras } from '../types/types';
 
-const PorkList:React.FC = () => {
+type PorkListProps = {
+  data?:Hembras[]
+}
+
+const PorkList:React.FC<PorkListProps> = ({data}) => {
 
   return (
-    <div>
-        
+        <div>
+        {data && data.map( (item) => (<PorkCard key={item.nro} {...item}/>) )}
       </div>
   )
 }

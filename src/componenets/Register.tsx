@@ -1,46 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import type { Hembras } from '../types/types';
+import PorkList from './PorkList';
 import ButtonCustom from '../ui/ButtonCustom';
 import InputCustom from '../ui/InputCustom';
-import PorkCard from '../ui/PorkCard';
+import type { Hembras } from '../types/types';
+import { datosPost, datosGet } from '../axios/axios';
 
 const Register = () => {
-
-  const [datos, setDatos] = useState<Hembras[]>([])
-
+  
   const [nro, setNro] = useState<number | ''>(0);
   const [pariciones, setPariciones] = useState<number | ''>(0);
   const [descripcion, setDescripcion] = useState('');
 
-  const datosURL= 'src/data/list.json'
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const Response = await fetch(datosURL)
-        setDatos(await Response.json())
-        
-       } catch (error) {
-        
-        console.log(error)
-        throw new Error
-      }
-    }
-    fetchData()
+  const [stock, setStock] = useState<Hembras[]>([])
+  const [nvoStock, setNvoStock] = useState<Hembras[]>([])
   
-  }, [])
+        useEffect(() => {
+          const fetchData = async () => {
+            try {
+              const {data} = await datosGet()
+              setStock(data)
+  
+              
+             } catch (error) {
+              
+              console.log(error)
+              throw new Error
+            }
+          }
+          fetchData()
+        }, [])
   
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+
     // Validar inputs mínimos
     if (nro === '' || pariciones === '' || descripcion.trim() === '') return;
 
     // Agregar nuevo elemento al estado
-    setDatos(prev => [
-      ...prev,
-      { nro: Number(nro), pariciones: Number(pariciones), descripcion },
-    ]);
+    const nuevaHembra = {nro, pariciones, descripcion}
+    datosPost(nuevaHembra)
+    setNvoStock([...stock, nuevaHembra])
+    console.log(stock)
+    
 
     // Limpiar inputs
     setNro('');
@@ -79,9 +82,8 @@ const Register = () => {
         </ButtonCustom>
       </form>
       
-      <div>
-        {datos.map( (item) => (<PorkCard {...item}/>) )}
-      </div>
+<PorkList data={nvoStock} />
+      
 
     </div>
   );
