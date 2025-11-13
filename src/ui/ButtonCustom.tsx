@@ -3,14 +3,14 @@ import React from 'react';
 interface ButtonProps {
     buttonCustomStyle?:React.CSSProperties
   onClick?: () => void;
-  children: React.ReactNode;
-  type?: 'button' | 'submit';
+  children?: React.ReactNode;
+  type: "submit" | "reset" | "button" | undefined
 }
 
-const ButtonCustom: React.FC<ButtonProps> = ({ onClick, children, type = 'button' , buttonCustomStyle}) => {
+const ButtonCustom: React.FC<ButtonProps> = ({ onClick, children, type , buttonCustomStyle}) => {
   return (
     <button
-      type={type}
+    type={type}
       onClick={onClick}
       style={buttonCustomStyle}
     >

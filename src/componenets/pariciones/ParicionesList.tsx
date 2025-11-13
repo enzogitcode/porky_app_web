@@ -1,11 +1,10 @@
 import React from 'react'
-import type { Paricion } from '../../types/types'
+import type { Pig } from '../../types/types'
 
-const ParicionesList:React.FC<Paricion[]> = (props) => {
+const ParicionesList:React.FC<Pig> = () => {
   
     return (
     <div>
-        
     </div>
   )
 }

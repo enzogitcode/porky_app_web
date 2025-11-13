@@ -1,9 +1,22 @@
-import React from 'react'
+import { useGetAllPigsQuery } from "../../redux/features/pigSlice";
+import PorkCard from "../../ui/PorkCard";
 
 const PorkList = () => {
-  return (
-    <div>PorkList</div>
-  )
-}
+  const { data: pigs, isLoading, isError } = useGetAllPigsQuery();
 
-export default PorkList
+  if (isLoading) return <p>Cargando...</p>;
+  if (isError) {
+    console.error();
+    return <p>Ocurrió un error al cargar las cerdas 😢</p>;
+  }
+
+  return (
+    <div>
+      {pigs?.map((item) => (
+        <PorkCard {...item} key={item._id}/>
+      ))}
+    </div>
+  );
+};
+
+export default PorkList;

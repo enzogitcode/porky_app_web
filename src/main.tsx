@@ -1,3 +1,4 @@
+import './main.css'
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
@@ -14,7 +15,7 @@ if (container) {
     <React.StrictMode>
     <Provider store={store}>
       <App />
-    </Provider>,
+    </Provider>
     </React.StrictMode>
   )
 } else {
