@@ -1,0 +1,11 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+#root {
+  display: grid;
+  max-width: 100dvw;
+  max-height: 100dvh;
+  grid-template-rows: 1fr auto;
+}

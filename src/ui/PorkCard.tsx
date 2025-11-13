@@ -1,13 +1,17 @@
 import React from 'react'
-import type { Hembras } from '../types/types'
+import type { Pigs } from '../types/types'
 
 
-const PorkCard:React.FC<Hembras> = (props) => {
+const PorkCard:React.FC<Pigs> = (props) => {
+
+  
+
+
   return (
     <div>
-        <p>{props.nro}</p>
-        <p>{props.pariciones}</p>
+        <p>{props.nroCaravana}</p>
         <p>{props.descripcion}</p>
+        
     </div>
   )
 }
