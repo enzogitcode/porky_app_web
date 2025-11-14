@@ -1,5 +1,5 @@
 import { useGetAllPigsQuery } from "../../redux/features/pigSlice";
-import PorkCard from "../../ui/PorkCard";
+import PorkCard from "./PorkCard";
 
 const PorkList = () => {
   const { data: pigs, isLoading, isError } = useGetAllPigsQuery();

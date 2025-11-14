@@ -28,4 +28,6 @@ export interface Pig {
   descripcion?: string;
   ubicacion?: string;
   pariciones?: Paricion[];
+  createdAt: string;   
+  updatedAt: string;   
 }

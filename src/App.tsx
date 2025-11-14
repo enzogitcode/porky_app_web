@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./componenets/Home";
 import PorkList from "./componenets/cerdas/PorkList";
-import Header from "./ui/Header";
 import PorkDetails from "./componenets/cerdas/PorkDetails";
+import Header from "./ui/Header";
 import Register from "./componenets/cerdas/Register";
 import Updater from "./componenets/cerdas/Updater";
 

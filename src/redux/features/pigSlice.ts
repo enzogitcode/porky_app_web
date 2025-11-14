@@ -1,6 +1,6 @@
 // src/redux/services/pigsApi.ts
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { Pigs, Paricion } from "../../types/types";
+import type { Pig, Paricion } from "../../types/types";
 
 export const pigsApi = createApi({
   reducerPath: "pigsApi",
@@ -8,25 +8,25 @@ export const pigsApi = createApi({
   tagTypes: ["Pigs"], // útil para invalidación automática
   endpoints: (builder) => ({
     // GET all pigs
-    getAllPigs: builder.query<Pigs[], void>({
+    getAllPigs: builder.query<Pig[], void>({
       query: () => "/",
       providesTags: ["Pigs"],
     }),
 
     // GET pig by ID
-    getPigById: builder.query<Pigs, string>({
+    getPigById: builder.query<Pig, string>({
       query: (id) => `/${id}`,
       providesTags: (result, error, id) => [{ type: "Pigs", id }],
     }),
 
     // GET pig by nroCaravana
-    getPigByCaravana: builder.query<Pigs, number>({
+    getPigByCaravana: builder.query<Pig, number>({
       query: (nroCaravana) => `/caravana/${nroCaravana}`,
       providesTags: (result, error, nroCaravana) => [{ type: "Pigs", id: nroCaravana }],
     }),
 
     // CREATE a pig
-    createAPig: builder.mutation<Pigs, Partial<Pigs>>({
+    createAPig: builder.mutation<Pig, Partial<Pig>>({
       query: (newPig) => ({
         url: "/",
         method: "POST",
@@ -36,7 +36,7 @@ export const pigsApi = createApi({
     }),
 
     // PATCH pig by ID
-    updatePigById: builder.mutation<Pigs, { id: string; data: Partial<Pigs> }>({
+    updatePigById: builder.mutation<Pig, { id: string; data: Partial<Pig> }>({
       query: ({ id, data }) => ({
         url: `/${id}`,
         method: "PATCH",
@@ -51,7 +51,7 @@ export const pigsApi = createApi({
         url: `/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, id) => [{ type: "Pigs", id }],
+      invalidatesTags: (result, error, id) => [{ type: "Pigs" }],
     }),
 
     // PATCH paricion

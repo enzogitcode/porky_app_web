@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import type { Pig } from "../types/types";
+import type { Pig } from "../../types/types";
 
 const PorkCard: React.FC<Pig> = (props) => {
   return (
