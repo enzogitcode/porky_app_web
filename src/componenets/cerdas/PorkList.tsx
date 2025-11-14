@@ -9,6 +9,9 @@ const PorkList = () => {
     console.error();
     return <p>Ocurrió un error al cargar las cerdas 😢</p>;
   }
+  if (pigs?.length == 0) {
+    return <p>No hay cerdos registrados</p>
+  }
 
   return (
     <div>

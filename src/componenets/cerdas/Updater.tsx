@@ -1,7 +1,9 @@
 
 const Updater = () => {
   return (
-    <div>Updater</div>
+    <div>
+      
+    </div>
   )
 }
 

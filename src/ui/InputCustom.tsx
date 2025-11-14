@@ -9,10 +9,11 @@ interface InputProps {
   onChange: (e:React.ChangeEvent<HTMLInputElement>) => void; 
   type:InputType 
   placeholder?: string;
+  name?:string
 }
 
 
-const InputCustom: React.FC<InputProps> = ({ label, value, onChange, type, placeholder }) => {
+const InputCustom: React.FC<InputProps> = ({ label, value, onChange, type, placeholder, name }) => {
   
    
   
@@ -21,6 +22,7 @@ const InputCustom: React.FC<InputProps> = ({ label, value, onChange, type, place
       {label && <label htmlFor={label}>{label}</label>}
       <input
       id={label}
+      name={name}
         type={type}
         value={value}
         placeholder={placeholder}

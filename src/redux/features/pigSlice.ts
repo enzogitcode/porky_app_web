@@ -54,6 +54,17 @@ export const pigsApi = createApi({
       invalidatesTags: (result, error, id) => [{ type: "Pigs" }],
     }),
 
+    // PATCH agregar parición
+addParicion: builder.mutation<Pig, { pigId: string; data: Paricion }>({
+  query: ({ pigId, data }) => ({
+    url: `/${pigId}/paricion`,
+    method: "PATCH",
+    body: data,
+  }),
+  invalidatesTags: (result, error, { pigId }) => [{ type: "Pigs", id: pigId }],
+}),
+
+
     // PATCH paricion
     patchParicion: builder.mutation<Paricion, { pigId: string; paricionId: string; data: Partial<Paricion> }>({
       query: ({ pigId, paricionId, data }) => ({
@@ -75,4 +86,5 @@ export const {
   useUpdatePigByIdMutation,
   useDeletePigByIdMutation,
   usePatchParicionMutation,
+  useAddParicionMutation
 } = pigsApi;

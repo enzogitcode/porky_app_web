@@ -5,6 +5,7 @@ import PorkDetails from "./componenets/cerdas/PorkDetails";
 import Header from "./ui/Header";
 import Register from "./componenets/cerdas/Register";
 import Updater from "./componenets/cerdas/Updater";
+import ParicionForm from "./componenets/cerdas/ParicionForm";
 
 const App = () => {
   return (
@@ -26,6 +27,9 @@ const App = () => {
 
       {/* Editar un cerdo existente */}
       <Route path="/pigs/update/:id" element={<Updater />} />
+
+      {/* Editar pariciones */}
+      <Route path="/pigs/:id/pariciones" element={<ParicionForm/>}/>
 
       {/* Ruta comodín */}
       <Route path="*" element={<Home/>} />

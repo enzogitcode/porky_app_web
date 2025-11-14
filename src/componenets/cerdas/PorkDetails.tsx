@@ -7,18 +7,16 @@ const PorkDetails = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  // Obtener cerdo
+  
+  
   const { data: pig, isLoading, isError } = useGetPigByIdQuery(id!, { skip: !id });
-
-  // Hook para eliminar
   const [deletePigById, { isLoading: isDeleting }] = useDeletePigByIdMutation();
 
-  // Función para eliminar y redirigir
   const handleDelete = async () => {
     if (!id) return;
     try {
-      await deletePigById(id).unwrap(); // unwrap para manejar errores
-      navigate("/pigs"); // redirige a lista
+      await deletePigById(id).unwrap();
+      navigate("/pigs");
     } catch (error) {
       console.error("Error al eliminar:", error);
     }
@@ -45,6 +43,16 @@ const PorkDetails = () => {
         ) : (
           <p>No hay pariciones registradas</p>
         )}
+      </div>
+
+      {/* ----------------------------------------------------- */}
+      {/* Nuevo botón para agregar parición                     */}
+      {/* ----------------------------------------------------- */}
+      <div style={{ marginTop: "20px" }}>
+        {pig._id && (
+  <Link to={`/pigs/${pig._id}/pariciones`}>
+    Agregar Parición
+  </Link>)}
       </div>
 
       <div style={{ marginTop: "20px" }}>

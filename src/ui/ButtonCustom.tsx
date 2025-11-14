@@ -2,7 +2,7 @@ import React from 'react';
 
 interface ButtonProps {
     buttonCustomStyle?:React.CSSProperties
-  onClick?: () => void;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>
   children?: React.ReactNode;
   type: "submit" | "reset" | "button" | undefined
 }
