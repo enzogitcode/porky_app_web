@@ -60,8 +60,8 @@ export const pigsApi = createApi({
     // ADD PARICIÓN
     addParicion: builder.mutation<Pig, { pigId: string; data: Paricion }>({
       query: ({ pigId, data }) => ({
-        url: `/${pigId}/paricion`,
-        method: "PATCH",
+        url: `/${pigId}/pariciones`,
+        method: "POST",
         body: data,
       }),
       invalidatesTags: (result, error, { pigId }) => [{ type: "Pigs", id: pigId }],
@@ -73,7 +73,7 @@ export const pigsApi = createApi({
       { pigId: string; paricionId: string; data: Partial<Paricion> }
     >({
       query: ({ pigId, paricionId, data }) => ({
-        url: `/${pigId}/${paricionId}`,
+        url: `/${pigId}/pariciones/${paricionId}`,
         method: "PATCH",
         body: data,
       }),
@@ -87,7 +87,7 @@ export const pigsApi = createApi({
     >({
       query: ({ pigId, paricionId }) => ({
         url: `/${pigId}/paricion/${paricionId}`,
-        method: "PATCH", // porque tu backend usa PATCH para eliminar
+        method: "DELETE", // porque tu backend usa PATCH para eliminar
       }),
       invalidatesTags: (result, error, { pigId }) => [{ type: "Pigs", id: pigId }],
     }),

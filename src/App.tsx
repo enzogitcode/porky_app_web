@@ -37,6 +37,7 @@ const App = () => {
       {/* Detalle de un cerdo específico por ID */}
       <Route path="/pigs/:id" element={<PorkDetails />} />
 
+
       {/* Editar un cerdo existente */}
       <Route path="/pigs/update/:id" element={<Updater />} />
 

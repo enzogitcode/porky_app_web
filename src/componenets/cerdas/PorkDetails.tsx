@@ -7,8 +7,6 @@ const PorkDetails = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  
-  
   const { data: pig, isLoading, isError } = useGetPigByIdQuery(id!, { skip: !id });
   const [deletePigById, { isLoading: isDeleting }] = useDeletePigByIdMutation();
 
@@ -27,7 +25,9 @@ const PorkDetails = () => {
 
   return (
     <div>
+
       <h2>Cerdo #{pig.nroCaravana}</h2>
+      <p>{pig._id}</p>
       <p>Estadio: {pig.estadio}</p>
       <p>Ubicación: {pig.ubicacion}</p>
       <p>Descripción: {pig.descripcion}</p>
@@ -37,8 +37,8 @@ const PorkDetails = () => {
       <div>
         <h3>Pariciones:</h3>
         {pig.pariciones?.length ? (
-          pig.pariciones.map((p: Paricion, index) => (
-            <ParicionCard key={index} {...p} />
+          pig.pariciones.map((item, id) => (
+            <ParicionCard key={_id} {...item} {...pig}/>
           ))
         ) : (
           <p>No hay pariciones registradas</p>

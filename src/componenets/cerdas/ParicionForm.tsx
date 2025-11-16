@@ -3,7 +3,16 @@ import { useParams, useNavigate } from "react-router-dom";
 import InputCustom from "../../ui/InputCustom";
 import ButtonCustom from "../../ui/ButtonCustom";
 import { useAddParicionMutation } from "../../redux/features/pigSlice";
-import type { Paricion } from "../../types/types";
+import type { Paricion, Servicio } from "../../types/types";
+
+interface FormState {
+  fechaParicion: string;
+  cantidadLechones: string;
+  descripcion: string;
+  servicioTipo?: Servicio["tipo"];
+  servicioFecha?: string;
+  servicioMacho?: string;
+}
 
 const ParicionForm = () => {
   const { id } = useParams<{ id: string }>();
@@ -11,14 +20,16 @@ const ParicionForm = () => {
 
   const [addParicion, { isLoading }] = useAddParicionMutation();
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<FormState>({
     fechaParicion: "",
     cantidadLechones: "",
     descripcion: "",
+    servicioTipo: undefined,
+    servicioFecha: "",
+    servicioMacho: "",
   });
 
-  // Manejo unificado de cambios en inputs
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
@@ -26,21 +37,33 @@ const ParicionForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Preparar datos según el tipo Paricion
+    // Solo crear objeto servicio si se seleccionó tipo
+    let servicioData: Servicio | undefined = undefined;
+    if (form.servicioTipo) {
+      servicioData = {
+        tipo: form.servicioTipo,
+        fecha: form.servicioFecha || "",
+        macho: form.servicioTipo === "cerdo" ? form.servicioMacho || undefined : undefined,
+      };
+    }
+
     const paricionData: Paricion = {
       fechaParicion: form.fechaParicion,
       cantidadLechones: Number(form.cantidadLechones),
       descripcion: form.descripcion,
+      servicio: servicioData,
     };
 
+    console.log("Datos a enviar:", paricionData);
+
     try {
-      // Llamada al backend
       const updatedPig = await addParicion({
         pigId: id!,
         data: paricionData,
       }).unwrap();
 
-      // Navegar usando el id devuelto por el backend
+      console.log("Respuesta del backend:", updatedPig);
+
       navigate(`/pigs/${updatedPig._id}`);
     } catch (err) {
       alert("Error al agregar parición");
@@ -76,6 +99,36 @@ const ParicionForm = () => {
           value={form.descripcion}
           onChange={handleChange}
         />
+
+        <label>Tipo de servicio</label>
+        <select name="servicioTipo" value={form.servicioTipo || ""} onChange={handleChange}>
+          <option value="">-- Seleccionar --</option>
+          <option value="cerdo">Cerdo</option>
+          <option value="inseminacion">Inseminación</option>
+          <option value="desconocido">Desconocido</option>
+        </select>
+
+      {form.servicioTipo && (
+  <>
+    <InputCustom
+      label="Fecha de servicio"
+      type="date"
+      name="servicioFecha"
+      value={form.servicioFecha || ""}   // <- aseguramos string
+      onChange={handleChange}
+    />
+    {form.servicioTipo === "cerdo" && (
+      <InputCustom
+        label="Macho"
+        type="text"
+        name="servicioMacho"
+        value={form.servicioMacho || ""}  // <- aseguramos string
+        onChange={handleChange}
+      />
+    )}
+  </>
+)}
+
 
         <ButtonCustom type="submit">
           {isLoading ? "Guardando..." : "Agregar Parición"}
