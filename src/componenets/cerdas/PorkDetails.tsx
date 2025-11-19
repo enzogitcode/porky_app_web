@@ -1,4 +1,4 @@
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate, Link, data } from "react-router-dom";
 import { useGetPigByIdQuery, useDeletePigByIdMutation } from "../../redux/features/pigSlice";
 import ParicionCard from "./ParicionCard";
 import type { Paricion } from "../../types/types";
@@ -9,6 +9,8 @@ const PorkDetails = () => {
 
   const { data: pig, isLoading, isError } = useGetPigByIdQuery(id!, { skip: !id });
   const [deletePigById, { isLoading: isDeleting }] = useDeletePigByIdMutation();
+
+  
 
   const handleDelete = async () => {
     if (!id) return;
@@ -37,8 +39,21 @@ const PorkDetails = () => {
       <div>
         <h3>Pariciones:</h3>
         {pig.pariciones?.length ? (
-          pig.pariciones.map((item, id) => (
-            <ParicionCard key={_id} {...item} {...pig}/>
+          pig.pariciones.map((item) => (
+            <div key={item._id}>
+              {item._id}
+              {item.fechaParicion}
+              {item.fechaActualizacion}
+              {item.cantidadLechones}
+              {item.servicio?.tipo == 'desconocido' ? <p>{item.servicio?.tipo}</p> : 
+             <>
+                <p>{item.servicio?.fecha}</p>
+                <p>{item.servicio?.macho && item.servicio?.macho }</p>
+                </> }
+              {item.descripcion}
+  
+
+              </div>
           ))
         ) : (
           <p>No hay pariciones registradas</p>

@@ -14,6 +14,7 @@ export interface Servicio {
 }
 
 export interface Paricion {
+  _id?:string
   fechaParicion: string;
   cantidadLechones: number;
   descripcion?: string;
