@@ -6,6 +6,7 @@ import Header from "./ui/Header";
 import Register from "./componenets/cerdas/Register";
 import Updater from "./componenets/cerdas/Updater";
 import ParicionForm from "./componenets/cerdas/ParicionForm";
+import ParicionUpdate from "./componenets/cerdas/ParicionUpdate";
 /* import { toggleDarkMode } from "./redux/features/darkModeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "./redux/store/store"; */
@@ -37,12 +38,14 @@ const App = () => {
       {/* Detalle de un cerdo específico por ID */}
       <Route path="/pigs/:id" element={<PorkDetails />} />
 
-
       {/* Editar un cerdo existente */}
       <Route path="/pigs/update/:id" element={<Updater />} />
 
-      {/* Editar pariciones */}
+      {/* Agregar pariciones */}
       <Route path="/pigs/:id/pariciones" element={<ParicionForm/>}/>
+
+      {/* Editar pariciones existentes */}
+      <Route  path="/pigs/:id/pariciones/:paricionId/update" element={<ParicionUpdate/>}/>
 
       {/* Ruta comodín */}
       <Route path="*" element={<Home/>} />
