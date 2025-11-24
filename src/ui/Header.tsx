@@ -5,7 +5,7 @@ const Header = () => {
   return (
     <header>
         <div>
-        <Link to={'/'} >Inicio</Link>
+        <Link to={'/'} className="linkNavBar">Inicio</Link>
         </div>
         <NavBar/>
     </header>

@@ -25,7 +25,7 @@ const App = () => {
       <BrowserRouter>
         <Header/>
 
-        <main>
+        <main className="justify-center-safe items-center">
           <Routes>
             <Route path="/" element={<Home />} />
                {/* Listado de todos los cerdos */}
