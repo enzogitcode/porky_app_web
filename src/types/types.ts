@@ -1,5 +1,3 @@
-// src/types/types.ts
-
 export type Situacion =
   | "pregnant"
   | "parida con lechones"
@@ -9,26 +7,26 @@ export type Situacion =
 
 export interface Servicio {
   tipo: "cerdo" | "inseminacion" | "desconocido";
-  fecha: string; // ⚠️ en el frontend, Date viene como string JSON
+  fecha?: string | Date;  // <-- puede ser string (input) o Date (para backend)
   macho?: string | null;
 }
 
 export interface Paricion {
-  _id?:string
-  fechaParicion: string;
+  _id?: string;
+  fechaParicion: string | Date; // <-- acepta ambos
   cantidadLechones: number;
   descripcion?: string;
   servicio?: Servicio;
-  fechaActualizacion?: string;
+  fechaActualizacion?: string | Date; // <-- igual
 }
 
 export interface Pig {
-  _id: string; 
+  _id: string;
   nroCaravana: number;
   estadio: Situacion;
   descripcion?: string;
   ubicacion?: string;
   pariciones?: Paricion[];
-  createdAt: string;   
-  updatedAt: string;   
+  createdAt: string;
+  updatedAt: string;
 }

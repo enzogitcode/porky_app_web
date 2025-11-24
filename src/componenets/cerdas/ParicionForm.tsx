@@ -1,156 +1,174 @@
-import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import InputCustom from "../../ui/InputCustom";
+// src/components/paricion/ParicionForm.tsx
+import { useState } from "react";
 import ButtonCustom from "../../ui/ButtonCustom";
+import InputCustom from "../../ui/InputCustom";
 import { useAddParicionMutation } from "../../redux/features/pigSlice";
+import { useParams } from "react-router-dom";
+import { paricionSchema } from "../../zodSchemas/paricionSchema";
 import type { Paricion, Servicio } from "../../types/types";
 
-interface FormState {
-  fechaParicion: string|undefined;
-  cantidadLechones: string;
-  descripcion: string;
-  servicioTipo?: Servicio["tipo"];
-  servicioFecha?: string|undefined;
-  servicioMacho?: string;
-}
-
-const ParicionForm = () => {
+const ParicionForm: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
 
-  const [addParicion, { isLoading }] = useAddParicionMutation();
-
-  const [form, setForm] = useState<FormState>({
+  const [paricion, setParicion] = useState({
     fechaParicion: "",
     cantidadLechones: "",
     descripcion: "",
-    servicioTipo: undefined,
-    servicioFecha: "",
-    servicioMacho: "",
+    servicio: {
+      tipo: "desconocido",
+      fecha: "",
+      macho: "",
+    },
   });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+  const [addParicion, { isLoading }] = useAddParicionMutation();
+
+  const handleChange = (field: string, value: any) => {
+    setParicion((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleServicioChange = (field: string, value: any) => {
+    setParicion((prev) => ({
+      ...prev,
+      servicio: { ...prev.servicio, [field]: value },
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!form.fechaParicion) {
-      alert("La fecha de parición es obligatoria");
+    if (!id) {
+      alert("No se encontró el ID del cerdo");
       return;
     }
 
-    // Convertimos siempre a Date antes de enviar
-    const fechaParicionDate = new Date(form.fechaParicion);
-
-    let servicioData: Servicio | undefined = undefined;
-
-    if (form.servicioTipo) {
-      servicioData = {
-        tipo: form.servicioTipo,
-        fecha: form.servicioFecha ? new Date(form.servicioFecha) : undefined,
-        macho:
-          form.servicioTipo === "cerdo"
-            ? form.servicioMacho || undefined
-            : undefined,
-      };
+    // -------------------------
+    // 🔍 VALIDACIÓN con Zod
+    // -------------------------
+    const validation = paricionSchema.safeParse(paricion);
+    if (!validation.success) {
+      alert(validation.error.issues[0].message);
+      return;
     }
 
-    const paricionData: Paricion = {
-      fechaParicion: fechaParicionDate,
-      cantidadLechones: Number(form.cantidadLechones),
-      descripcion: form.descripcion,
-      servicio: servicioData,
+    const parsed = validation.data;
+
+    // -------------------------
+    // 🛠 FORMATEO para BACKEND
+    // -------------------------
+    const formatted: Paricion = {
+      fechaParicion: new Date(parsed.fechaParicion).toISOString(),
+      cantidadLechones: Number(parsed.cantidadLechones),
+      descripcion: parsed.descripcion || "",
+      fechaActualizacion: new Date().toISOString(),
+      servicio:
+        parsed.servicio.tipo === "desconocido"
+          ? { tipo: "desconocido" as const } // literal exacto, sin fecha ni macho
+          : {
+              tipo: parsed.servicio.tipo as "cerdo" | "inseminacion",
+              fecha: new Date(parsed.servicio.fecha!).toISOString(),
+              ...(parsed.servicio.tipo === "cerdo" && { macho: parsed.servicio.macho }),
+            },
     };
 
-    console.log("Datos a enviar:", paricionData);
-
     try {
-      const updatedPig = await addParicion({
-        pigId: id!,
-        data: paricionData,
-      }).unwrap();
+      await addParicion({ pigId: id, data: formatted }).unwrap();
+      alert("Parición guardada correctamente");
 
-      console.log("Respuesta del backend:", updatedPig);
-      navigate(`/pigs/${updatedPig._id}`);
-    } catch (err) {
-      alert("Error al agregar parición");
-      console.error(err);
+      // Reset form
+      setParicion({
+        fechaParicion: "",
+        cantidadLechones: "",
+        descripcion: "",
+        servicio: {
+          tipo: "desconocido",
+          fecha: "",
+          macho: "",
+        },
+      });
+    } catch (error) {
+      console.error(error);
+      alert("Hubo un error al guardar");
     }
   };
 
   return (
-    <div>
-      <h2>Nueva Parición</h2>
+    <form onSubmit={handleSubmit}>
+      <InputCustom
+        label="Fecha de Parición"
+        type="date"
+        value={paricion.fechaParicion}
+        onChange={(e) => handleChange("fechaParicion", e.target.value)}
+      />
 
-      <form onSubmit={handleSubmit}>
-        <InputCustom
-          label="Fecha de parición"
-          type="date"
-          name="fechaParicion"
-          value={form.fechaParicion}
-          onChange={handleChange}
-        />
+      <InputCustom
+        label="Cantidad de Lechones"
+        type="number"
+        value={paricion.cantidadLechones}
+        onChange={(e) => handleChange("cantidadLechones", e.target.value)}
+      />
 
-        <InputCustom
-          label="Cantidad de lechones"
-          type="number"
-          name="cantidadLechones"
-          value={form.cantidadLechones}
-          onChange={handleChange}
-        />
+      <InputCustom
+        label="Descripción"
+        type="text"
+        value={paricion.descripcion}
+        onChange={(e) => handleChange("descripcion", e.target.value)}
+      />
 
-        <InputCustom
-          label="Descripción"
-          type="text"
-          name="descripcion"
-          value={form.descripcion}
-          onChange={handleChange}
-        />
+      <h4>Servicio</h4>
 
-        <label>Tipo de servicio</label>
-        <select
-          name="servicioTipo"
-          value={form.servicioTipo || ""}
-          onChange={handleChange}
-        >
-          <option value="">-- Seleccionar --</option>
-          <option value="cerdo">Cerdo</option>
-          <option value="inseminacion">Inseminación</option>
-          <option value="desconocido">Desconocido</option>
-        </select>
+      <select
+        value={paricion.servicio.tipo}
+        onChange={(e) => handleServicioChange("tipo", e.target.value)}
+      >
+        <option value="cerdo">Cerdo</option>
+        <option value="inseminacion">Inseminación</option>
+        <option value="desconocido">Desconocido</option>
+      </select>
 
-        {form.servicioTipo !== "desconocido" && (
-          <>
+      {/* Mostrar campos solo si NO es desconocido */}
+      {paricion.servicio.tipo !== "desconocido" && (
+        <>
+          <InputCustom
+            label="Fecha del Servicio"
+            type="date"
+            value={paricion.servicio.fecha}
+            onChange={(e) => handleServicioChange("fecha", e.target.value)}
+          />
+
+          {paricion.servicio.tipo === "cerdo" && (
             <InputCustom
-              label="Fecha de servicio"
-              type="date"
-              name="servicioFecha"
-              value={form.servicioFecha || ""}
-              onChange={handleChange}
+              label="Macho"
+              type="text"
+              value={paricion.servicio.macho}
+              onChange={(e) => handleServicioChange("macho", e.target.value)}
             />
+          )}
+        </>
+      )}
 
-            {form.servicioTipo === "cerdo" && (
-              <InputCustom
-                label="Macho"
-                type="text"
-                name="servicioMacho"
-                value={form.servicioMacho || ""}
-                onChange={handleChange}
-              />
-            )}
-          </>
-        )}
+      <ButtonCustom type="submit">
+        {isLoading ? "Guardando..." : "Enviar"}
+      </ButtonCustom>
 
-        <ButtonCustom type="submit">
-          {isLoading ? "Guardando..." : "Agregar Parición"}
-        </ButtonCustom>
-      </form>
-    </div>
+      <ButtonCustom
+        type="reset"
+        onClick={() =>
+          setParicion({
+            fechaParicion: "",
+            cantidadLechones: "",
+            descripcion: "",
+            servicio: {
+              tipo: "desconocido",
+              fecha: "",
+              macho: "",
+            },
+          })
+        }
+      >
+        Restablecer
+      </ButtonCustom>
+    </form>
   );
 };
 

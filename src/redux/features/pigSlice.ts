@@ -86,7 +86,7 @@ export const pigsApi = createApi({
       { pigId: string; paricionId: string }
     >({
       query: ({ pigId, paricionId }) => ({
-        url: `/${pigId}/paricion/${paricionId}`,
+        url: `/${pigId}/pariciones/${paricionId}`,
         method: "DELETE", // porque tu backend usa PATCH para eliminar
       }),
       invalidatesTags: (result, error, { pigId }) => [{ type: "Pigs", id: pigId }],
