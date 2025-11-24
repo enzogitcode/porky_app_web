@@ -5,7 +5,7 @@ interface ButtonProps {
   onClick?: React.MouseEventHandler<HTMLButtonElement>
   children?: React.ReactNode;
   type: "submit" | "reset" | "button" | undefined
-  className:string
+  className?:string
 }
 
 const ButtonCustom: React.FC<ButtonProps> = ({ onClick, children, type , buttonCustomStyle, className}) => {
