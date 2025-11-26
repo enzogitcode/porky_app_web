@@ -5,8 +5,8 @@ import PorkDetails from "./componenets/cerdas/PorkDetails";
 import Header from "./ui/Header";
 import Register from "./componenets/cerdas/Register";
 import Updater from "./componenets/cerdas/Updater";
-import ParicionForm from "./componenets/pariciones/ParicionForm";
-import ParicionUpdate from "./componenets/pariciones/ParicionUpdate";
+import ParicionForm from "./componenets/cerdas/ParicionForm";
+import ParicionUpdate from "./componenets/cerdas/ParicionUpdate";
 
 
 
