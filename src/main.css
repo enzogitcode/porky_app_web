@@ -1,12 +1,5 @@
 @import "tailwindcss";
 
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-  border: .5px solid #aa0000;
-}
 #root {
   display: grid;
   min-height: 100dvh;
@@ -26,8 +19,13 @@ nav {
   flex-wrap: wrap;
   padding: .5rem;
   gap: .8em;
-  
 }
+
+.stylePad {
+  padding: .5rem;
+  margin: .5rem;
+}
+
 .linkNavBar {
   background-color: #fda5d5;
   border-radius: 1.5rem;

@@ -1,4 +1,5 @@
 import { useGetAllPigsQuery } from "../../redux/features/pigSlice";
+import Container from "../../ui/Container";
 import PorkCard from "./PorkCard";
 
 const PorkList = () => {
@@ -17,14 +18,14 @@ const PorkList = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-6">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Lista de Cerdos</h2>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <Container>
+      <h2 className="text-2xl font-bold text-gray-800 text-center m-3">Lista de Cerdos</h2>
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 p-1">
         {pigs?.map((item) => (
           <PorkCard {...item} key={item._id} />
         ))}
       </div>
-    </div>
+    </Container>
   );
 };
 

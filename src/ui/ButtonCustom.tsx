@@ -11,7 +11,7 @@ interface ButtonProps {
 const ButtonCustom: React.FC<ButtonProps> = ({ onClick, children, type , buttonCustomStyle, className}) => {
   return (
     <button
-    className={className}
+    className={`m-1 p-1 ${className ?? ""}`}
     type={type}
       onClick={onClick}
       style={buttonCustomStyle}

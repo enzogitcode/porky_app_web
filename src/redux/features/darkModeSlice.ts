@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
+
 interface DarkModeState {
   darkMode: boolean; // ✅ aquí es boolean
 }
@@ -24,3 +25,4 @@ export const darkModeSlice = createSlice({
 
 export const { toggleDarkMode, setDarkMode } = darkModeSlice.actions;
 export default darkModeSlice.reducer;
+

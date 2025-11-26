@@ -4,6 +4,7 @@ import ButtonCustom from "../../ui/ButtonCustom";
 import { useCreateAPigMutation } from "../../redux/features/pigSlice";
 import type { Situacion } from "../../types/types";
 import { useNavigate } from "react-router-dom";
+import Container from "../../ui/Container";
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
@@ -35,18 +36,20 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div>
+    <Container className="text-center">
       <h2>Registrar Cerdo</h2>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3 border-2 border-b-cyan-700 justify-center-safe items-center-safe ">
         <InputCustom
+        className="max-w-5xl self-center-safe"
+        inputClassName="text-center"
           label="Nro Caravana"
           type="number"
           value={form.nroCaravana}
           onChange={(e) => setForm({ ...form, nroCaravana: e.target.value })}
         />
 
-        <div style={{ marginBottom: "1rem" }}>
+        <div>
           <label htmlFor="estadio">Estadio</label>
           <select
             id="estadio"
@@ -63,23 +66,35 @@ const Register: React.FC = () => {
           </select>
         </div>
 
-        <InputCustom
+        {/* <InputCustom
+        className=""
           label="Descripción"
           type="text"
           value={form.descripcion}
           onChange={(e) => setForm({ ...form, descripcion: e.target.value })}
-        />
+        /> */}
+        <label htmlFor="descripcion">Descripción</label>
+        <textarea
+        id="descripcion"
+          value={form.descripcion}
+          onChange={(e) => setForm({ ...form, descripcion: e.target.value })}
+        >
+
+        </textarea>
 
         <InputCustom
+        inputClassName="text-center"
+        className="text-center"
           label="Ubicación"
           type="text"
           value={form.ubicacion}
           onChange={(e) => setForm({ ...form, ubicacion: e.target.value })}
         />
 
-        <ButtonCustom type="submit">{isLoading ? "Creando..." : "Registrar Cerdo"}</ButtonCustom>
+        <ButtonCustom className="rounded bg-cyan-300 m-2 p-2"
+         type="submit">{isLoading ? "Creando..." : "Registrar Cerdo"}</ButtonCustom>
       </form>
-    </div>
+    </Container>
   );
 };
 

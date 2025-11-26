@@ -5,12 +5,18 @@ import {
   useDeleteParicionMutation,
 } from "../../redux/features/pigSlice";
 import ButtonCustom from "../../ui/ButtonCustom";
+import Card from "../../ui/Card";
+import Container from "../../ui/Container";
 
 const PorkDetails = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const { data: pig, isLoading, isError } = useGetPigByIdQuery(id!, { skip: !id });
+  const {
+    data: pig,
+    isLoading,
+    isError,
+  } = useGetPigByIdQuery(id!, { skip: !id });
   const [deletePigById, { isLoading: isDeleting }] = useDeletePigByIdMutation();
   const [deleteParicion] = useDeleteParicionMutation();
 
@@ -34,80 +40,98 @@ const PorkDetails = () => {
     }
   };
 
+
   if (isLoading) return <p>Cargando...</p>;
   if (isError || !pig) return <p>No se encontró el cerdo</p>;
 
   return (
-    <div>
-      <h2>Cerdo #{pig.nroCaravana}</h2>
-      <p>ID: {pig._id}</p>
-
+    <Container className="text-center">
+      <h2 className="text-3xl">Cerdo N° {pig.nroCaravana}</h2>
       <div>
-        <p><strong>Estadio:</strong> {pig.estadio}</p>
-        <p><strong>Ubicación:</strong> {pig.ubicacion}</p>
-        <p><strong>Descripción:</strong> {pig.descripcion}</p>
-        <p><strong>Creado:</strong> {pig.createdAt}</p>
-        <p><strong>Actualizado:</strong> {pig.updatedAt}</p>
+        <p>ID: {pig._id}</p>
+
+        <div>
+          <p>
+            <strong>Estadio:</strong> {pig.estadio}
+          </p>
+          <p>
+            <strong>Ubicación:</strong> {pig.ubicacion}
+          </p>
+          <p>
+            <strong>Descripción:</strong> {pig.descripcion}
+          </p>
+          <p>
+            <strong>Creado:</strong> {new Date(pig?.createdAt).toLocaleDateString()} <strong>Hora: </strong> {new Date(pig?.createdAt).toLocaleTimeString()}
+          </p>
+          <p>
+            <strong>Actualizado:</strong> {new Date(pig.updatedAt).toLocaleDateString()}
+          </p>
+        </div>
       </div>
 
-      <div>
-        <h3>Pariciones</h3>
+      <Card className="m-2">
+        <h3 className="text-2xl">Pariciones</h3>
         {pig.pariciones?.length ? (
           <div>
             {pig.pariciones.map((item) => (
-              <div key={item._id}>
-                <p>ID: {item._id}</p>
-                <p>📅 Parición: {item.fechaParicion?.toString()}</p>
-                <p>🔄 Actualización: {item.fechaActualizacion?.toString()}</p>
-                <p>🐖 Lechones: {item.cantidadLechones}</p>
+              <Card className="m-2" key={item._id}>
+                <div className="m-4">
+                  <p>ID: {item._id}</p>
+                  <p>📅 Parición: {item.fechaParicion?.toLocaleString()}</p>
+                  <p>🔄 Actualización: {item.fechaActualizacion?.toString()}</p>
+                  <p>🐖 Lechones: {item.cantidadLechones}</p>
 
-                {item.servicio?.tipo === "desconocido" ? (
-                  <p>Servicio: {item.servicio?.tipo}</p>
-                ) : (
-                  <>
-                    <p>📅 Servicio: {item.servicio?.fecha?.toString()}</p>
-                    <p>♂ Macho: {item.servicio?.macho}</p>
-                  </>
-                )}
+                  {item.servicio?.tipo === "desconocido" ? (
+                    <p>Servicio: {item.servicio?.tipo}</p>
+                  ) : (
+                    <>
+                      <p>📅 Servicio: {item.servicio?.fecha?.toString()}</p>
+                      <p>♂ Macho: {item.servicio?.macho}</p>
+                    </>
+                  )}
 
-                <p>📝 {item.descripcion}</p>
+                  <p>📝 Descripción: {item.descripcion}</p>
+                </div>
 
-                <ButtonCustom
-                  type="button"
-                  onClick={() => handleDeleteParicion(item._id!)}
-                >
-                  Eliminar
-                </ButtonCustom>
-                <ButtonCustom
-  type="button"
-  onClick={() => navigate(`/pigs/${id}/pariciones/${item._id}/update`)}
->
-  Editar Parición
-</ButtonCustom>
-              </div>
+                <div className="flex gap-3 m-2">
+                  <ButtonCustom
+                    className="bg-red-600 p-1 rounded hover:bg-red-700 text-white"
+                    type="button"
+                    onClick={() => handleDeleteParicion(item._id!)}
+                  >
+                    Eliminar parición
+                  </ButtonCustom>
+
+                  <ButtonCustom
+                    className="bg-amber-300 rounded p-2"
+                    type="button"
+                    onClick={() =>
+                      navigate(`/pigs/${id}/pariciones/${item._id}/update`)
+                    }
+                  >
+                    Editar Parición
+                  </ButtonCustom>
+                </div>
+              </Card>
             ))}
           </div>
         ) : (
           <p>No hay pariciones registradas</p>
         )}
-      </div>
+      </Card>
 
-      <div>
+      <div className=" flex justify-center items-center gap-2.5 mb-2">
         {pig._id && (
-          <Link to={`/pigs/${pig._id}/pariciones`}>
-            Agregar Parición
-          </Link>
+          <Link className="rounded bg-sky-300 p-1" to={`/pigs/${pig._id}/pariciones`}>Agregar Parición</Link>
         )}
 
-        <Link to={`/pigs/update/${pig._id}`}>
-          Editar cerdo
-        </Link>
+        <Link className="rounded bg-amber-300 p-1" to={`/pigs/update/${pig._id}`}>Editar cerdo</Link>
 
-        <button onClick={handleDelete} disabled={isDeleting}>
-          {isDeleting ? "Eliminando..." : "Eliminar"}
+        <button onClick={handleDelete} disabled={isDeleting} className="rounded bg-red-600 p-1">
+          {isDeleting ? "Eliminando..." : "Eliminar TODO EL CERDO"}
         </button>
       </div>
-    </div>
+    </Container>
   );
 };
 

@@ -5,11 +5,9 @@ import PorkDetails from "./componenets/cerdas/PorkDetails";
 import Header from "./ui/Header";
 import Register from "./componenets/cerdas/Register";
 import Updater from "./componenets/cerdas/Updater";
-import ParicionForm from "./componenets/cerdas/ParicionForm";
-import ParicionUpdate from "./componenets/cerdas/ParicionUpdate";
-/* import { toggleDarkMode } from "./redux/features/darkModeSlice";
-import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "./redux/store/store"; */
+import ParicionForm from "./componenets/pariciones/ParicionForm";
+import ParicionUpdate from "./componenets/pariciones/ParicionUpdate";
+
 
 
 const App = () => {
@@ -19,14 +17,13 @@ const App = () => {
   console.log(darkMode) */
   {/* <button onClick={() => dispatch(toggleDarkMode())}>{darkMode ? "Modo claro" : "Modo Oscuro" }</button>
   <div style={{height:"10px", width: "10px", backgroundColor: darkMode? "#000":"#fff"}}></div> */}
-  
  
   return (
     <>
       <BrowserRouter>
         <Header/>
 
-        <main className="justify-center-safe items-center">
+        <main>
           <Routes>
             <Route path="/" element={<Home />} />
                {/* Listado de todos los cerdos */}

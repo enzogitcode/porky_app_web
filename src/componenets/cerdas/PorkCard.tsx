@@ -1,15 +1,24 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import type { Pig } from "../../types/types";
+import Card from "../../ui/Card";
 
 const PorkCard: React.FC<Pig> = (props) => {
   return (
-    <div>
-      <p>{props.nroCaravana}</p>
-      <p>{props.ubicacion}</p>
-      <p>{props.estadio}</p>
-      <Link to={`/pigs/${props._id}`}><button>Ver detalles</button></Link>
-    </div>
+    <Card>
+      <div>
+        <p>Cerda nro° {props.nroCaravana}</p>
+        <p>Ubicación: {props.ubicacion}</p>
+        <p>Estadío: {props.estadio}</p>
+      </div>
+      <div className="bg-green-300 hover:bg-green-400 rounded p-1">
+        <Link to={`/pigs/${props._id}`}
+        className="" 
+        >
+          Ver detalles
+        </Link>
+      </div>
+    </Card>
   );
 };
 
