@@ -36,10 +36,10 @@ const Register: React.FC = () => {
   };
 
   return (
-    <Container className="text-center">
-      <h2>Registrar Cerdo</h2>
+    <Container className="text-center flex-col">
+      <h2 className="text-3xl m-2">Registrar Cerdo</h2>
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3 border-2 border-b-cyan-700 justify-center-safe items-center-safe ">
+      <form onSubmit={handleSubmit} className="flex flex-col m-3 p-2 gap-3 border-2 border-b-cyan-700 justify-center-safe items-center-safe ">
         <InputCustom
         className="max-w-5xl self-center-safe"
         inputClassName="text-center"
@@ -58,10 +58,10 @@ const Register: React.FC = () => {
               setForm({ ...form, estadio: e.target.value as Situacion })
             }
           >
-            <option value="pregnant">Pregnant</option>
             <option value="parida con lechones">Parida con lechones</option>
-            <option value="servida">Servida</option>
+            <option value="pregnant">Pregnant</option>
             <option value="enferma">Enferma</option>
+            <option value="servida">Servida</option>
             <option value="ninguno">Ninguno</option>
           </select>
         </div>

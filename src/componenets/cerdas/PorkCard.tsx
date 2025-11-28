@@ -5,8 +5,8 @@ import Card from "../../ui/Card";
 
 const PorkCard: React.FC<Pig> = (props) => {
   return (
-    <Card>
-      <div>
+    <Card className="p-4 gap-2">
+      <div className=" content-evenly ">
         <p>Cerda nro° {props.nroCaravana}</p>
         <p>Ubicación: {props.ubicacion}</p>
         <p>Estadío: {props.estadio}</p>
