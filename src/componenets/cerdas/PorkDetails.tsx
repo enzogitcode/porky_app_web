@@ -45,7 +45,7 @@ const PorkDetails = () => {
   if (isError || !pig) return <p>No se encontró el cerdo</p>;
 
   return (
-    <Container className="text-center">
+    <Container className="text-center flex-col">
       <h2 className="text-3xl">Cerdo N° {pig.nroCaravana}</h2>
       <div>
         <p>ID: {pig._id}</p>
@@ -69,16 +69,16 @@ const PorkDetails = () => {
         </div>
       </div>
 
-      <Card className="m-2">
+      <Container className="flex-col">
         <h3 className="text-2xl">Pariciones</h3>
         {pig.pariciones?.length ? (
-          <div>
+          <Container className="flex flex-wrap justify-evenly items-center">
             {pig.pariciones.map((item) => (
-              <Card className="m-2" key={item._id}>
+              <Card className="m-2 justify-evenly" key={item._id}>
                 <div className="m-4">
                   <p>ID: {item._id}</p>
-                  <p>📅 Parición: {item.fechaParicion?.toLocaleString()}</p>
-                  <p>🔄 Actualización: {item.fechaActualizacion?.toString()}</p>
+                  <p>📅 Parición: {new Date(item?.fechaParicion).toLocaleString()}</p>
+                  <p>🔄 Actualización: {new Date(item?.fechaActualizacion).toLocaleString()}</p>
                   <p>🐖 Lechones: {item.cantidadLechones}</p>
 
                   {item.servicio?.tipo === "desconocido" ? (
@@ -114,11 +114,11 @@ const PorkDetails = () => {
                 </div>
               </Card>
             ))}
-          </div>
+          </Container>
         ) : (
           <p>No hay pariciones registradas</p>
         )}
-      </Card>
+      </Container>
 
       <div className=" flex justify-center items-center gap-2.5 mb-2">
         {pig._id && (

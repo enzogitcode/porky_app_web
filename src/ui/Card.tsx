@@ -8,7 +8,7 @@ interface CardProp {
 const Card:React.FC<CardProp> = ({children, className}) => {
   return (
     <div className=
-    {`${className ?? ""} flex flex-col justify-center text-center items-center border-pink-400 border-2 radius-sm rounded-2xl`}>
+    {`flex flex-col justify-center text-center items-center border-pink-400 border-2 radius-sm rounded-2xl ${className ?? ""}`}>
 {children}
     </div>
   )

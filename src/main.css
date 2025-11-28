@@ -6,7 +6,12 @@
   min-width: 100%;
   grid-template-rows: auto 1fr;
 }
+:root {
+  --pink-border-default: #fda5d5;
+}
 
+
+/* Header */
 header {
   display: flex;
   flex-wrap: wrap;
@@ -27,7 +32,7 @@ nav {
 }
 
 .linkNavBar {
-  background-color: #fda5d5;
+  background-color: var(--pink-border-default);
   border-radius: 1.5rem;
   padding: .5rem;
 }
@@ -44,3 +49,4 @@ nav {
     align-items: center;
   }
 }
+

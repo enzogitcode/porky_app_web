@@ -3,9 +3,9 @@ import NavBar from "./NavBar"
 
 const Header = () => {
   return (
-    <header>
+    <header className="bg-slate-500">
         <div>
-        <Link to={'/'} className="linkNavBar">Inicio</Link>
+        <Link  to={'/'} className="linkNavBar border-2 border-sky-500">Inicio</Link>
         </div>
         <NavBar/>
     </header>
