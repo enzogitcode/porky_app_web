@@ -5,6 +5,8 @@ import PorkCard from "./PorkCard";
 const PorkList = () => {
   const { data: pigs, isLoading, isError } = useGetAllPigsQuery();
 
+  
+
   if (isLoading)
     return <p className="text-center text-gray-500 mt-10 text-lg animate-pulse">Cargando...</p>;
 
