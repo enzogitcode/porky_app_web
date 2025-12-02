@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@theme {
+  --color-rosadefault: #fda5d5;
+  --breakpoint-customMobile: 400px;
+}
 #root {
   display: grid;
   min-height: 100dvh;
@@ -16,12 +20,20 @@
 }
 
 .linkNavBar {
+<<<<<<< HEAD
   background-color: var(--cssrosadefault);
+=======
+  background-color: var(--color-pink-300);
+>>>>>>> 3187bee853a0995405439c6bd259d67c8266b75a
   border-radius: 1.5rem;
   padding: .5rem;
 }
 .linkNavBar:hover {
+<<<<<<< HEAD
   background-color: var(--color-pink-500);
+=======
+  background-color: var(--cssrosadefault);
+>>>>>>> 3187bee853a0995405439c6bd259d67c8266b75a
 }
 
 .btnStyle {
@@ -30,6 +42,10 @@
 }
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3187bee853a0995405439c6bd259d67c8266b75a
 @media only screen and (max-device-width: 430px) {
   header {
     justify-content: center;
@@ -42,6 +58,15 @@
   
 }
 
+<<<<<<< HEAD
+=======
+@layer utilities {
+  .btn {
+    @apply bg-rosadefault px-4 py-2 rounded-4xl;
+  }
+  
+}
+>>>>>>> 3187bee853a0995405439c6bd259d67c8266b75a
 
 
  
