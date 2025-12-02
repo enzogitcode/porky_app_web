@@ -7,23 +7,7 @@
   grid-template-rows: auto 1fr;
 }
 :root {
-  --pink-border-default: #fda5d5;
-}
-
-
-/* Header */
-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  padding: .8em 1em;
-}
-nav {
-  display: flex;
-  flex-wrap: wrap;
-  padding: .5rem;
-  gap: .8em;
+  --cssrosadefault: #fda5d5;
 }
 
 .stylePad {
@@ -32,13 +16,20 @@ nav {
 }
 
 .linkNavBar {
-  background-color: var(--pink-border-default);
+  background-color: var(--cssrosadefault);
   border-radius: 1.5rem;
   padding: .5rem;
 }
 .linkNavBar:hover {
-  background-color: #d863a3;
+  background-color: var(--color-pink-500);
 }
+
+.btnStyle {
+  padding: 1rem;
+  margin: 1rem
+}
+
+
 @media only screen and (max-device-width: 430px) {
   header {
     justify-content: center;
@@ -48,5 +39,10 @@ nav {
     justify-content: center;
     align-items: center;
   }
+  
 }
+
+
+
+ 
 

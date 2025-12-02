@@ -7,9 +7,8 @@ interface FormContainerProps {
 
 const FormContainer:React.FC<FormContainerProps> = ({children, className}) => {
   return (
-    <div className={`${className ?? ""}`}>
+    <div className={`border-2 border-gray-700 ${className ?? ""}`}>
         {children}
-
     </div>
   )
 }

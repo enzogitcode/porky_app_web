@@ -7,7 +7,7 @@ import Register from "./componenets/cerdas/Register";
 import Updater from "./componenets/cerdas/Updater";
 import ParicionForm from "./componenets/cerdas/ParicionForm";
 import ParicionUpdate from "./componenets/cerdas/ParicionUpdate";
-
+import Searcher from "./ui/Searcher";
 
 
 const App = () => {
@@ -23,10 +23,14 @@ const App = () => {
       <BrowserRouter>
         <Header/>
 
-        <main>
+        <main className="">
           <Routes>
             <Route path="/" element={<Home />} />
                {/* Listado de todos los cerdos */}
+
+            <Route path="/searcher" element={<Searcher/>} />
+            
+
       <Route path="/pigs" element={<PorkList />} />
 
       {/* Crear un nuevo cerdo */}

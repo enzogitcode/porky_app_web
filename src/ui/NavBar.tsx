@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom'
 
 const NavBar = () => {
+  
   return (
-    <nav>
-  <Link className='linkNavBar border-2 border-sky-500' to="/pigs">Ver todos los cerdos</Link>
-  <Link className='linkNavBar border-2 border-sky-500' to="/pigs/new">Agregar un cerdo</Link>
+    <nav className='flex flex-wrap p-2 m-2 gap-3'>
+  <Link className='btn ' to="/searcher">Buscador</Link>
+  <Link className='btn ' to="/pigs">Ver todos los cerdos</Link>
+  <Link className='btn ' to="/pigs/new">Agregar un cerdo</Link>
     </nav>
   )
 }
