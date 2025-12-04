@@ -1,23 +1,18 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import type { Pig } from "../../types/types";
 import Card from "../../ui/Card";
+import ButtonCustom from "../../ui/ButtonCustom";
 
 const PorkCard: React.FC<Pig> = (props) => {
   return (
-    <Card className="p-4 gap-2 flex-1">
+    <Card className="p-4 gap-2 flex-1 shadow-2xs hover:shadow-2xl hover:shadow-zinc-500 hover:scale-105">
       <div className=" content-evenly ">
-        <p>Cerda nro° {props.nroCaravana}</p>
+        <h2 className="text-lg">Cerda nro° {props.nroCaravana}</h2>
         <p>Ubicación: {props.ubicacion}</p>
         <p>Estadío: {props.estadio}</p>
       </div>
-      <div className="bg-green-300 hover:bg-green-400 rounded p-1">
-        <Link to={`/pigs/${props._id}`}
-        className="" 
-        >
-          Ver detalles
-        </Link>
-      </div>
+        <ButtonCustom to={`/pigs/${props._id}`} className="detailsButton">Ver Detalles</ButtonCustom>
+       
     </Card>
   );
 };

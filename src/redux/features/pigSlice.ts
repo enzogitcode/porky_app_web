@@ -3,26 +3,35 @@ import type { Pig, Paricion } from "../../types/types";
 
 export const pigsApi = createApi({
   reducerPath: "pigsApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:4000/pigs" }),
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:4000" }), // 👈 base limpia
   tagTypes: ["Pigs"],
 
   endpoints: (builder) => ({
+    // GET all pigs como array (compatibilidad)
+    getAllPigsArray: builder.query<Pig[], { page?: number; limit?: number }>({
+      query: ({ page = 1, limit = 10 }) => `pigs?page=${page}&limit=${limit}`,
+      providesTags: ["Pigs"],
+      transformResponse: (response: { data: Pig[] }) => response.data,
+    }),
 
-    // GET all pigs
-    getAllPigs: builder.query<Pig[], void>({
-      query: () => `/`,
+    // GET all pigs con objeto paginado (para botones de paginación)
+    getAllPigsPaginated: builder.query<
+      { data: Pig[]; total: number; page: number; totalPages: number },
+      { page?: number; limit?: number }
+    >({
+      query: ({ page = 1, limit = 10 }) => `pigs?page=${page}&limit=${limit}`,
       providesTags: ["Pigs"],
     }),
 
     // GET pig by ID
     getPigById: builder.query<Pig, string>({
-      query: (id) => `/${id}`,
+      query: (id) => `pigs/${id}`,
       providesTags: (result, error, id) => [{ type: "Pigs", id }],
     }),
 
     // GET pig by nroCaravana
     getPigByCaravana: builder.query<Pig, number>({
-      query: (nroCaravana) => `/caravana/${nroCaravana}`,
+      query: (nroCaravana) => `pigs/caravana/${nroCaravana}`,
       providesTags: (result, error, nroCaravana) => [
         { type: "Pigs", id: nroCaravana },
       ],
@@ -31,7 +40,7 @@ export const pigsApi = createApi({
     // CREATE a pig
     createAPig: builder.mutation<Pig, Partial<Pig>>({
       query: (newPig) => ({
-        url: `/`,
+        url: `pigs`,
         method: "POST",
         body: newPig,
       }),
@@ -41,7 +50,7 @@ export const pigsApi = createApi({
     // UPDATE pig
     updatePigById: builder.mutation<Pig, { id: string; data: Partial<Pig> }>({
       query: ({ id, data }) => ({
-        url: `/${id}`,
+        url: `pigs/${id}`,
         method: "PATCH",
         body: data,
       }),
@@ -51,7 +60,7 @@ export const pigsApi = createApi({
     // DELETE pig
     deletePigById: builder.mutation<{ success: boolean; id: string }, string>({
       query: (id) => ({
-        url: `/${id}`,
+        url: `pigs/${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Pigs"],
@@ -60,7 +69,7 @@ export const pigsApi = createApi({
     // ADD PARICIÓN
     addParicion: builder.mutation<Pig, { pigId: string; data: Paricion }>({
       query: ({ pigId, data }) => ({
-        url: `/${pigId}/pariciones`,
+        url: `pigs/${pigId}/pariciones`,
         method: "POST",
         body: data,
       }),
@@ -73,7 +82,7 @@ export const pigsApi = createApi({
       { pigId: string; paricionId: string; data: Partial<Paricion> }
     >({
       query: ({ pigId, paricionId, data }) => ({
-        url: `/${pigId}/pariciones/${paricionId}`,
+        url: `pigs/${pigId}/pariciones/${paricionId}`,
         method: "PATCH",
         body: data,
       }),
@@ -86,17 +95,17 @@ export const pigsApi = createApi({
       { pigId: string; paricionId: string }
     >({
       query: ({ pigId, paricionId }) => ({
-        url: `/${pigId}/pariciones/${paricionId}`,
-        method: "DELETE", // porque tu backend usa PATCH para eliminar
+        url: `pigs/${pigId}/pariciones/${paricionId}`,
+        method: "DELETE",
       }),
       invalidatesTags: (result, error, { pigId }) => [{ type: "Pigs", id: pigId }],
     }),
-
   }),
 });
 
 export const {
-  useGetAllPigsQuery,
+  useGetAllPigsArrayQuery,
+  useGetAllPigsPaginatedQuery,
   useGetPigByIdQuery,
   useGetPigByCaravanaQuery,
   useCreateAPigMutation,

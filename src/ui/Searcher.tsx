@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useGetAllPigsQuery } from "../redux/features/pigSlice";
+import { useGetAllPigsArrayQuery } from "../redux/features/pigSlice"; // 👈 usamos el hook del array
 import Container from "./Container";
 import InputCustom from "./InputCustom";
 import ButtonCustom from "./ButtonCustom";
 import type { Pig } from "../types/types";
 
 const Searcher = () => {
-  const { data, isLoading, isError } = useGetAllPigsQuery();
+  // 👇 pedimos un límite grande para traer todos los registros
+  const { data, isLoading, isError } = useGetAllPigsArrayQuery({ page: 1, limit: 1000 });
 
-  // 🔑 ahora el select permite todas las propiedades relevantes
   const [searchField, setSearchField] = useState<
     "nroCaravana" | "descripcion" | "estadio" | "ubicacion" | "createdAt" | "updatedAt"
   >("nroCaravana");
@@ -75,9 +75,8 @@ const Searcher = () => {
   if (isError) return <p>Error al cargar los datos</p>;
 
   return (
-    <Container className="">
+    <Container>
       <div className="flex gap-2 items-center">
-        {/* Select para elegir el campo */}
         <select
           value={searchField}
           onChange={(e) =>
@@ -100,19 +99,21 @@ const Searcher = () => {
           <option value="updatedAt">Última actualización</option>
         </select>
 
-        {/* Input para escribir el valor */}
         <InputCustom
-          type={searchField === 'createdAt'||searchField === 'updatedAt' ? 'date': 'text'}
+          type={searchField === "createdAt" || searchField === "updatedAt" ? "date" : "text"}
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
         />
 
-        <ButtonCustom type="button" onClick={handleSearch} className="rounded-2xl bg-sky-300 p-2">
+        <ButtonCustom
+          type="button"
+          onClick={handleSearch}
+          className="rounded-2xl bg-sky-300 p-2"
+        >
           Buscar
         </ButtonCustom>
       </div>
 
-      {/* Resultados */}
       <ul>
         {filteredData.map((pig) => (
           <li key={pig._id}>
@@ -122,11 +123,7 @@ const Searcher = () => {
             <strong>Ubicación:</strong> {pig.ubicacion ?? "-"} |{" "}
             <strong>Creado:</strong> {pig.createdAt} |{" "}
             <strong>Actualizado:</strong> {pig.updatedAt}
-            {/* 🔗 Link a la ficha del cerdo */}
-            <Link
-              to={`/pigs/${pig._id}`}
-              className="text-blue-600 underline ml-2"
-            >
+            <Link to={`/pigs/${pig._id}`} className="text-blue-600 underline ml-2">
               Ver detalles
             </Link>
           </li>

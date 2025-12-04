@@ -8,7 +8,7 @@ className?:string
 const Container:React.FC<ContainerProps> = ({children, className}) => {
   return (
     <div className=
-    {` flex justify-center items-center self-center-safe p-1.5 m-1.5 border-slate-400 border-2 rounded-2xl ${className ?? ""} `}
+    {` flex flex-wrap justify-center self-center-safe p-1.5 m-1.5 border-slate-400 border-2 rounded-2xl ${className ?? ""} `}
     >
 {children}
     </div>
