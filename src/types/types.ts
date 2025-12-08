@@ -9,6 +9,7 @@ export interface Servicio {
   tipo: "cerdo" | "inseminacion" | "desconocido";
   fecha?: string | Date;  // <-- puede ser string (input) o Date (para backend)
   macho?: string | null;
+  proveedorDosis?:string|null
 }
 
 export interface Paricion {

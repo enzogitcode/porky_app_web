@@ -36,27 +36,40 @@ const Register: React.FC = () => {
   };
 
   return (
-    <Container className="text-center flex-col">
-      <h2 className="text-3xl m-2">Registrar Cerdo</h2>
+    <Container className="flex flex-col items-center">
+      <h2 className="text-3xl font-bold mt-4 mb-6">Registrar Cerdo</h2>
 
-      <form onSubmit={handleSubmit} className="flex flex-col m-3 p-2 gap-3 border-2 border-b-cyan-700 justify-center-safe items-center-safe ">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white shadow-md rounded-xl p-6 w-full max-w-lg flex flex-col gap-6"
+      >
+        {/* Nro Caravana */}
         <InputCustom
-        className="max-w-5xl self-center-safe"
-        inputClassName="text-center"
           label="Nro Caravana"
           type="number"
           value={form.nroCaravana}
-          onChange={(e) => setForm({ ...form, nroCaravana: e.target.value })}
+          inputClassName="text-center"
+          onChange={(e) =>
+            setForm({ ...form, nroCaravana: e.target.value })
+          }
         />
 
-        <div>
-          <label htmlFor="estadio">Estadio</label>
+        {/* Estadio */}
+        <div className="flex flex-col gap-1">
+          <label htmlFor="estadio" className="font-semibold">
+            Estadio
+          </label>
+
           <select
             id="estadio"
             value={form.estadio}
             onChange={(e) =>
-              setForm({ ...form, estadio: e.target.value as Situacion })
+              setForm({
+                ...form,
+                estadio: e.target.value as Situacion,
+              })
             }
+            className="border rounded-lg p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="parida con lechones">Parida con lechones</option>
             <option value="pregnant">Pregnant</option>
@@ -66,33 +79,39 @@ const Register: React.FC = () => {
           </select>
         </div>
 
-        {/* <InputCustom
-        className=""
-          label="Descripción"
-          type="text"
-          value={form.descripcion}
-          onChange={(e) => setForm({ ...form, descripcion: e.target.value })}
-        /> */}
-        <label htmlFor="descripcion">Descripción</label>
-        <textarea
-        id="descripcion"
-          value={form.descripcion}
-          onChange={(e) => setForm({ ...form, descripcion: e.target.value })}
-        >
+        {/* Descripción */}
+        <div className="flex flex-col gap-1">
+          <label htmlFor="descripcion" className="font-semibold">
+            Descripción
+          </label>
 
-        </textarea>
+          <textarea
+            id="descripcion"
+            value={form.descripcion}
+            onChange={(e) =>
+              setForm({ ...form, descripcion: e.target.value })
+            }
+            className="border rounded-lg p-2 h-28 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
 
+        {/* Ubicación */}
         <InputCustom
-        inputClassName="text-center"
-        className="text-center"
           label="Ubicación"
           type="text"
           value={form.ubicacion}
-          onChange={(e) => setForm({ ...form, ubicacion: e.target.value })}
+          inputClassName="text-center"
+          onChange={(e) =>
+            setForm({ ...form, ubicacion: e.target.value })
+          }
         />
 
-        <ButtonCustom className="rounded bg-cyan-300 m-2 p-2"
-         type="submit">{isLoading ? "Creando..." : "Registrar Cerdo"}</ButtonCustom>
+        <ButtonCustom
+          type="submit"
+          className="bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+        >
+          {isLoading ? "Creando..." : "Registrar Cerdo"}
+        </ButtonCustom>
       </form>
     </Container>
   );

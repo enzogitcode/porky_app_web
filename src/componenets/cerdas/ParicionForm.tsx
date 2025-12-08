@@ -1,4 +1,3 @@
-// src/components/paricion/ParicionForm.tsx
 import { useState } from "react";
 import ButtonCustom from "../../ui/ButtonCustom";
 import InputCustom from "../../ui/InputCustom";
@@ -18,6 +17,7 @@ const ParicionForm: React.FC = () => {
       tipo: "desconocido",
       fecha: "",
       macho: "",
+      proveedorDosis: "", // ← agregado
     },
   });
 
@@ -42,9 +42,7 @@ const ParicionForm: React.FC = () => {
       return;
     }
 
-    // -------------------------
-    // 🔍 VALIDACIÓN con Zod
-    // -------------------------
+    // 🔍 Validación con Zod
     const validation = paricionSchema.safeParse(paricion);
     if (!validation.success) {
       alert(validation.error.issues[0].message);
@@ -53,9 +51,7 @@ const ParicionForm: React.FC = () => {
 
     const parsed = validation.data;
 
-    // -------------------------
-    // 🛠 FORMATEO para BACKEND
-    // -------------------------
+    // 🛠 Formateo para Backend
     const formatted: Paricion = {
       fechaParicion: new Date(parsed.fechaParicion).toISOString(),
       cantidadLechones: Number(parsed.cantidadLechones),
@@ -63,11 +59,18 @@ const ParicionForm: React.FC = () => {
       fechaActualizacion: new Date().toISOString(),
       servicio:
         parsed.servicio.tipo === "desconocido"
-          ? { tipo: "desconocido" as const } // literal exacto, sin fecha ni macho
+          ? { tipo: "desconocido" as const }
           : {
               tipo: parsed.servicio.tipo as "cerdo" | "inseminacion",
               fecha: new Date(parsed.servicio.fecha!).toISOString(),
-              ...(parsed.servicio.tipo === "cerdo" && { macho: parsed.servicio.macho }),
+
+              ...(parsed.servicio.tipo === "cerdo" && {
+                macho: parsed.servicio.macho,
+              }),
+
+              ...(parsed.servicio.tipo === "inseminacion" && {
+                proveedorDosis: parsed.servicio.proveedorDosis, // ← agregado
+              }),
             },
     };
 
@@ -84,6 +87,7 @@ const ParicionForm: React.FC = () => {
           tipo: "desconocido",
           fecha: "",
           macho: "",
+          proveedorDosis: "", // ← agregado
         },
       });
     } catch (error) {
@@ -93,7 +97,7 @@ const ParicionForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="form-base">
       <InputCustom
         label="Fecha de Parición"
         type="date"
@@ -126,7 +130,6 @@ const ParicionForm: React.FC = () => {
         <option value="desconocido">Desconocido</option>
       </select>
 
-      {/* Mostrar campos solo si NO es desconocido */}
       {paricion.servicio.tipo !== "desconocido" && (
         <>
           <InputCustom
@@ -142,6 +145,17 @@ const ParicionForm: React.FC = () => {
               type="text"
               value={paricion.servicio.macho}
               onChange={(e) => handleServicioChange("macho", e.target.value)}
+            />
+          )}
+
+          {paricion.servicio.tipo === "inseminacion" && (
+            <InputCustom
+              label="Proveedor de la dosis"
+              type="text"
+              value={paricion.servicio.proveedorDosis}
+              onChange={(e) =>
+                handleServicioChange("proveedorDosis", e.target.value)
+              }
             />
           )}
         </>
@@ -162,6 +176,7 @@ const ParicionForm: React.FC = () => {
               tipo: "desconocido",
               fecha: "",
               macho: "",
+              proveedorDosis: "",
             },
           })
         }

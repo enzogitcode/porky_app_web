@@ -21,7 +21,7 @@ const PorkList: React.FC = () => {
   }
 
   return (
-    <Container className="flex-col">
+    <Container className="flex-col bg-slate-400">
       <h2 className="text-2xl font-bold text-gray-800 text-center m-3">Lista de Cerdos</h2>
       
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 p-1">
@@ -31,7 +31,7 @@ const PorkList: React.FC = () => {
       </div>
 
       {/* 🔹 Controles de paginación con ButtonCustom */}
-      <Container className="flex justify-center gap-2 mt-2 shadow-2xs hover:shadow-2xl hover:shadow-zinc-500 hover:scale-105">
+      <Container className="bg-slate-100 flex justify-center gap-2 mt-2 shadow-2xs hover:shadow-2xl hover:shadow-zinc-500 hover:scale-105">
         <ButtonCustom
           onClick={() => setPage(1)}
           className="pageButton"

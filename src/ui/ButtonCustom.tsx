@@ -8,6 +8,7 @@ interface ButtonProps {
   type?: "submit" | "reset" | "button";
   className?: string;
   to?: string; // 👉 si existe, renderiza un Link
+  disabled?:boolean
 }
 
 const ButtonCustom: React.FC<ButtonProps> = ({
@@ -17,6 +18,7 @@ const ButtonCustom: React.FC<ButtonProps> = ({
   buttonCustomStyle,
   className,
   to,
+  disabled
 }) => {
   if (to) {
     // 👉 si se pasa la prop "to", renderiza un Link
@@ -38,6 +40,7 @@ const ButtonCustom: React.FC<ButtonProps> = ({
       type={type}
       onClick={onClick}
       style={buttonCustomStyle}
+      disabled={disabled}
     >
       {children}
     </button>

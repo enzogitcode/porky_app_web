@@ -3,7 +3,7 @@ import ButtonCustom from "./ButtonCustom"
 
 const Header = () => {
   return (
-    <header className="flex flex-wrap items-center justify-between py-3 px-3.5 ">
+    <header className="containerBg flex flex-wrap items-center justify-between py-3 px-3.5 ">
         <div>
         <ButtonCustom to={'/'} className="linkNavBar">Inicio</ButtonCustom>
         </div>

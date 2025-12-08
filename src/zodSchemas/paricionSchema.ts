@@ -17,6 +17,7 @@ export const paricionSchema = z.object({
     tipo: z.enum(["cerdo", "inseminacion", "desconocido"]),
     fecha: z.string().optional(),
     macho: z.string().optional(),
+    proveedorDosis:z.string().optional()
   })
   .refine(
     (data) => {
