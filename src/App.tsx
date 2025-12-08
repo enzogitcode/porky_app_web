@@ -8,6 +8,7 @@ import Updater from "./componenets/cerdas/Updater";
 import ParicionForm from "./componenets/cerdas/ParicionForm";
 import ParicionUpdate from "./componenets/cerdas/ParicionUpdate";
 import Searcher from "./ui/Searcher";
+import ErrorPage from "./ui/ErrorPage";
 
 
 const App = () => {
@@ -49,7 +50,7 @@ const App = () => {
       <Route  path="/pigs/:id/pariciones/:paricionId/update" element={<ParicionUpdate/>}/>
 
       {/* Ruta comodín */}
-      <Route path="*" element={<Home/>} />
+      <Route path="*" element={<ErrorPage/>} />
           </Routes>
         </main>
 

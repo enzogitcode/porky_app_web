@@ -47,7 +47,7 @@ const PorkDetails = () => {
   return (
     <Container className="text-center flex-col">
       <h2 className="text-3xl">Cerdo N° {pig.nroCaravana}</h2>
-      <div>
+      <Card>
         <p>ID: {pig._id}</p>
 
         <div>
@@ -67,18 +67,18 @@ const PorkDetails = () => {
             <strong>Actualizado:</strong> {new Date(pig.updatedAt).toLocaleDateString()}
           </p>
         </div>
-      </div>
+      </Card>
 
-      <Container className="flex-col">
         <h3 className="text-2xl">Pariciones</h3>
+      <Container className=" flex flex-col items-stretch">
         {pig.pariciones?.length ? (
-          <Container className="flex flex-wrap justify-evenly items-center">
+          <div className="flex flex-wrap items-stretch">
             {pig.pariciones.map((item) => (
-              <Card className="m-2 justify-evenly" key={item._id}>
+              <Card className="m-2 justify-evenly flex-col" key={item._id}>
                 <div className="m-4">
                   <p>ID: {item._id}</p>
-                  <p>📅 Parición: {new Date(item?.fechaParicion).toLocaleString()}</p>
-                  <p>🔄 Actualización: {new Date(item?.fechaActualizacion).toLocaleString()}</p>
+                  <p>📅 Parición: {new Date(item?.fechaParicion ?? "").toLocaleString()}</p>
+                  <p>🔄 Actualización: {new Date(item?.fechaActualizacion ?? "").toLocaleString()}</p>
                   <p>🐖 Lechones: {item.cantidadLechones}</p>
 
                   {item.servicio?.tipo === "desconocido" ? (
@@ -114,15 +114,15 @@ const PorkDetails = () => {
                 </div>
               </Card>
             ))}
-          </Container>
+          </div>
         ) : (
-          <p>No hay pariciones registradas</p>
+          <h2>No hay pariciones registradas</h2>
         )}
       </Container>
 
-      <div className=" flex justify-center items-center gap-2.5 mb-2">
+      <Container className=" flex justify-center items-center gap-2.5 mb-2">
         {pig._id && (
-          <Link className="rounded bg-sky-300 p-1" to={`/pigs/${pig._id}/pariciones`}>Agregar Parición</Link>
+          <ButtonCustom className="updateButton" to={`/pigs/${pig._id}/pariciones`}>Agregar parición</ButtonCustom>
         )}
 
         <Link className="rounded bg-amber-300 p-1" to={`/pigs/update/${pig._id}`}>Editar cerdo</Link>
@@ -130,7 +130,8 @@ const PorkDetails = () => {
         <button onClick={handleDelete} disabled={isDeleting} className="rounded bg-red-600 p-1">
           {isDeleting ? "Eliminando..." : "Eliminar TODO EL CERDO"}
         </button>
-      </div>
+      </Container>
+      {pig.pariciones ? <p>Mayor a 0</p>:null }
     </Container>
   );
 };

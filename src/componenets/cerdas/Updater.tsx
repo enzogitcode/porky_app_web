@@ -5,6 +5,9 @@ import {
   useUpdatePigByIdMutation,
 } from "../../redux/features/pigSlice";
 import type { Situacion } from "../../types/types";
+import Container from "../../ui/Container";
+import Card from "../../ui/Card";
+import ButtonCustom from "../../ui/ButtonCustom";
 
 const Updater = () => {
   const { id } = useParams<{ id: string }>();
@@ -79,70 +82,89 @@ const Updater = () => {
   if (isError || !pig) return <p>No se encontró el cerdo</p>;
 
   return (
-    <div style={{ display: "grid", gap: "2rem" }}>
+    <Container className="sm:grid sm:grid-cols-2 gap-2 place-content-center-safe">
       {/* Datos actuales */}
-      <div>
-        <h2>Datos actuales</h2>
+      <Card className="p-3">
+        <h2 className="text-lg font-bold">Datos actuales</h2>
         <p><strong>Nro Caravana:</strong> {pig.nroCaravana}</p>
         <p><strong>Estadio:</strong> {pig.estadio}</p>
         <p><strong>Ubicación:</strong> {pig.ubicacion ?? "-"}</p>
         <p><strong>Descripción:</strong> {pig.descripcion ?? "-"}</p>
-      </div>
+      </Card>
 
       {/* Formulario de edición (sin pariciones) */}
-      <div>
-        <h2>Editar datos</h2>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>Nro Caravana:</label>
-            <input
-              type="number"
-              name="nroCaravana"
-              value={formData.nroCaravana}
-              onChange={handleChange}
-            />
-          </div>
+      <Card className="p-5 bg-white shadow-md rounded-lg">
+  <h2 className="text-xl font-bold mb-4">Datos a editar</h2>
 
-          <div>
-            <label>Estadio:</label>
-            <select
-              name="estadio"
-              value={formData.estadio}
-              onChange={handleChange}
-            >
-              <option value="pregnant">Pregnant</option>
-              <option value="parida con lechones">Parida con lechones</option>
-              <option value="servida">Servida</option>
-              <option value="enferma">Enferma</option>
-              <option value="ninguno">Ninguno</option>
-            </select>
-          </div>
+  <form onSubmit={handleSubmit} className="flex flex-col gap-4">
 
-          <div>
-            <label>Ubicación:</label>
-            <input
-              type="text"
-              name="ubicacion"
-              value={formData.ubicacion}
-              onChange={handleChange}
-            />
-          </div>
-
-          <div>
-            <label>Descripción:</label>
-            <textarea
-              name="descripcion"
-              value={formData.descripcion}
-              onChange={handleChange}
-            />
-          </div>
-
-          <button type="submit" disabled={isUpdating}>
-            {isUpdating ? "Actualizando..." : "Guardar cambios"}
-          </button>
-        </form>
-      </div>
+    {/* Nro Caravana */}
+    <div className="flex flex-col gap-1">
+      <label className="font-semibold">Nro Caravana</label>
+      <input
+        type="number"
+        name="nroCaravana"
+        value={formData.nroCaravana}
+        onChange={handleChange}
+        className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
     </div>
+
+    {/* Estadio */}
+    <div className="flex flex-col gap-1">
+      <label className="font-semibold">Estadio</label>
+      <select
+        name="estadio"
+        value={formData.estadio}
+        onChange={handleChange}
+        className="border rounded-lg p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        <option value="nulipara">Nulípara</option>
+        <option value="servida">Servida</option>
+        <option value="gestación confirmada">Gestación confirmada</option>
+        <option value="parida con lechones">Parida con lechones</option>
+        <option value="destetada">Destetada</option>
+        <option value="vacía">Vacía</option>
+        <option value="descarte">Descarte</option>
+      </select>
+    </div>
+
+    {/* Ubicación */}
+    <div className="flex flex-col gap-1">
+      <label className="font-semibold">Ubicación</label>
+      <input
+        type="text"
+        name="ubicacion"
+        value={formData.ubicacion}
+        onChange={handleChange}
+        className="border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    {/* Descripción */}
+    <div className="flex flex-col gap-1">
+      <label className="font-semibold">Descripción</label>
+      <textarea
+        name="descripcion"
+        value={formData.descripcion}
+        onChange={handleChange}
+        className="border rounded-lg p-2 h-24 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+    </div>
+
+    {/* Botón */}
+    <ButtonCustom
+      className="updateButton bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+      type="submit"
+      disabled={isUpdating}
+    >
+      {isUpdating ? "Actualizando..." : "Guardar cambios"}
+    </ButtonCustom>
+
+  </form>
+</Card>
+
+    </Container>
   );
 };
 

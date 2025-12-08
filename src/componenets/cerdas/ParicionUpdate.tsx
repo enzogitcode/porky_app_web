@@ -116,63 +116,87 @@ const ParicionUpdate: React.FC = () => {
   if (isError || !pig) return <p>No se encontró el cerdo</p>;
 
   return (
-    <form onSubmit={handleSubmit}>
-      <InputCustom
-        label="Fecha de Parición"
-        type="date"
-        value={paricion.fechaParicion}
-        onChange={(e) => handleChange("fechaParicion", e.target.value)}
-      />
+<form
+  onSubmit={handleSubmit}
+  className="form-base"
+>
+  {/* Fecha */}
+  <div className="flex flex-col gap-1">
+    <InputCustom
+      label="Fecha de Parición"
+      type="date"
+      value={paricion.fechaParicion}
+      onChange={(e) => handleChange("fechaParicion", e.target.value)}
+    />
+  </div>
 
-      <InputCustom
-        label="Cantidad de Lechones"
-        type="number"
-        value={paricion.cantidadLechones}
-        onChange={(e) => handleChange("cantidadLechones", e.target.value)}
-      />
+  {/* Lechones */}
+  <div className="flex flex-col gap-1">
+    <InputCustom
+      label="Cantidad de Lechones"
+      type="number"
+      value={paricion.cantidadLechones}
+      onChange={(e) => handleChange("cantidadLechones", e.target.value)}
+    />
+  </div>
 
-      <InputCustom
-        label="Descripción"
-        type="text"
-        value={paricion.descripcion}
-        onChange={(e) => handleChange("descripcion", e.target.value)}
-      />
+  {/* Descripción */}
+  <div className="flex flex-col gap-1">
+    <InputCustom
+      label="Descripción"
+      type="text"
+      value={paricion.descripcion}
+      onChange={(e) => handleChange("descripcion", e.target.value)}
+    />
+  </div>
 
-      <h4>Servicio</h4>
+  {/* Servicio */}
+  <div className="flex flex-col gap-2 pt-2 border-t">
+    <h4 className="text-lg font-semibold text-gray-700">Servicio</h4>
 
-      <select
-        value={paricion.servicio.tipo}
-        onChange={(e) => handleServicioChange("tipo", e.target.value)}
-      >
-        <option value="cerdo">Cerdo</option>
-        <option value="inseminacion">Inseminación</option>
-        <option value="desconocido">Desconocido</option>
-      </select>
+    <select
+      value={paricion.servicio.tipo}
+      onChange={(e) => handleServicioChange("tipo", e.target.value)}
+      className="border rounded-lg p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+    >
+      <option value="cerdo">Cerdo</option>
+      <option value="inseminacion">Inseminación</option>
+      <option value="desconocido">Desconocido</option>
+    </select>
 
-      {paricion.servicio.tipo !== "desconocido" && (
-        <>
+    {paricion.servicio.tipo !== "desconocido" && (
+      <div className="flex flex-col gap-3">
+
+        <InputCustom
+          label="Fecha del Servicio"
+          type="date"
+          value={paricion.servicio.fecha}
+          onChange={(e) => handleServicioChange("fecha", e.target.value)}
+        />
+
+        {paricion.servicio.tipo === "cerdo" && (
           <InputCustom
-            label="Fecha del Servicio"
-            type="date"
-            value={paricion.servicio.fecha}
-            onChange={(e) => handleServicioChange("fecha", e.target.value)}
+            label="Macho"
+            type="text"
+            value={paricion.servicio.macho}
+            onChange={(e) => handleServicioChange("macho", e.target.value)}
           />
+        )}
+      </div>
+    )}
+  </div>
 
-          {paricion.servicio.tipo === "cerdo" && (
-            <InputCustom
-              label="Macho"
-              type="text"
-              value={paricion.servicio.macho}
-              onChange={(e) => handleServicioChange("macho", e.target.value)}
-            />
-          )}
-        </>
-      )}
+  {/* Botón */}
+  <div className="pt-4 border-t">
+    <ButtonCustom
+      type="submit"
+      className="w-full bg-blue-600 text-white hover:bg-blue-700 transition rounded-lg py-2"
+    >
+      {isUpdating ? "Actualizando..." : "Guardar cambios"}
+    </ButtonCustom>
+  </div>
+</form>
 
-      <ButtonCustom type="submit">
-        {isUpdating ? "Actualizando..." : "Guardar cambios"}
-      </ButtonCustom>
-    </form>
   );
 };
 
