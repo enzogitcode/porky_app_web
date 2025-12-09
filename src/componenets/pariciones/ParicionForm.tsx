@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ButtonCustom from "../../ui/ButtonCustom";
 import InputCustom from "../../ui/InputCustom";
-import { useAddParicionMutation } from "../../redux/features/pigSlice";
+import { useAddParicionMutation, useUpdatePigByIdMutation } from "../../redux/features/pigSlice";
 import { useParams } from "react-router-dom";
 import { paricionSchema } from "../../zodSchemas/paricionSchema";
 import type { Paricion } from "../../types/types";
@@ -17,11 +17,12 @@ const ParicionForm: React.FC = () => {
       tipo: "desconocido",
       fecha: "",
       macho: "",
-      proveedorDosis: "", // ← agregado
+      proveedorDosis: "",
     },
   });
 
   const [addParicion, { isLoading }] = useAddParicionMutation();
+  const [updatePig] = useUpdatePigByIdMutation();
 
   const handleChange = (field: string, value: any) => {
     setParicion((prev) => ({ ...prev, [field]: value }));
@@ -63,20 +64,26 @@ const ParicionForm: React.FC = () => {
           : {
               tipo: parsed.servicio.tipo as "cerdo" | "inseminacion",
               fecha: new Date(parsed.servicio.fecha!).toISOString(),
-
               ...(parsed.servicio.tipo === "cerdo" && {
                 macho: parsed.servicio.macho,
               }),
-
               ...(parsed.servicio.tipo === "inseminacion" && {
-                proveedorDosis: parsed.servicio.proveedorDosis, // ← agregado
+                proveedorDosis: parsed.servicio.proveedorDosis,
               }),
             },
     };
 
     try {
+      // 1️⃣ Guardar la parición
       await addParicion({ pigId: id, data: formatted }).unwrap();
-      alert("Parición guardada correctamente");
+
+      // 2️⃣ Actualizar el estadio del cerdo
+      await updatePig({
+        id,
+        data: { estadio: "parida con lechones" },
+      }).unwrap();
+
+      alert("Parición guardada y estadio actualizado correctamente");
 
       // Reset form
       setParicion({
@@ -87,7 +94,7 @@ const ParicionForm: React.FC = () => {
           tipo: "desconocido",
           fecha: "",
           macho: "",
-          proveedorDosis: "", // ← agregado
+          proveedorDosis: "",
         },
       });
     } catch (error) {

@@ -11,9 +11,10 @@ const Register: React.FC = () => {
 
   const [form, setForm] = useState({
     nroCaravana: "",
-    estadio: "ninguno" as Situacion,
+    estadio: "nulipara" as Situacion, // valor inicial válido según backend
     descripcion: "",
     ubicacion: "",
+    enfermedadActual: "", // nuevo campo para enfermedad
   });
 
   const [createPig, { isLoading }] = useCreateAPigMutation();
@@ -27,6 +28,8 @@ const Register: React.FC = () => {
         estadio: form.estadio,
         descripcion: form.descripcion,
         ubicacion: form.ubicacion,
+        // solo enviar enfermedadActual si el estadio es "descarte"
+        ...(form.estadio === "descarte" && { enfermedadActual: form.enfermedadActual }),
       }).unwrap();
 
       navigate(`/pigs/${newPig._id}`);
@@ -71,13 +74,28 @@ const Register: React.FC = () => {
             }
             className="border rounded-lg p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="parida con lechones">Parida con lechones</option>
-            <option value="pregnant">Pregnant</option>
-            <option value="enferma">Enferma</option>
+            <option value="nulipara">Nulípara</option>
             <option value="servida">Servida</option>
-            <option value="ninguno">Ninguno</option>
+            <option value="gestación confirmada">Gestación confirmada</option>
+            <option value="parida con lechones">Parida con lechones</option>
+            <option value="destetada">Destetada</option>
+            <option value="vacía">Vacía</option>
+            <option value="descarte">Descarte</option>
           </select>
         </div>
+
+        {/* Enfermedad (solo si estadio es "descarte") */}
+        {form.estadio === "descarte" && (
+          <InputCustom
+            label="Enfermedad actual"
+            type="text"
+            value={form.enfermedadActual}
+            inputClassName="text-center"
+            onChange={(e) =>
+              setForm({ ...form, enfermedadActual: e.target.value })
+            }
+          />
+        )}
 
         {/* Descripción */}
         <div className="flex flex-col gap-1">

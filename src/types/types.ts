@@ -1,9 +1,12 @@
 export type Situacion =
-  | "pregnant"
-  | "parida con lechones"
+  | "nulipara"
   | "servida"
-  | "enferma"
-  | "ninguno";
+  | "gestación confirmada"
+  | "parida con lechones"
+  | "destetada"
+  | "vacía"
+  | "descarte";
+
 
 export interface Servicio {
   tipo: "cerdo" | "inseminacion" | "desconocido";
@@ -28,6 +31,8 @@ export interface Pig {
   descripcion?: string;
   ubicacion?: string;
   pariciones?: Paricion[];
+  lechonesTotal?:number;
+  enfermedadActual?:string;
   createdAt: string;
   updatedAt: string;
 }

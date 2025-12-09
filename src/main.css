@@ -40,18 +40,18 @@
 }
 
 .updateButton {
-@apply bg-sky-400 text-black hover:text-white rounded disabled:opacity-50 shadow-2xs hover:bg-sky-700 hover:shadow-2xl hover:shadow-zinc-500 
+@apply p-2 bg-sky-400 text-black hover:text-white rounded disabled:opacity-50 shadow-2xs hover:bg-sky-700 hover:shadow-2xl hover:shadow-zinc-500 
 }
 
-/*  
-.dangerButton {
-@apply
-} */
 
-/* 
-.blueButton {
-@apply
-} */
+.dangerButton {
+@apply bg-red-600 p-2 rounded hover:bg-red-700 text-white
+}
+
+
+.editButton {
+@apply bg-amber-300 rounded p-2 hover:bg-amber-500
+} 
  
 .containerBg {
   background: linear-gradient(

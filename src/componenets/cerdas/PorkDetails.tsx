@@ -1,4 +1,4 @@
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   useGetPigByIdQuery,
   useDeletePigByIdMutation,
@@ -19,7 +19,7 @@ const PorkDetails = () => {
   } = useGetPigByIdQuery(id!, { skip: !id });
   const [deletePigById, { isLoading: isDeleting }] = useDeletePigByIdMutation();
   const [deleteParicion] = useDeleteParicionMutation();
-
+console.log(pig)
   const handleDelete = async () => {
     if (!id) return;
     try {
@@ -51,6 +51,9 @@ const PorkDetails = () => {
         <p>ID: {pig._id}</p>
 
         <div>
+          <p>
+            <strong>Lechones Total Paridos:</strong> {pig.lechonesTotal}
+          </p>
           <p>
             <strong>Estadio:</strong> {pig.estadio}
           </p>
@@ -95,7 +98,7 @@ const PorkDetails = () => {
 
                 <div className="flex gap-3 m-2">
                   <ButtonCustom
-                    className="bg-red-600 p-1 rounded hover:bg-red-700 text-white"
+                    className="dangerButton"
                     type="button"
                     onClick={() => handleDeleteParicion(item._id!)}
                   >
@@ -103,7 +106,7 @@ const PorkDetails = () => {
                   </ButtonCustom>
 
                   <ButtonCustom
-                    className="bg-amber-300 rounded p-2"
+                    className="editButton"
                     type="button"
                     onClick={() =>
                       navigate(`/pigs/${id}/pariciones/${item._id}/update`)
@@ -125,13 +128,15 @@ const PorkDetails = () => {
           <ButtonCustom className="updateButton" to={`/pigs/${pig._id}/pariciones`}>Agregar parición</ButtonCustom>
         )}
 
-        <Link className="rounded bg-amber-300 p-1" to={`/pigs/update/${pig._id}`}>Editar cerdo</Link>
+        
+        <ButtonCustom className="editButton" to={`/pigs/update/${pig._id}`}>
+Editar cerdo
+        </ButtonCustom>
 
-        <button onClick={handleDelete} disabled={isDeleting} className="rounded bg-red-600 p-1">
+        <ButtonCustom onClick={handleDelete} disabled={isDeleting} className="dangerButton">
           {isDeleting ? "Eliminando..." : "Eliminar TODO EL CERDO"}
-        </button>
+        </ButtonCustom>
       </Container>
-      {pig.pariciones ? <p>Mayor a 0</p>:null }
     </Container>
   );
 };
