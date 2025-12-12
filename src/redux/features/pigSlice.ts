@@ -3,18 +3,18 @@ import type { Pig, Paricion } from "../../types/types";
 
 export const pigsApi = createApi({
   reducerPath: "pigsApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:4000" }), // 👈 base limpia
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:4000" }),
   tagTypes: ["Pigs"],
 
   endpoints: (builder) => ({
-    // GET all pigs como array (compatibilidad)
+    // LISTA COMPLETA DE CERDOS
     getAllPigsArray: builder.query<Pig[], { page?: number; limit?: number }>({
       query: ({ page = 1, limit = 10 }) => `pigs?page=${page}&limit=${limit}`,
-      providesTags: ["Pigs"],
       transformResponse: (response: { data: Pig[] }) => response.data,
+      providesTags: ["Pigs"], // tag general para listas
     }),
 
-    // GET all pigs con objeto paginado (para botones de paginación)
+    // LISTA PAGINADA
     getAllPigsPaginated: builder.query<
       { data: Pig[]; total: number; page: number; totalPages: number },
       { page?: number; limit?: number }
@@ -23,60 +23,73 @@ export const pigsApi = createApi({
       providesTags: ["Pigs"],
     }),
 
-    // GET pig by ID
+    // Cerdas servidas o en gestación
+    getServidasOGestacion: builder.query<Pig[], void>({
+      query: () => `pigs/servidas-gestacion`,
+      providesTags: ["Pigs"], // invalidar lista general cuando se actualice alguna cerda
+    }),
+
+    // DETALLE DE CERDA POR ID
     getPigById: builder.query<Pig, string>({
       query: (id) => `pigs/${id}`,
       providesTags: (result, error, id) => [{ type: "Pigs", id }],
     }),
 
-    // GET pig by nroCaravana
+    // DETALLE POR NRO DE CARAVANA
     getPigByCaravana: builder.query<Pig, number>({
       query: (nroCaravana) => `pigs/caravana/${nroCaravana}`,
-      providesTags: (result, error, nroCaravana) => [
-        { type: "Pigs", id: nroCaravana },
-      ],
+      providesTags: (result, error, nroCaravana) => [{ type: "Pigs", id: nroCaravana }],
     }),
 
-    // CREATE a pig
+    // CREAR CERDA
     createAPig: builder.mutation<Pig, Partial<Pig>>({
       query: (newPig) => ({
         url: `pigs`,
         method: "POST",
         body: newPig,
       }),
-      invalidatesTags: ["Pigs"],
+      invalidatesTags: ["Pigs"], // refetch de listas
     }),
 
-    // UPDATE pig
+    // ACTUALIZAR CERDA
     updatePigById: builder.mutation<Pig, { id: string; data: Partial<Pig> }>({
       query: ({ id, data }) => ({
         url: `pigs/${id}`,
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: "Pigs", id }],
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Pigs", id }, // invalidar detalle individual
+        "Pigs",               // invalidar listas generales
+      ],
     }),
 
-    // DELETE pig
+    // ELIMINAR CERDA
     deletePigById: builder.mutation<{ success: boolean; id: string }, string>({
       query: (id) => ({
         url: `pigs/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Pigs"],
+      invalidatesTags: (result, error, id) => [
+        { type: "Pigs", id },
+        "Pigs",
+      ],
     }),
 
-    // ADD PARICIÓN
+    // AGREGAR PARICIÓN
     addParicion: builder.mutation<Pig, { pigId: string; data: Paricion }>({
       query: ({ pigId, data }) => ({
         url: `pigs/${pigId}/pariciones`,
         method: "POST",
         body: data,
       }),
-      invalidatesTags: (result, error, { pigId }) => [{ type: "Pigs", id: pigId }],
+      invalidatesTags: (result, error, { pigId }) => [
+        { type: "Pigs", id: pigId },
+        "Pigs",
+      ],
     }),
 
-    // UPDATE PARICIÓN
+    // ACTUALIZAR PARICIÓN
     patchParicion: builder.mutation<
       Pig,
       { pigId: string; paricionId: string; data: Partial<Paricion> }
@@ -86,19 +99,22 @@ export const pigsApi = createApi({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: (result, error, { pigId }) => [{ type: "Pigs", id: pigId }],
+      invalidatesTags: (result, error, { pigId }) => [
+        { type: "Pigs", id: pigId },
+        "Pigs",
+      ],
     }),
 
-    // REMOVE PARICIÓN
-    deleteParicion: builder.mutation<
-      Pig,
-      { pigId: string; paricionId: string }
-    >({
+    // ELIMINAR PARICIÓN
+    deleteParicion: builder.mutation<Pig, { pigId: string; paricionId: string }>({
       query: ({ pigId, paricionId }) => ({
         url: `pigs/${pigId}/pariciones/${paricionId}`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, { pigId }) => [{ type: "Pigs", id: pigId }],
+      invalidatesTags: (result, error, { pigId }) => [
+        { type: "Pigs", id: pigId },
+        "Pigs",
+      ],
     }),
   }),
 });
@@ -114,4 +130,5 @@ export const {
   useAddParicionMutation,
   usePatchParicionMutation,
   useDeleteParicionMutation,
+  useGetServidasOGestacionQuery,
 } = pigsApi;

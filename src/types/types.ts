@@ -24,6 +24,11 @@ export interface Paricion {
   fechaActualizacion?: string | Date; // <-- igual
 }
 
+interface RangoFecha {
+  inicio:Date
+  fin:Date
+}
+
 export interface Pig {
   _id: string;
   nroCaravana: number;
@@ -33,6 +38,8 @@ export interface Pig {
   pariciones?: Paricion[];
   lechonesTotal?:number;
   enfermedadActual?:string;
+  fechaServicioActual:string;
+  posibleFechaParto:RangoFecha;
   createdAt: string;
   updatedAt: string;
 }

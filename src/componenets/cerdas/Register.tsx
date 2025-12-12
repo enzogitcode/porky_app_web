@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import InputCustom from "../../ui/InputCustom";
 import ButtonCustom from "../../ui/ButtonCustom";
 import { useCreateAPigMutation } from "../../redux/features/pigSlice";
-import type { Situacion } from "../../types/types";
 import { useNavigate } from "react-router-dom";
 import Container from "../../ui/Container";
 
@@ -11,10 +10,11 @@ const Register: React.FC = () => {
 
   const [form, setForm] = useState({
     nroCaravana: "",
-    estadio: "nulipara" as Situacion, // valor inicial válido según backend
+    estadio: "nulipara", // debe coincidir con el enum del backend
     descripcion: "",
     ubicacion: "",
-    enfermedadActual: "", // nuevo campo para enfermedad
+    enfermedadActual: "",
+    fechaServicioActual: "",
   });
 
   const [createPig, { isLoading }] = useCreateAPigMutation();
@@ -23,17 +23,35 @@ const Register: React.FC = () => {
     e.preventDefault();
 
     try {
-      const newPig = await createPig({
+      // Construir payload
+      const payload: any = {
         nroCaravana: Number(form.nroCaravana),
-        estadio: form.estadio,
+        estadio: form.estadio, // enviar exactamente como enum
         descripcion: form.descripcion,
         ubicacion: form.ubicacion,
-        // solo enviar enfermedadActual si el estadio es "descarte"
-        ...(form.estadio === "descarte" && { enfermedadActual: form.enfermedadActual }),
-      }).unwrap();
+      };
+
+      // Solo enviar enfermedadActual si es descarte
+      if (form.estadio === "descarte") {
+        payload.enfermedadActual = form.enfermedadActual;
+      }
+
+      // Solo enviar fechaServicioActual si es servida o gestación confirmada
+      if (
+        (form.estadio === "servida" || form.estadio === "gestación confirmada") &&
+        form.fechaServicioActual
+      ) {
+        payload.fechaServicioActual = new Date(form.fechaServicioActual);
+      }
+
+      console.log("Payload enviado:", payload);
+
+      const newPig = await createPig(payload).unwrap();
+      console.log("Respuesta backend:", newPig);
 
       navigate(`/pigs/${newPig._id}`);
-    } catch (err) {
+    } catch (err: any) {
+      console.error("Error al crear cerdo:", err);
       alert("Error al crear cerdo");
     }
   };
@@ -67,10 +85,7 @@ const Register: React.FC = () => {
             id="estadio"
             value={form.estadio}
             onChange={(e) =>
-              setForm({
-                ...form,
-                estadio: e.target.value as Situacion,
-              })
+              setForm({ ...form, estadio: e.target.value })
             }
             className="border rounded-lg p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
@@ -84,7 +99,7 @@ const Register: React.FC = () => {
           </select>
         </div>
 
-        {/* Enfermedad (solo si estadio es "descarte") */}
+        {/* Enfermedad actual (solo si descarte) */}
         {form.estadio === "descarte" && (
           <InputCustom
             label="Enfermedad actual"
@@ -93,6 +108,20 @@ const Register: React.FC = () => {
             inputClassName="text-center"
             onChange={(e) =>
               setForm({ ...form, enfermedadActual: e.target.value })
+            }
+          />
+        )}
+
+        {/* Fecha de servicio actual (solo si servida o gestación confirmada) */}
+        {(form.estadio === "servida" ||
+          form.estadio === "gestación confirmada") && (
+          <InputCustom
+            label="Fecha de servicio actual"
+            type="date"
+            value={form.fechaServicioActual}
+            inputClassName="text-center"
+            onChange={(e) =>
+              setForm({ ...form, fechaServicioActual: e.target.value })
             }
           />
         )}

@@ -13,18 +13,18 @@ const PorkList: React.FC = () => {
 
   if (isError) {
     console.error();
-    return <p className="text-center text-red-500 mt-10 text-lg">Ocurrió un error al cargar las cerdas 😢</p>;
+    return <h1 className="text-center text-red-500 mt-10 text-lg">Ocurrió un error al cargar las cerdas 😢</h1>;
   }
 
   if (pigsResponse?.data?.length === 0) {
-    return <p className="text-center text-gray-600 mt-10 text-lg">No hay cerdos registrados</p>;
+    return <h1 className="text-center text-gray-600 mt-10 text-lg">No hay cerdos registrados</h1>;
   }
 
   return (
     <Container className="flex-col bg-slate-400">
       <h2 className="text-2xl font-bold text-gray-800 text-center m-3">Lista de Cerdos</h2>
       
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 p-1">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5 p-1">
         {pigsResponse?.data?.map((item) => (
           <PorkCard {...item} key={item._id} />
         ))}

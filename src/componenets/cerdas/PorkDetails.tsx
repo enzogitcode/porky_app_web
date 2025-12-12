@@ -19,7 +19,7 @@ const PorkDetails = () => {
   } = useGetPigByIdQuery(id!, { skip: !id });
   const [deletePigById, { isLoading: isDeleting }] = useDeletePigByIdMutation();
   const [deleteParicion] = useDeleteParicionMutation();
-console.log(pig)
+  console.log(pig);
   const handleDelete = async () => {
     if (!id) return;
     try {
@@ -39,7 +39,6 @@ console.log(pig)
       console.error("Error al eliminar parición:", error);
     }
   };
-
 
   if (isLoading) return <p>Cargando...</p>;
   if (isError || !pig) return <p>No se encontró el cerdo</p>;
@@ -64,15 +63,40 @@ console.log(pig)
             <strong>Descripción:</strong> {pig.descripcion}
           </p>
           <p>
-            <strong>Creado:</strong> {new Date(pig?.createdAt).toLocaleDateString()} <strong>Hora: </strong> {new Date(pig?.createdAt).toLocaleTimeString()}
+            <strong>Creado:</strong>{" "}
+            {new Date(pig?.createdAt).toLocaleDateString()}{" "}
+            <strong>Hora: </strong>{" "}
+            {new Date(pig?.createdAt).toLocaleTimeString()}
           </p>
           <p>
-            <strong>Actualizado:</strong> {new Date(pig.updatedAt).toLocaleDateString()}
+            <strong>Actualizado:</strong>{" "}
+            {new Date(pig.updatedAt).toLocaleDateString()}
           </p>
+          {(pig.estadio === "servida" ||
+            pig.estadio === "gestación confirmada") &&
+            pig.posibleFechaParto && (
+              <div>
+                <h4>Posible fecha de parto:</h4>
+
+                <h5>
+                  Desde:{" "}
+                  {new Date(pig.posibleFechaParto.inicio).toLocaleDateString(
+                    "es-ES"
+                  )}
+                </h5>
+
+                <h5>
+                  Hasta:{" "}
+                  {new Date(pig.posibleFechaParto.fin).toLocaleDateString(
+                    "es-ES"
+                  )}
+                </h5>
+              </div>
+            )}
         </div>
       </Card>
 
-        <h3 className="text-2xl">Pariciones</h3>
+      <h3 className="text-2xl">Pariciones</h3>
       <Container className=" flex flex-col items-stretch">
         {pig.pariciones?.length ? (
           <div className="flex flex-wrap items-stretch">
@@ -80,8 +104,14 @@ console.log(pig)
               <Card className="m-2 justify-evenly flex-col" key={item._id}>
                 <div className="m-4">
                   <p>ID: {item._id}</p>
-                  <p>📅 Parición: {new Date(item?.fechaParicion ?? "").toLocaleString()}</p>
-                  <p>🔄 Actualización: {new Date(item?.fechaActualizacion ?? "").toLocaleString()}</p>
+                  <p>
+                    📅 Parición:{" "}
+                    {new Date(item?.fechaParicion ?? "").toLocaleString()}
+                  </p>
+                  <p>
+                    🔄 Actualización:{" "}
+                    {new Date(item?.fechaActualizacion ?? "").toLocaleString()}
+                  </p>
                   <p>🐖 Lechones: {item.cantidadLechones}</p>
 
                   {item.servicio?.tipo === "desconocido" ? (
@@ -125,15 +155,23 @@ console.log(pig)
 
       <Container className=" flex justify-center items-center gap-2.5 mb-2">
         {pig._id && (
-          <ButtonCustom className="updateButton" to={`/pigs/${pig._id}/pariciones`}>Agregar parición</ButtonCustom>
+          <ButtonCustom
+            className="updateButton"
+            to={`/pigs/${pig._id}/pariciones`}
+          >
+            Agregar parición
+          </ButtonCustom>
         )}
 
-        
         <ButtonCustom className="editButton" to={`/pigs/update/${pig._id}`}>
-Editar cerdo
+          Editar cerdo
         </ButtonCustom>
 
-        <ButtonCustom onClick={handleDelete} disabled={isDeleting} className="dangerButton">
+        <ButtonCustom
+          onClick={handleDelete}
+          disabled={isDeleting}
+          className="dangerButton"
+        >
           {isDeleting ? "Eliminando..." : "Eliminar TODO EL CERDO"}
         </ButtonCustom>
       </Container>
