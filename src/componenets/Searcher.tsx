@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useGetAllPigsArrayQuery } from "../redux/features/pigSlice"; // 👈 usamos el hook del array
-import Container from "./Container";
-import InputCustom from "./InputCustom";
-import ButtonCustom from "./ButtonCustom";
+import Container from "../ui/Container";
+import InputCustom from "../ui/InputCustom";
+import ButtonCustom from "../ui/ButtonCustom";
 import type { Pig } from "../types/types";
 
 const Searcher = () => {

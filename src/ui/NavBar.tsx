@@ -7,6 +7,7 @@ const NavBar = () => {
   <ButtonCustom className='linkNavBar' to="/searcher">Buscador</ButtonCustom>
   <ButtonCustom className='linkNavBar ' to="/pigs">Ver todos los cerdos</ButtonCustom>
   <ButtonCustom className='linkNavBar ' to="/pigs/new">Agregar un cerdo</ButtonCustom>
+  <ButtonCustom className='linkNavBar' to="/">Vacunas</ButtonCustom>
     </nav>
   )
 }

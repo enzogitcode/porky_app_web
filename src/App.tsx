@@ -7,8 +7,11 @@ import Register from "./componenets/cerdas/Register";
 import Updater from "./componenets/cerdas/Updater";
 import ParicionForm from "./componenets/pariciones/ParicionForm";
 import ParicionUpdate from "./componenets/pariciones/ParicionUpdate";
-import Searcher from "./ui/Searcher";
+import Searcher from "./componenets/Searcher";
 import ErrorPage from "./ui/ErrorPage";
+import VacunasList from "./componenets/vacunas/VacunasList";
+import RegisterVacunaForm from "./componenets/vacunas/RegisterVacunaForm";
+import UpdaterVacunasForm from "./componenets/vacunas/UpdaterVacunasForm";
 
 
 const App = () => {
@@ -48,6 +51,18 @@ const App = () => {
 
       {/* Editar pariciones existentes */}
       <Route  path="/pigs/:id/pariciones/:paricionId/update" element={<ParicionUpdate/>}/>
+
+      {/* Vacunas Home */}
+
+      {/* Vacunas List */}
+      <Route path="/vacunas/list" element={<VacunasList/>} />
+      
+      {/* Vacunas Register */}
+      <Route path="/vacunas/register" element={<RegisterVacunaForm/>} />
+      
+      {/* Vacunas Vacunas Updater */}
+      <Route path="/vacunas/updater" element={<UpdaterVacunasForm/>} />
+
 
       {/* Ruta comodín */}
       <Route path="*" element={<ErrorPage/>} />

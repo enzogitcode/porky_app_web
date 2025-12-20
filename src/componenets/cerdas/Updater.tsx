@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import {
   useGetPigByIdQuery,
@@ -12,7 +12,6 @@ import InputCustom from "../../ui/InputCustom";
 
 const Updater = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
 
   const { data: pig, isLoading, isError } = useGetPigByIdQuery(id!, { skip: !id });
   const [updatePig, { isLoading: isUpdating }] = useUpdatePigByIdMutation();

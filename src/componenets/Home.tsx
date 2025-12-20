@@ -5,7 +5,6 @@ import Container from "../ui/Container";
 
 const Home = () => {
   const { data, isLoading, isError } = useGetServidasOGestacionQuery();
-  console.log(data);
 
   if (isError) {
     console.error();
