@@ -12,6 +12,7 @@ import ErrorPage from "./ui/ErrorPage";
 import VacunasList from "./componenets/vacunas/VacunasList";
 import RegisterVacunaForm from "./componenets/vacunas/RegisterVacunaForm";
 import UpdaterVacunasForm from "./componenets/vacunas/UpdaterVacunasForm";
+import IndexHomeVacunas from "./componenets/vacunas/IndexHomeVacunas";
 
 
 const App = () => {
@@ -22,6 +23,9 @@ const App = () => {
   {/* <button onClick={() => dispatch(toggleDarkMode())}>{darkMode ? "Modo claro" : "Modo Oscuro" }</button>
   <div style={{height:"10px", width: "10px", backgroundColor: darkMode? "#000":"#fff"}}></div> */}
  
+  
+
+// Llamada
   return (
     <>
       <BrowserRouter>
@@ -53,6 +57,7 @@ const App = () => {
       <Route  path="/pigs/:id/pariciones/:paricionId/update" element={<ParicionUpdate/>}/>
 
       {/* Vacunas Home */}
+      <Route path="/vacunas" element={<IndexHomeVacunas/>} />
 
       {/* Vacunas List */}
       <Route path="/vacunas/list" element={<VacunasList/>} />
