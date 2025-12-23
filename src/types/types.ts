@@ -1,3 +1,5 @@
+import type { Vacuna } from "./vacunaType";
+
 export type Situacion =
   | "nulipara"
   | "servida"
@@ -24,7 +26,7 @@ export interface Paricion {
   fechaActualizacion?: string | Date; // <-- igual
 }
 
-interface RangoFecha {
+export interface RangoFecha {
   inicio:Date
   fin:Date
 }
@@ -42,4 +44,5 @@ export interface Pig {
   posibleFechaParto:RangoFecha;
   createdAt: string;
   updatedAt: string;
+  VacunasAplicadas:Vacuna[]
 }
