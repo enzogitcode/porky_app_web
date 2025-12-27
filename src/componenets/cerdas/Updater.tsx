@@ -14,7 +14,7 @@ const Updater = () => {
   const { id } = useParams<{ id: string }>();
 
   const { data: pig, isLoading, isError } = useGetPigByIdQuery(id!, { skip: !id });
-  const [updatePig, { isLoading: isUpdating }] = useUpdatePigByIdMutation();
+  const [updatePig] = useUpdatePigByIdMutation();
 
   const [formData, setFormData] = useState<{
     nroCaravana: number;

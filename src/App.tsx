@@ -31,7 +31,7 @@ const App = () => {
       <BrowserRouter>
         <Header/>
 
-        <main className="">
+        <main>
           <Routes>
             <Route path="/" element={<Home />} />
                {/* Listado de todos los cerdos */}
@@ -66,7 +66,7 @@ const App = () => {
       <Route path="/vacunas/register" element={<RegisterVacunaForm/>} />
       
       {/* Vacunas Vacunas Updater */}
-      <Route path="/vacunas/updater" element={<UpdaterVacunasForm/>} />
+      <Route path="/vacunas/updater/:id" element={<UpdaterVacunasForm/>} />
 
 
       {/* Ruta comodín */}
