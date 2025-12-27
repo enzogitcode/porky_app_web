@@ -83,6 +83,7 @@ const UpdaterVacunasForm = () => {
               onChange={(e) => handleChange(key, e.target.value)}
               className="border rounded-lg p-1 h-20 w-full resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+            
           ) : (
             <InputCustom
               type={type}
