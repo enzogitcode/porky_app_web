@@ -25,7 +25,7 @@ export const vacunasApi = createApi({
             invalidatesTags: ['Vacunas']
         }),
         //Editar vacuna
-        updateVacuna: builder.mutation<Vacuna, { id: string; data: Vacuna }>({
+        updateVacuna: builder.mutation<Vacuna, { id: string; data: Partial<Vacuna> }>({
             query: ({ id, data }) => ({
                 url: `/update/${id}`,
                 method: 'PATCH',
