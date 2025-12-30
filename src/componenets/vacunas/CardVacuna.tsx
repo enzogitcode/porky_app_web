@@ -2,7 +2,7 @@ import {  useNavigate } from "react-router-dom";
 import { useDeleteVacunaByIdMutation } from "../../redux/features/vacunaSlice";
 import type { Vacuna } from "../../types/vacunaType";
 import Card from "../../ui/Card";
-
+import assets from '../../assets/johannes-groll.jpg'
 const CardVacuna: React.FC<Vacuna> = (props) => {
   const creacion = new Date(props.createdAt);
   const editada = new Date(props.updatedAt);
@@ -15,7 +15,8 @@ const CardVacuna: React.FC<Vacuna> = (props) => {
     <Card className="flex flex-col md:grid md:grid-cols-[30%_70%]">
       {/* Imagen */}
       <img
-        src="/ruta/a/imagen.jpg"
+      
+        src={assets}
         alt={props.nombre}
         className="w-full h-48 md:h-full object-cover rounded-t-2xl md:rounded-l-2xl md:rounded-t-none"
       />

@@ -13,7 +13,11 @@ import InputCustom from "../../ui/InputCustom";
 const Updater = () => {
   const { id } = useParams<{ id: string }>();
 
-  const { data: pig, isLoading, isError } = useGetPigByIdQuery(id!, { skip: !id });
+  const {
+    data: pig,
+    isLoading,
+    isError,
+  } = useGetPigByIdQuery(id!, { skip: !id });
   const [updatePig] = useUpdatePigByIdMutation();
 
   const [formData, setFormData] = useState<{
@@ -67,9 +71,14 @@ const Updater = () => {
       const payload: any = { [key]: formData[key] };
 
       if (key === "enfermedadActual" && formData.estadio !== "descarte") return;
-      if (key === "fechaServicioActual" && !["servida", "gestación confirmada"].includes(formData.estadio)) return;
+      if (
+        key === "fechaServicioActual" &&
+        !["servida", "gestación confirmada"].includes(formData.estadio)
+      )
+        return;
 
-      if (key === "fechaServicioActual") payload[key] = new Date(formData.fechaServicioActual);
+      if (key === "fechaServicioActual")
+        payload[key] = new Date(formData.fechaServicioActual);
 
       await updatePig({ id, data: payload }).unwrap();
       setEditing((prev) => ({ ...prev, [key]: false }));
@@ -105,7 +114,14 @@ const Updater = () => {
               className="border rounded-lg p-1 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               {options?.map((opt) => (
-                <option key={opt.value} value={opt.value} disabled={opt.value === "nulipara" && pig?.pariciones?.length > 0}>
+                <option
+                  key={opt.value}
+                  value={opt.value}
+                  disabled={
+                    opt.value === "nulipara" &&
+                    (pig?.pariciones?.length ?? 0) > 0
+                  }
+                >
                   {opt.label}
                 </option>
               ))}
@@ -114,7 +130,12 @@ const Updater = () => {
             <InputCustom
               type={type}
               value={formData[key]}
-              onChange={(e) => handleChange(key, type === "number" ? Number(e.target.value) : e.target.value)}
+              onChange={(e) =>
+                handleChange(
+                  key,
+                  type === "number" ? Number(e.target.value) : e.target.value
+                )
+              }
             />
           )
         ) : (
@@ -123,9 +144,15 @@ const Updater = () => {
       </div>
       <ButtonCustom
         onClick={() =>
-          editing[key] ? handleSave(key) : setEditing((prev) => ({ ...prev, [key]: true }))
+          editing[key]
+            ? handleSave(key)
+            : setEditing((prev) => ({ ...prev, [key]: true }))
         }
-        className={`py-1 px-3 rounded-lg ${editing[key] ? "bg-green-600 hover:bg-green-700" : "bg-blue-600 hover:bg-blue-700"} text-white transition`}
+        className={`py-1 px-3 rounded-lg ${
+          editing[key]
+            ? "bg-green-600 hover:bg-green-700"
+            : "bg-blue-600 hover:bg-blue-700"
+        } text-white transition`}
       >
         {editing[key] ? "Guardar" : "Editar"}
       </ButtonCustom>
@@ -137,33 +164,48 @@ const Updater = () => {
       {/* Datos actuales */}
       <Card className="p-4 shadow rounded-lg">
         <h2 className="text-lg font-bold mb-2">Datos actuales</h2>
-        <p><strong>Nro Caravana:</strong> {pig.nroCaravana}</p>
-        <p><strong>Estadio:</strong> {pig.estadio}</p>
-        <p><strong>Ubicación:</strong> {pig.ubicacion ?? "-"}</p>
-        <p><strong>Descripción:</strong> {pig.descripcion ?? "-"}</p>
-        {pig.estadio === "descarte" && <p><strong>Enfermedad actual:</strong> {pig.enfermedadActual ?? "-"}</p>}
-        {["servida", "gestación confirmada"].includes(pig.estadio) && <p><strong>Fecha de servicio:</strong> {pig.fechaServicioActual ? new Date(pig.fechaServicioActual).toLocaleDateString() : "-"}</p>}
+        <p>
+          <strong>Nro Caravana:</strong> {pig.nroCaravana}
+        </p>
+        <p>
+          <strong>Estadio:</strong> {pig.estadio}
+        </p>
+        <p>
+          <strong>Ubicación:</strong> {pig.ubicacion ?? "-"}
+        </p>
+        <p>
+          <strong>Descripción:</strong> {pig.descripcion ?? "-"}
+        </p>
+        {pig.estadio === "descarte" && (
+          <p>
+            <strong>Enfermedad actual:</strong> {pig.enfermedadActual ?? "-"}
+          </p>
+        )}
+        {["servida", "gestación confirmada"].includes(pig.estadio) && (
+          <p>
+            <strong>Fecha de servicio:</strong>{" "}
+            {pig.fechaServicioActual
+              ? new Date(pig.fechaServicioActual).toLocaleDateString()
+              : "-"}
+          </p>
+        )}
       </Card>
 
       {/* Formulario editable */}
       <Card className="p-4 shadow rounded-lg flex flex-col gap-4">
         <h2 className="text-lg font-bold mb-2">Editar campos</h2>
         {renderField("Nro Caravana", "nroCaravana", "number")}
-        {renderField(
-          "Estadio",
-          "estadio",
-          "select",
-          [
-            { label: "Nulípara", value: "nulipara" },
-            { label: "Servida", value: "servida" },
-            { label: "Gestación confirmada", value: "gestación confirmada" },
-            { label: "Parida con lechones", value: "parida con lechones" },
-            { label: "Destetada", value: "destetada" },
-            { label: "Vacía", value: "vacía" },
-            { label: "Descarte", value: "descarte" },
-          ]
-        )}
-        {formData.estadio === "descarte" && renderField("Enfermedad actual", "enfermedadActual", "text")}
+        {renderField("Estadio", "estadio", "select", [
+          { label: "Nulípara", value: "nulipara" },
+          { label: "Servida", value: "servida" },
+          { label: "Gestación confirmada", value: "gestación confirmada" },
+          { label: "Parida con lechones", value: "parida con lechones" },
+          { label: "Destetada", value: "destetada" },
+          { label: "Vacía", value: "vacía" },
+          { label: "Descarte", value: "descarte" },
+        ])}
+        {formData.estadio === "descarte" &&
+          renderField("Enfermedad actual", "enfermedadActual", "text")}
         {["servida", "gestación confirmada"].includes(formData.estadio) &&
           renderField("Fecha de servicio", "fechaServicioActual", "date")}
         {renderField("Ubicación", "ubicacion", "text")}

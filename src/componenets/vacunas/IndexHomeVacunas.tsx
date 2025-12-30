@@ -1,14 +1,17 @@
-import React from 'react'
-import Container from '../../ui/Container'
-import ButtonCustom from '../../ui/ButtonCustom'
+import Container from "../../ui/Container";
+import ButtonCustom from "../../ui/ButtonCustom";
 
 const IndexHomeVacunas = () => {
   return (
-    <Container className='self-center-safe flex flex-col justify-center items-center gap-5'>
-        <ButtonCustom className='updateButton' to='/vacunas/list'>Ver listado de vacunas</ButtonCustom>
-        <ButtonCustom className='updateButton' to='/vacunas/register'>Agregar una vacuna</ButtonCustom>
+    <Container className="flex flex-col gap-2 text-center">
+      <ButtonCustom className="updateButton text-2xl" to="/vacunas/list">
+        Ver listado de vacunas
+      </ButtonCustom>
+      <ButtonCustom className="updateButton text-2xl" to="/vacunas/register">
+        Agregar una vacuna
+      </ButtonCustom>
     </Container>
-  )
-}
+  );
+};
 
-export default IndexHomeVacunas
+export default IndexHomeVacunas;

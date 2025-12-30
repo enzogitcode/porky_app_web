@@ -12,7 +12,7 @@ console.log(data)
       {isLoading ? (
         <h1>Cargando los datos...</h1>
       ) : (
-        <h1 className="text-center text-4xl m-2">Lista de Vacunas</h1>
+        <h1 className="text-center text-4xl m-2">Lista de Vacunas Registradas</h1>
       )}
 
       {data?.length == 0 ? (
