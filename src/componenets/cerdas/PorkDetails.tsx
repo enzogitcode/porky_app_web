@@ -99,7 +99,6 @@ const PorkDetails = () => {
 
       <h3 className="text-2xl">Pariciones</h3>
 
-      <Container className="flex flex-col items-stretch">
         {pig.pariciones && pig.pariciones.length > 0 ? (
           <ParicionesList
             pariciones={pig.pariciones}
@@ -109,7 +108,6 @@ const PorkDetails = () => {
         ) : (
           <h2>No hay pariciones registradas</h2>
         )}
-      </Container>
 
       <Container className="flex justify-center items-center gap-2.5 mb-2">
         <ButtonCustom

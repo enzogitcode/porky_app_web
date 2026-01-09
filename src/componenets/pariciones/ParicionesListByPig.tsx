@@ -1,5 +1,6 @@
 import ParicionCard from "./ParicionCard";
 import type { Paricion } from "../../types/types";
+import Container from "../../ui/Container";
 
 type ParicionesListProps = {
   pariciones: Paricion[];
@@ -13,7 +14,7 @@ const ParicionesListByPig = ({
   onDeleteParicion,
 }: ParicionesListProps) => {
   return (
-    <div className="flex flex-wrap items-stretch">
+    <Container className="flex flex-wrap items-stretch gap-4">
       {pariciones.map((paricion) => (
         <ParicionCard
           key={paricion._id}
@@ -22,7 +23,7 @@ const ParicionesListByPig = ({
           onDelete={onDeleteParicion}
         />
       ))}
-    </div>
+    </Container>
   );
 };
 

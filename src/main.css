@@ -73,3 +73,20 @@
          max-w-xl mx-auto w-full;
 }
 
+.paricionFechas {
+  grid-area: paricionFechas;
+}
+.paricionDescripcion {
+  grid-area: paricionDescripcion;
+}
+.paricionDatos {
+  grid-area: paricionDatos
+}
+
+.paricionCard{
+  display: grid;
+  grid-template-areas: 
+  "paricionDatos paricionFechas"
+  "descripcion descripcion"
+  ;
+}
