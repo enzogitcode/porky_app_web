@@ -30,7 +30,7 @@ const ParicionCard = ({
         </p>
         <p>
           🔄 Actualización:{" "}
-          {new Date(fechaActualizacion ?? "").toLocaleString()}
+          {/* {new Date(fechaActualizacion ?? "").toLocaleString()} */}
         </p>
         <p>🐖 Lechones: {cantidadLechones}</p>
 

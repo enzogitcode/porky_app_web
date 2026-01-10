@@ -1,11 +1,7 @@
 
 const Vacunar = () => {
 
-    // Todas las vacunas
-    //todos los cerdos
-    //elegir a que cerdo aplicar una vacuna
-    //
-
+  /* Teniendo en cuenta una vacuna en particular, aplicarla a múltiples cerdas */
   return (
     <div>
         
