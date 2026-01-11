@@ -1,5 +1,3 @@
-import type { Vacuna } from "./vacunaType";
-
 export type Situacion =
   | "nulipara"
   | "servida"
@@ -14,7 +12,7 @@ export interface Servicio {
   tipo: "cerdo" | "inseminacion" | "desconocido";
   fecha?: string | Date;  // <-- puede ser string (input) o Date (para backend)
   macho?: string | null;
-  proveedorDosis?:string|null
+  proveedorDosis?: string | null
 }
 
 export interface Paricion {
@@ -27,8 +25,20 @@ export interface Paricion {
 }
 
 export interface RangoFecha {
-  inicio:Date
-  fin:Date
+  inicio: Date
+  fin: Date
+}
+
+export interface VacunaAplicada {
+  _id: string;
+  vacuna: string | {
+    _id: string;
+    nombre: string;
+    dosis: string;
+    laboratorio: string;
+    descripcion: string;
+  };
+  fechaVacunacion: string;
 }
 
 export interface Pig {
@@ -38,11 +48,11 @@ export interface Pig {
   descripcion?: string;
   ubicacion?: string;
   pariciones?: Paricion[];
-  lechonesTotal?:number;
-  enfermedadActual?:string;
-  fechaServicioActual:string;
-  posibleFechaParto:RangoFecha;
+  lechonesTotal?: number;
+  enfermedadActual?: string;
+  fechaServicioActual: string;
+  posibleFechaParto: RangoFecha;
   createdAt: string;
   updatedAt: string;
-  VacunasAplicadas:Vacuna[]
+  vacunasAplicadas: VacunaAplicada[]
 }

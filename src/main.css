@@ -48,11 +48,13 @@
 @apply bg-red-600 p-2 rounded hover:bg-red-700 text-white
 }
 
-
 .editButton {
 @apply bg-amber-300 rounded p-2 hover:bg-amber-500
 } 
  
+.showButton {
+  @apply bg-sky-500 hover:bg-sky-800 text-white p-2 rounded disabled:opacity-50 
+}
 .containerBg {
   background: linear-gradient(
   180deg,

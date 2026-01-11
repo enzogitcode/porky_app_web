@@ -31,7 +31,7 @@ export const vacunasApi = createApi({
                 method: 'PATCH',
                 body: data,
             }),
-            invalidatesTags: (result, error, { id }) => [
+            invalidatesTags: (_result, _error, { id }) => [
 
                 { type: "Vacunas", id }, // invalidar detalle individual
                 "Vacunas",               // invalidar listas generales
@@ -44,9 +44,9 @@ export const vacunasApi = createApi({
                 url: `/delete/${id}`,
                 method: "DELETE"
             }),
-            invalidatesTags: (result, error, id) => [
-                { type: "Vacunas", id },
-                "Vacunas",
+            invalidatesTags: (_result, _error, id) => [
+                { type: "Vacunas", id }, // invalidar detalle individual
+                "Vacunas", // invalidar listas generales
             ],
 
         })

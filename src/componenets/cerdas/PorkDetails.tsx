@@ -8,6 +8,7 @@ import ButtonCustom from "../../ui/ButtonCustom";
 import Card from "../../ui/Card";
 import Container from "../../ui/Container";
 import ParicionesList from "../pariciones/ParicionesListByPig";
+import { useState } from "react";
 
 const PorkDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -40,6 +41,8 @@ const PorkDetails = () => {
       console.error("Error al eliminar parición:", error);
     }
   };
+  const [showVacunas, setShowVacunas] = useState(true);
+  const [showPariciones, setShowPariciones] = useState(true);
 
   if (isLoading) return <p>Cargando...</p>;
   if (isError || !pig) return <p>No se encontró el cerdo</p>;
@@ -97,9 +100,49 @@ const PorkDetails = () => {
         </div>
       </Card>
 
-      <h3 className="text-2xl">Pariciones</h3>
+      <h3 className="text-2xl">Vacunas</h3>
+      {pig?.vacunasAplicadas?.length === 0 ? (
+        <Card>
+          <h4>No hay vacunas aplicadas aún</h4>
+        </Card>
+      ) : (
+        <div className=" border-2 border-amber-700 rounded">
+          <ButtonCustom
+            className="showButton"
+            onClick={() => setShowVacunas(!showVacunas)}
+          >
+            {showVacunas ? "ocultar vacunas" : "ver vacunas"}
+          </ButtonCustom>
+          {showVacunas && (
+            <div>
+              {pig?.vacunasAplicadas.map((vacuna) => (
+                <div key={vacuna._id}>
+                  <p>
+                    Fecha:{" "}
+                    {new Date(vacuna.fechaVacunacion).toLocaleDateString()}
+                  </p>
+                  <p>
+                    Hora:{" "}
+                    {new Date(vacuna.fechaVacunacion).toLocaleTimeString()}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
-        {pig.pariciones && pig.pariciones.length > 0 ? (
+      <h3 className="text-2xl">Pariciones</h3>
+      <div className="flex justify-center items-center bg-amber-300">
+        <ButtonCustom
+          className="m-1 p-1 updateButton"
+          onClick={() => setShowPariciones(!showPariciones)}
+        >
+          {showPariciones ? "ocultar pariciones" : "mostrar pariciones"}
+        </ButtonCustom>
+      </div>
+      {showPariciones &&
+        (pig?.pariciones && pig?.pariciones?.length > 0 ? (
           <ParicionesList
             pariciones={pig.pariciones}
             pigId={id!}
@@ -107,7 +150,7 @@ const PorkDetails = () => {
           />
         ) : (
           <h2>No hay pariciones registradas</h2>
-        )}
+        ))}
 
       <Container className="flex justify-center items-center gap-2.5 mb-2">
         <ButtonCustom
@@ -119,6 +162,10 @@ const PorkDetails = () => {
 
         <ButtonCustom className="editButton" to={`/pigs/update/${pig._id}`}>
           Editar cerdo
+        </ButtonCustom>
+
+        <ButtonCustom className="editButton" to={`/pigs/${pig._id}/vacunar`}>
+          Vacuna cerdo
         </ButtonCustom>
 
         <ButtonCustom

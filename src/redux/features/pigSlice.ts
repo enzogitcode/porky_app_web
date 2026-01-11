@@ -32,13 +32,13 @@ export const pigsApi = createApi({
     // DETALLE DE CERDA POR ID
     getPigById: builder.query<Pig, string>({
       query: (id) => `pigs/${id}`,
-      providesTags: (result, error, id) => [{ type: "Pigs", id }],
+      providesTags: (_result, _error, id) => [{ type: "Pigs", id }],
     }),
 
     // DETALLE POR NRO DE CARAVANA
     getPigByCaravana: builder.query<Pig, number>({
       query: (nroCaravana) => `pigs/caravana/${nroCaravana}`,
-      providesTags: (result, error, nroCaravana) => [{ type: "Pigs", id: nroCaravana }],
+      providesTags: (_result, _error, nroCaravana) => [{ type: "Pigs", id: nroCaravana }],
     }),
 
     // CREAR CERDA
@@ -58,7 +58,7 @@ export const pigsApi = createApi({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: (result, error, { id }) => [
+      invalidatesTags: (_result, _error, { id }) => [
         { type: "Pigs", id }, // invalidar detalle individual
         "Pigs",               // invalidar listas generales
       ],
@@ -70,7 +70,7 @@ export const pigsApi = createApi({
         url: `pigs/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, id) => [
+      invalidatesTags: (_result, _error, id) => [
         { type: "Pigs", id },
         "Pigs",
       ],
@@ -83,7 +83,7 @@ export const pigsApi = createApi({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: (result, error, { pigId }) => [
+      invalidatesTags: (_result, _error, { pigId }) => [
         { type: "Pigs", id: pigId },
         "Pigs",
       ],
@@ -99,7 +99,7 @@ export const pigsApi = createApi({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: (result, error, { pigId }) => [
+      invalidatesTags: (_result, _error, { pigId }) => [
         { type: "Pigs", id: pigId },
         "Pigs",
       ],
@@ -111,7 +111,32 @@ export const pigsApi = createApi({
         url: `pigs/${pigId}/pariciones/${paricionId}`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, { pigId }) => [
+      invalidatesTags: (_result, _error, { pigId }) => [
+        { type: "Pigs", id: pigId },
+        "Pigs",
+      ],
+    }),
+
+
+    //VACUNAS
+    vacunarPig: builder.mutation<Pig, { pigId: string; vacunaId: string, fechaVacunacion: string }>({
+      query: ({ pigId, vacunaId, fechaVacunacion }) => ({
+        url: `pigs/${pigId}/addvacuna/${vacunaId}`,
+        method: "PATCH",
+        body:
+          { vacuna: vacunaId, fechaVacunacion },
+      }),
+      invalidatesTags: (_result, _error, { pigId }) => [
+        { type: "Pigs", id: pigId }, // invalidar detalle individual
+        "Pigs", // invalidar listas generales
+      ],
+    }),
+    eliminarVacunaDePig: builder.mutation<Pig, { pigId: string; vacunaId: string }>({
+      query: ({ pigId, vacunaId }) => ({
+        url: `pigs/${pigId}/removevacuna/${vacunaId}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: (_result, _error, { pigId }) => [
         { type: "Pigs", id: pigId },
         "Pigs",
       ],
@@ -131,4 +156,6 @@ export const {
   usePatchParicionMutation,
   useDeleteParicionMutation,
   useGetServidasOGestacionQuery,
+  useVacunarPigMutation,
+  useEliminarVacunaDePigMutation
 } = pigsApi;
