@@ -1,20 +1,21 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import InputCustom from "../../ui/InputCustom";
 import ButtonCustom from "../../ui/ButtonCustom";
-import { useCreateAPigMutation } from "../../redux/features/pigSlice";
-import { useNavigate } from "react-router-dom";
 import Container from "../../ui/Container";
+import { useCreateAPigMutation } from "../../redux/features/pigSlice";
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
     nroCaravana: "",
-    estadio: "nulipara", // debe coincidir con el enum del backend
+    estadio: "nulipara",
     descripcion: "",
     ubicacion: "",
     enfermedadActual: "",
     fechaServicioActual: "",
+    fechaFallecido: "",
   });
 
   const [createPig, { isLoading }] = useCreateAPigMutation();
@@ -23,16 +24,22 @@ const Register: React.FC = () => {
     e.preventDefault();
 
     try {
-      // Construir payload
+      // Convierte nroCaravana a número
+      const nroCaravanaNum = Number(form.nroCaravana);
+      if (isNaN(nroCaravanaNum)) {
+        alert("El número de caravana debe ser válido");
+        return;
+      }
+
       const payload: any = {
-        nroCaravana: Number(form.nroCaravana),
-        estadio: form.estadio, // enviar exactamente como enum
-        descripcion: form.descripcion,
-        ubicacion: form.ubicacion,
+        nroCaravana: nroCaravanaNum,
+        estadio: form.estadio,
+        descripcion: form.descripcion || undefined,
+        ubicacion: form.ubicacion || undefined,
       };
 
       // Solo enviar enfermedadActual si es descarte
-      if (form.estadio === "descarte") {
+      if (form.estadio === "descarte" && form.enfermedadActual) {
         payload.enfermedadActual = form.enfermedadActual;
       }
 
@@ -44,15 +51,15 @@ const Register: React.FC = () => {
         payload.fechaServicioActual = new Date(form.fechaServicioActual);
       }
 
-      console.log("Payload enviado:", payload);
-
+      // Solo enviar fechaFallecido si es fallecido
+      if (form.estadio === "fallecido" && form.fechaFallecido) {
+        payload.fechaFallecido = new Date(form.fechaFallecido);
+      }
       const newPig = await createPig(payload).unwrap();
-      console.log("Respuesta backend:", newPig);
-
       navigate(`/pigs/${newPig._id}`);
     } catch (err: any) {
-      console.error("Error al crear cerdo:", err);
-      alert("Error al crear cerdo");
+      console.error("ERROR COMPLETO:", err);
+      alert(err?.data?.message ?? "Error al crear cerdo");
     }
   };
 
@@ -71,23 +78,19 @@ const Register: React.FC = () => {
           value={form.nroCaravana}
           inputClassName="text-center"
           onChange={(e) =>
-            setForm({ ...form, nroCaravana: e.target.value })
+            setForm({...form, nroCaravana:e.target.value})
           }
+          required
         />
 
         {/* Estadio */}
         <div className="flex flex-col gap-1">
-          <label htmlFor="estadio" className="font-semibold">
-            Estadio
-          </label>
-
+          <label htmlFor="estadio" className="font-semibold">Estadio</label>
           <select
             id="estadio"
             value={form.estadio}
-            onChange={(e) =>
-              setForm({ ...form, estadio: e.target.value })
-            }
-            className="border rounded-lg p-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={(e) => setForm({ ...form, estadio: e.target.value })}
+            className="border rounded-lg p-2 bg-white"
           >
             <option value="nulipara">Nulípara</option>
             <option value="servida">Servida</option>
@@ -96,49 +99,56 @@ const Register: React.FC = () => {
             <option value="destetada">Destetada</option>
             <option value="vacía">Vacía</option>
             <option value="descarte">Descarte</option>
+            <option value="fallecido">Fallecido</option>
           </select>
         </div>
 
-        {/* Enfermedad actual (solo si descarte) */}
+        {/* Enfermedad actual (solo para descarte) */}
         {form.estadio === "descarte" && (
           <InputCustom
             label="Enfermedad actual"
             type="text"
             value={form.enfermedadActual}
-            inputClassName="text-center"
             onChange={(e) =>
               setForm({ ...form, enfermedadActual: e.target.value })
             }
           />
         )}
 
-        {/* Fecha de servicio actual (solo si servida o gestación confirmada) */}
-        {(form.estadio === "servida" ||
-          form.estadio === "gestación confirmada") && (
+        {/* Fecha de servicio (solo servida / gestación confirmada) */}
+        {(form.estadio === "servida" || form.estadio === "gestación confirmada") && (
           <InputCustom
-            label="Fecha de servicio actual"
+            label="Fecha de servicio"
             type="date"
             value={form.fechaServicioActual}
-            inputClassName="text-center"
             onChange={(e) =>
               setForm({ ...form, fechaServicioActual: e.target.value })
             }
           />
         )}
 
+        {/* Fecha de fallecido (solo fallecido) */}
+        {form.estadio === "fallecido" && (
+          <InputCustom
+            label="Fecha de fallecimiento"
+            type="date"
+            value={form.fechaFallecido}
+            onChange={(e) =>
+              setForm({ ...form, fechaFallecido: e.target.value })
+            }
+          />
+        )}
+
         {/* Descripción */}
         <div className="flex flex-col gap-1">
-          <label htmlFor="descripcion" className="font-semibold">
-            Descripción
-          </label>
-
+          <label htmlFor="descripcion" className="font-semibold">Descripción</label>
           <textarea
             id="descripcion"
             value={form.descripcion}
             onChange={(e) =>
               setForm({ ...form, descripcion: e.target.value })
             }
-            className="border rounded-lg p-2 h-28 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="border rounded-lg p-2 h-28 resize-none"
           />
         </div>
 
@@ -147,16 +157,12 @@ const Register: React.FC = () => {
           label="Ubicación"
           type="text"
           value={form.ubicacion}
-          inputClassName="text-center"
           onChange={(e) =>
             setForm({ ...form, ubicacion: e.target.value })
           }
         />
 
-        <ButtonCustom
-          type="submit"
-          className="bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
-        >
+        <ButtonCustom type="submit">
           {isLoading ? "Creando..." : "Registrar Cerdo"}
         </ButtonCustom>
       </form>

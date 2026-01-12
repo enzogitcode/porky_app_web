@@ -46,37 +46,44 @@ const Home = () => {
             <p>
               <strong>Lechones Total Paridos:</strong> {item.lechonesTotal}
             </p>
-              {(item.estadio === "servida" ||
-                item.estadio === "gestación confirmada") &&
-                item.posibleFechaParto && (
-                  <div className="border-2 border-red-800 rounded-b-3xl p-4 gap-4">
-                    <h4>Posible fecha de parto:</h4>
+            {(item.estadio === "servida" ||
+              item.estadio === "gestación confirmada") &&
+              item.posibleFechaParto && (
+                <div className="border-2 border-red-800 rounded-b-3xl p-4 gap-4">
+                  <h4>Posible fecha de parto:</h4>
+                  <p className="text-2xl">
+                    <strong>Fecha Servicio:</strong>{" "}
+                    {new Date(item.fechaServicioActual).toLocaleDateString()}
+                  </p>
 
-                    <p className="text-2xl">
+                  <p className="text-2xl">
+                    <strong>
                       Mínima:{" "}
                       {new Date(
                         item.posibleFechaParto.inicio
                       ).toLocaleDateString("es-ES")}
-                    </p>
+                    </strong>
+                  </p>
 
-                    <p className="text-2xl">
+                  <p className="text-2xl">
+                    <strong>
                       Máxima:{" "}
                       {new Date(item.posibleFechaParto.fin).toLocaleDateString(
                         "es-ES"
                       )}
-                    </p>
-                    
-                    <div className="mt-2">
+                    </strong>
+                  </p>
 
+                  <div className="mt-2">
                     <ButtonCustom
                       to={`/pigs/${item._id}`}
                       className="detailsButton mt-2"
-                      >
+                    >
                       Ver Detalles de la cerda
                     </ButtonCustom>
-                      </div>
                   </div>
-                )}
+                </div>
+              )}
             <p>
               <strong>Actualizado:</strong>{" "}
               {new Date(item.updatedAt).toLocaleDateString()}

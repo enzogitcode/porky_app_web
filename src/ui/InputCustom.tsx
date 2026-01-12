@@ -12,10 +12,11 @@ interface InputProps {
   name?:string
   className?:string
   inputClassName?:string
+  required?:boolean
 }
 
 
-const InputCustom: React.FC<InputProps> = ({ label, value, onChange, type, placeholder, name, className, inputClassName }) => {
+const InputCustom: React.FC<InputProps> = ({ label, value, onChange, type, placeholder, name, className, inputClassName, required }) => {
   
   return (
     <div className={`m-1 p-1${className ?? ""}`}>
@@ -29,6 +30,7 @@ const InputCustom: React.FC<InputProps> = ({ label, value, onChange, type, place
         placeholder={placeholder}
         onChange={onChange}
         style={{ padding: '0.5rem', width: '100%' }}
+        required={required}
       />
     </div>
   );

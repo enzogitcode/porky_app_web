@@ -1,21 +1,21 @@
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDeleteVacunaByIdMutation } from "../../redux/features/vacunaSlice";
 import type { Vacuna } from "../../types/vacunaType";
 import Card from "../../ui/Card";
-import assets from '../../assets/johannes-groll.jpg'
+import assets from "../../assets/johannes-groll.jpg";
+import ButtonCustom from "../../ui/ButtonCustom";
 const CardVacuna: React.FC<Vacuna> = (props) => {
   const creacion = new Date(props.createdAt);
   const editada = new Date(props.updatedAt);
 
-  const navig = useNavigate()
+  const navig = useNavigate();
 
-  const [deleteVacuna, {isLoading}] = useDeleteVacunaByIdMutation()
+  const [deleteVacuna, { isLoading }] = useDeleteVacunaByIdMutation();
 
   return (
     <Card className="flex flex-col md:grid md:grid-cols-[30%_70%]">
       {/* Imagen */}
       <img
-      
         src={assets}
         alt={props.nombre}
         className="w-full h-48 md:h-full object-cover rounded-t-2xl md:rounded-l-2xl md:rounded-t-none"
@@ -64,13 +64,25 @@ const CardVacuna: React.FC<Vacuna> = (props) => {
 
         {/* Footer con botones centrados */}
         <div className="flex justify-center gap-4 mt-2">
-          <button onClickCapture={() => navig(`/vacunas/updater/${props._id}`)} className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+          <ButtonCustom
+            className="px-4 py-2 bg-green-600 text-black hover:text-white rounded-lg hover:bg-green-900"
+            to={`/vacunar/vacunas/${props._id}`}
+          >
+            Vacunar varias cerdas
+          </ButtonCustom>
+          <ButtonCustom
+            onClick={() => navig(`/vacunas/updater/${props._id}`)}
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+          >
             Editar
-          </button>
+          </ButtonCustom>
 
-          <button onClick={() => deleteVacuna(props._id)} className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
-            {isLoading ? "Eliminando...": "Eliminar"}
-          </button>
+          <ButtonCustom
+            onClick={() => deleteVacuna(props._id)}
+            className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
+          >
+            {isLoading ? "Eliminando..." : "Eliminar"}
+          </ButtonCustom>
         </div>
       </div>
     </Card>

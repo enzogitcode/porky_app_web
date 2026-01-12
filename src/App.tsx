@@ -14,6 +14,7 @@ import RegisterVacunaForm from "./componenets/vacunas/RegisterVacunaForm";
 import UpdaterVacunasForm from "./componenets/vacunas/UpdaterVacunasForm";
 import IndexHomeVacunas from "./componenets/vacunas/IndexHomeVacunas";
 import PorkVacunar from "./componenets/cerdas/PorkVacunar";
+import Vacunar from "./componenets/vacunas/Vacunar";
 
 const App = () => {
   /* const dispatch = useDispatch()
@@ -79,6 +80,9 @@ const App = () => {
 
             {/* Vacunar cerdas */}
             <Route path="/pigs/:id/vacunar" element={<PorkVacunar />} />
+
+            {/* Vacunar MÚLTIPLES CERDAS */}
+            <Route path='/vacunas/vacunar' element={<Vacunar/>} />
 
             {/* Ruta comodín */}
             <Route path="*" element={<ErrorPage />} />
