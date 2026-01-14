@@ -5,7 +5,8 @@ export type Situacion =
   | "parida con lechones"
   | "destetada"
   | "vacía"
-  | "descarte";
+  | "descarte"
+  | "fallecido";
 
 
 export interface Servicio {

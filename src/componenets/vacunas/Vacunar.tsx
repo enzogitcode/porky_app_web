@@ -83,7 +83,7 @@ const Vacunar: React.FC = () => {
 
       {/* Lista de pigs */}
       <div className="space-y-2 max-h-64 overflow-y-auto border p-3">
-        {pigs?.map((pig) => (
+        {pigs?.filter(pig => pig.estadio !== 'fallecido').map((pig) => (
           <label key={pig._id} className="flex items-center gap-2">
             <input
               type="checkbox"

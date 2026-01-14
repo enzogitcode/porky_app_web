@@ -59,9 +59,7 @@ const VacunarConUnaVacuna = () => {
     }
 
     if (!usarFechaGeneral) {
-      const faltaFecha = pigsSeleccionados.some(
-        (id) => !fechasPorCerda[id]
-      );
+      const faltaFecha = pigsSeleccionados.some((id) => !fechasPorCerda[id]);
       if (faltaFecha) {
         alert("Todas las cerdas seleccionadas deben tener fecha");
         return;
@@ -77,9 +75,7 @@ const VacunarConUnaVacuna = () => {
     try {
       await Promise.all(
         pigsSeleccionados.map((pigId) => {
-          const fecha = usarFechaGeneral
-            ? fechaGeneral
-            : fechasPorCerda[pigId];
+          const fecha = usarFechaGeneral ? fechaGeneral : fechasPorCerda[pigId];
 
           return vacunarPig({
             pigId,
@@ -124,55 +120,53 @@ const VacunarConUnaVacuna = () => {
 
   // Render
   return (
-    <Container className="space-y-6">
+    <div className="space-y-6">
       <h1 className="text-3xl text-center font-bold">
         Vacunar cerdas con: {vacuna.nombre}
       </h1>
 
-      {/* Fecha general */}
-      <div className="border p-4 rounded-lg space-y-2">
-        <label className="flex items-center gap-2 font-semibold">
-          <input
-            type="checkbox"
-            checked={usarFechaGeneral}
-            onChange={(e) => setUsarFechaGeneral(e.target.checked)}
-          />
-          Usar una fecha general para todas las cerdas
-        </label>
+      <div className="justify-center-safe items-center-safe p-3 space-y-6">
+        {/* Fecha general */}
+        <div className="border p-4 rounded-lg space-y-2">
+          <label className="flex items-center gap-2 font-semibold">
+            <input
+              type="checkbox"
+              checked={usarFechaGeneral}
+              onChange={(e) => setUsarFechaGeneral(e.target.checked)}
+            />
+            Usar una fecha general para todas las cerdas
+          </label>
 
-        {usarFechaGeneral && (
-          <InputCustom
-            type="datetime-local"
-            label="Fecha general de vacunación"
-            value={fechaGeneral}
-            onChange={(e) => setFechaGeneral(e.target.value)}
-          />
-        )}
-      </div>
+          {usarFechaGeneral && (
+            <InputCustom
+              type="datetime-local"
+              label="Fecha general de vacunación"
+              value={fechaGeneral}
+              onChange={(e) => setFechaGeneral(e.target.value)}
+            />
+          )}
+        </div>
 
-      {/* Listado de cerdas */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {pigs.map((pig) => (
-          <div
-            key={pig._id}
-            className="border p-4 rounded-lg shadow space-y-2"
-          >
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={pigsSeleccionados.includes(pig._id)}
-                onChange={() => togglePig(pig._id)}
-              />
-              Seleccionar
-            </label>
+        {/* Listado de cerdas */}
+        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {pigs.filter(pig => pig.estadio !== 'fallecido').map((pig) => (
+            <div
+              key={pig._id}
+              className="border p-4 rounded-lg shadow space-y-2"
+            >
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={pigsSeleccionados.includes(pig._id)}
+                  onChange={() => togglePig(pig._id)}
+                />
+                Seleccionar
+              </label>
 
-            <h2 className="font-semibold">
-              N° Caravana: {pig.nroCaravana}
-            </h2>
-            <p>Estadio: {pig.estadio}</p>
+              <h2 className="font-semibold">N° Caravana: {pig.nroCaravana}</h2>
+              <p>Estadio: {pig.estadio}</p>
 
-            {!usarFechaGeneral &&
-              pigsSeleccionados.includes(pig._id) && (
+              {!usarFechaGeneral && pigsSeleccionados.includes(pig._id) && (
                 <InputCustom
                   type="datetime-local"
                   label="Fecha de vacunación"
@@ -185,20 +179,21 @@ const VacunarConUnaVacuna = () => {
                   }
                 />
               )}
-          </div>
-        ))}
-      </div>
+            </div>
+          ))}
+        </div>
 
-      {/* Botón final */}
-      <div className="flex justify-center">
-        <ButtonCustom
-          onClick={handleVacunarTodas}
-          className="bg-green-600 hover:bg-green-700 text-white px-6 py-3"
-        >
-          Aplicar vacuna a seleccionadas
-        </ButtonCustom>
+        {/* Botón final */}
+        <div className="flex justify-center">
+          <ButtonCustom
+            onClick={handleVacunarTodas}
+            className="bg-green-600 hover:bg-green-700 text-white px-6 py-3"
+          >
+            Aplicar vacuna a seleccionadas
+          </ButtonCustom>
+        </div>
       </div>
-    </Container>
+    </div>
   );
 };
 
