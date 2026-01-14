@@ -124,7 +124,7 @@ const ParicionUpdate: React.FC = () => {
   <div className="flex flex-col gap-1">
     <InputCustom
       label="Fecha de Parición"
-      type="date"
+      type="datetime-local"
       value={paricion.fechaParicion}
       onChange={(e) => handleChange("fechaParicion", e.target.value)}
     />
@@ -169,7 +169,7 @@ const ParicionUpdate: React.FC = () => {
 
         <InputCustom
           label="Fecha del Servicio"
-          type="date"
+          type="datetime-local"
           value={paricion.servicio.fecha}
           onChange={(e) => handleServicioChange("fecha", e.target.value)}
         />

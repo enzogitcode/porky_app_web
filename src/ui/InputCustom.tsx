@@ -1,13 +1,13 @@
 import React from 'react';
 
-type InputType = React.InputHTMLAttributes<HTMLInputElement>["type"];
+export type InputType = React.InputHTMLAttributes<HTMLInputElement>["type"];
 
 
 interface InputProps {
   label?: string;
   value: string | number;
   onChange: (e:React.ChangeEvent<HTMLInputElement>) => void; 
-  type:InputType 
+  type:InputType |  'datetime-local';
   placeholder?: string;
   name?:string
   className?:string

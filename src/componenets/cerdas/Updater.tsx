@@ -9,6 +9,7 @@ import Container from "../../ui/Container";
 import Card from "../../ui/Card";
 import ButtonCustom from "../../ui/ButtonCustom";
 import InputCustom from "../../ui/InputCustom";
+import type { InputType } from "../../ui/InputCustom";
 
 const Updater = () => {
   const { id } = useParams<{ id: string }>();
@@ -94,7 +95,7 @@ const Updater = () => {
   const renderField = (
     label: string,
     key: keyof typeof formData,
-    type: "text" | "number" | "date" | "textarea" | "select",
+    type: InputType,
     options?: { label: string; value: string }[]
   ) => (
     <div className="flex justify-between items-center">
@@ -207,7 +208,7 @@ const Updater = () => {
         {formData.estadio === "descarte" &&
           renderField("Enfermedad actual", "enfermedadActual", "text")}
         {["servida", "gestación confirmada"].includes(formData.estadio) &&
-          renderField("Fecha de servicio", "fechaServicioActual", "date")}
+          renderField("Fecha de servicio", "fechaServicioActual", "datetime-local")}
         {renderField("Ubicación", "ubicacion", "text")}
         {renderField("Descripción", "descripcion", "textarea")}
       </Card>

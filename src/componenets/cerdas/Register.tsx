@@ -136,7 +136,7 @@ const Register: React.FC = () => {
         {(form.estadio === "servida" || form.estadio === "gestación confirmada") && (
           <InputCustom
             label="Fecha de servicio"
-            type="date"
+            type="datetime-local"
             value={form.fechaServicioActual}
             onChange={(e) =>
               setForm({ ...form, fechaServicioActual: e.target.value })
@@ -148,7 +148,7 @@ const Register: React.FC = () => {
         {form.estadio === "fallecido" && (
           <InputCustom
             label="Fecha de fallecimiento"
-            type="date"
+            type="datetime-local"
             value={form.fechaFallecido}
             onChange={(e) =>
               setForm({ ...form, fechaFallecido: e.target.value })

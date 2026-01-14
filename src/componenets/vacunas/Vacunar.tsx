@@ -74,7 +74,7 @@ const Vacunar: React.FC = () => {
       <div>
         <label className="font-semibold">Fecha de vacunación</label>
         <input
-          type="date"
+          type="datetime-local"
           className="border p-2 w-full"
           value={fechaVacunacion}
           onChange={(e) => setFechaVacunacion(e.target.value)}

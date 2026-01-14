@@ -4,6 +4,7 @@ import type { Vacuna } from "../../types/vacunaType";
 import Card from "../../ui/Card";
 import assets from "../../assets/johannes-groll.jpg";
 import ButtonCustom from "../../ui/ButtonCustom";
+
 const CardVacuna: React.FC<Vacuna> = (props) => {
   const creacion = new Date(props.createdAt);
   const editada = new Date(props.updatedAt);
@@ -66,7 +67,7 @@ const CardVacuna: React.FC<Vacuna> = (props) => {
         <div className="flex justify-center gap-4 mt-2">
           <ButtonCustom
             className="px-4 py-2 bg-green-600 text-black hover:text-white rounded-lg hover:bg-green-900"
-            to={`/vacunar/vacunas/${props._id}`}
+            to={`/vacunas/vacunar/${props._id}`}
           >
             Vacunar varias cerdas
           </ButtonCustom>

@@ -134,12 +134,14 @@ const PorkDetails = () => {
 
       <h3 className="text-2xl">Pariciones</h3>
       <div className="flex justify-center items-center bg-amber-300">
-        <ButtonCustom
-          className="m-1 p-1 updateButton"
-          onClick={() => setShowPariciones(!showPariciones)}
-        >
-          {showPariciones ? "ocultar pariciones" : "mostrar pariciones"}
-        </ButtonCustom>
+        {pig.pariciones?.length !== 0 && (
+          <ButtonCustom
+            className="m-1 p-1 updateButton"
+            onClick={() => setShowPariciones(!showPariciones)}
+          >
+            {showPariciones ? "ocultar pariciones" : "mostrar pariciones"}
+          </ButtonCustom>
+        )}
       </div>
       {showPariciones &&
         (pig?.pariciones && pig?.pariciones?.length > 0 ? (

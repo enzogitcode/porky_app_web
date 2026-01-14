@@ -88,7 +88,7 @@ const PorkVacunar = () => {
           </div>
 
           <input
-            type="date"
+            type="datetime-local"
             value={fechas[vacuna._id] || ""}
             onChange={(e) => handleFechaChange(vacuna._id, e.target.value)}
             className="border p-1 rounded flex justify-center items-center"

@@ -61,7 +61,7 @@ const Home = () => {
                       Mínima:{" "}
                       {new Date(
                         item.posibleFechaParto.inicio
-                      ).toLocaleDateString("es-ES")}
+                      ).toLocaleDateString()}
                     </strong>
                   </p>
 

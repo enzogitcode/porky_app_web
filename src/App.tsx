@@ -15,6 +15,7 @@ import UpdaterVacunasForm from "./componenets/vacunas/UpdaterVacunasForm";
 import IndexHomeVacunas from "./componenets/vacunas/IndexHomeVacunas";
 import PorkVacunar from "./componenets/cerdas/PorkVacunar";
 import Vacunar from "./componenets/vacunas/Vacunar";
+import VacunarConUnaVacuna from "./componenets/vacunas/VacunarConUnaVacuna";
 
 const App = () => {
   /* const dispatch = useDispatch()
@@ -55,7 +56,6 @@ const App = () => {
             <Route path="/pigs/:id/pariciones" element={<ParicionForm />} />
 
             {/* LISTA DE PARICIONES */}
-            
 
             {/* Editar pariciones existentes */}
             <Route
@@ -78,11 +78,17 @@ const App = () => {
               element={<UpdaterVacunasForm />}
             />
 
-            {/* Vacunar cerdas */}
+            {/* Vacunar cerdas / UNA CERDA - MÚLTIPLES VACUNAS */}
             <Route path="/pigs/:id/vacunar" element={<PorkVacunar />} />
 
-            {/* Vacunar MÚLTIPLES CERDAS */}
-            <Route path='/vacunas/vacunar' element={<Vacunar/>} />
+            {/* VACUNAR UNA VACUNA MÚLTIPLES CERDAS */}
+            <Route
+              path="/vacunas/vacunar/:vacunaId"
+              element={<VacunarConUnaVacuna />}
+            />
+
+            {/* Vacunar con MÚLTIPLES VACUNAS a MÚLTIPLES CERDAS */}
+            <Route path="/vacunas/vacunar" element={<Vacunar />} />
 
             {/* Ruta comodín */}
             <Route path="*" element={<ErrorPage />} />

@@ -107,7 +107,7 @@ const ParicionForm: React.FC = () => {
     <form onSubmit={handleSubmit} className="form-base">
       <InputCustom
         label="Fecha de Parición"
-        type="date"
+        type="datetime-local"
         value={paricion.fechaParicion}
         onChange={(e) => handleChange("fechaParicion", e.target.value)}
       />
@@ -141,7 +141,7 @@ const ParicionForm: React.FC = () => {
         <>
           <InputCustom
             label="Fecha del Servicio"
-            type="date"
+            type="datetime-local"
             value={paricion.servicio.fecha}
             onChange={(e) => handleServicioChange("fecha", e.target.value)}
           />
