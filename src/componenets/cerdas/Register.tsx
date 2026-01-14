@@ -24,9 +24,14 @@ const Register: React.FC = () => {
     e.preventDefault();
 
     try {
-      // Convierte nroCaravana a número
-      const nroCaravanaNum = Number(form.nroCaravana);
-      if (isNaN(nroCaravanaNum)) {
+      // Validación: nroCaravana no vacío y número válido (evitar Number("") -> 0)
+      const rawCaravana = String(form.nroCaravana ?? "").trim();
+      if (!rawCaravana) {
+        alert("El número de caravana no puede estar vacío");
+        return;
+      }
+      const nroCaravanaNum = Number(rawCaravana);
+      if (!Number.isFinite(nroCaravanaNum) || isNaN(nroCaravanaNum)) {
         alert("El número de caravana debe ser válido");
         return;
       }
@@ -37,6 +42,9 @@ const Register: React.FC = () => {
         descripcion: form.descripcion || undefined,
         ubicacion: form.ubicacion || undefined,
       };
+
+      // Log del payload previo a enviar para depuración
+      console.log("Payload crear cerdo:", payload);
 
       // Solo enviar enfermedadActual si es descarte
       if (form.estadio === "descarte" && form.enfermedadActual) {
@@ -56,10 +64,19 @@ const Register: React.FC = () => {
         payload.fechaFallecido = new Date(form.fechaFallecido);
       }
       const newPig = await createPig(payload).unwrap();
+      console.log("Respuesta crear cerdo:", newPig);
       navigate(`/pigs/${newPig._id}`);
     } catch (err: any) {
+      // Logueo detallado para depuración: RTK Query devuelve un objeto error
       console.error("ERROR COMPLETO:", err);
-      alert(err?.data?.message ?? "Error al crear cerdo");
+      try {
+        console.error("ERROR DETAILS:", JSON.stringify(err, Object.getOwnPropertyNames(err), 2));
+      } catch (e) {
+        console.error("No se pudo serializar el error:", e);
+      }
+      console.error("ERR.DATA:", err?.data);
+      console.error("ERR.STATUS:", err?.status);
+      alert(err?.data?.message ?? err?.error ?? "Error al crear cerdo");
     }
   };
 

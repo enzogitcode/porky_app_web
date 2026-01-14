@@ -14,7 +14,7 @@ const IndexHomeVacunas = () => {
           Agregar una vacuna
         </ButtonCustom>
       </div>
-      <div>
+      <div className="flex justify-center-safe items-center-safe">
         <ButtonCustom className="updateButton text-2xl" to="/vacunas/vacunar">Vacunar múltiples cerdas</ButtonCustom>
       </div>
     </Container>
