@@ -3,8 +3,8 @@ import Home from "./componenets/Home";
 import PorkList from "./componenets/cerdas/PorkList";
 import PorkDetails from "./componenets/cerdas/PorkDetails";
 import Header from "./ui/Header";
-import Register from "./componenets/cerdas/Register";
-import Updater from "./componenets/cerdas/Updater";
+import Register from "./componenets/cerdas/RegisterPork";
+import Updater from "./componenets/cerdas/UpdaterPork";
 import ParicionForm from "./componenets/pariciones/ParicionForm";
 import ParicionUpdate from "./componenets/pariciones/ParicionUpdate";
 import Searcher from "./componenets/Searcher";
@@ -18,6 +18,8 @@ import Vacunar from "./componenets/vacunas/Vacunar";
 import VacunarConUnaVacuna from "./componenets/vacunas/VacunarConUnaVacuna";
 
 const App = () => {
+  const user= true
+  console.log(user)
   /* const dispatch = useDispatch()
   const darkMode:boolean = useSelector((state: RootState) => state.darkMode.darkMode);
 
@@ -30,7 +32,7 @@ const App = () => {
   // Llamada
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter> 
         <Header />
 
         <main>

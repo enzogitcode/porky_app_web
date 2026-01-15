@@ -4,7 +4,21 @@ import Card from "../ui/Card";
 import Container from "../ui/Container";
 
 const Home = () => {
+
+  const user = 1; // TODO: Reemplazar con el hook de autenticación cuando esté implementado
+  //TODO significa to do, es una marca para recordar que hay que volver a esa parte del código más tarde
+
   const { data, isLoading, isError } = useGetServidasOGestacionQuery();
+
+  if (!user) {
+    return (
+      <Container>
+        <h1 className="text-5xl font-bold text-red-700 text-center">
+          Por favor, inicie sesión para ver las cerdas próximas a parir.
+        </h1>
+      </Container>
+    );
+  }
 
   if (isError) {
     console.error();

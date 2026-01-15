@@ -9,6 +9,7 @@ import Card from "../../ui/Card";
 import Container from "../../ui/Container";
 import ParicionesList from "../pariciones/ParicionesListByPig";
 import { useState } from "react";
+import Swal from "sweetalert2";
 
 const PorkDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -20,27 +21,71 @@ const PorkDetails = () => {
     isError,
   } = useGetPigByIdQuery(id!, { skip: !id });
 
-  const [deletePigById, { isLoading: isDeleting }] = useDeletePigByIdMutation();
+  const [deletePigById, { isLoading: isDeleting }] =
+    useDeletePigByIdMutation();
   const [deleteParicion] = useDeleteParicionMutation();
 
+  // 🔴 ELIMINAR CERDO (CONFIRMACIÓN)
   const handleDelete = async () => {
     if (!id) return;
+
+    const result = await Swal.fire({
+      title: "¿Eliminar cerdo?",
+      text: "⚠️ Se eliminarán también todas las pariciones y datos asociados.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
       await deletePigById(id).unwrap();
+      await Swal.fire(
+        "Eliminado",
+        "El cerdo fue eliminado correctamente",
+        "success"
+      );
       navigate("/pigs");
     } catch (error) {
+      Swal.fire("Error", "No se pudo eliminar el cerdo", "error");
       console.error("Error al eliminar cerdo:", error);
     }
   };
 
+  // 🔴 ELIMINAR PARICIÓN (CONFIRMACIÓN)
   const handleDeleteParicion = async (paricionId: string) => {
     if (!id) return;
+
+    const result = await Swal.fire({
+      title: "¿Eliminar parición?",
+      text: "Esta acción no se puede deshacer",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
       await deleteParicion({ pigId: id, paricionId }).unwrap();
+      Swal.fire(
+        "Eliminada",
+        "La parición fue eliminada correctamente",
+        "success"
+      );
     } catch (error) {
+      Swal.fire("Error", "No se pudo eliminar la parición", "error");
       console.error("Error al eliminar parición:", error);
     }
   };
+
   const [showVacunas, setShowVacunas] = useState(true);
   const [showPariciones, setShowPariciones] = useState(true);
 
@@ -77,26 +122,6 @@ const PorkDetails = () => {
             <strong>Actualizado:</strong>{" "}
             {new Date(pig.updatedAt).toLocaleDateString()}
           </p>
-
-          {(pig.estadio === "servida" ||
-            pig.estadio === "gestación confirmada") &&
-            pig.posibleFechaParto && (
-              <div>
-                <h4>Posible fecha de parto</h4>
-                <h5>
-                  Desde:{" "}
-                  {new Date(pig.posibleFechaParto.inicio).toLocaleDateString(
-                    "es-ES"
-                  )}
-                </h5>
-                <h5>
-                  Hasta:{" "}
-                  {new Date(pig.posibleFechaParto.fin).toLocaleDateString(
-                    "es-ES"
-                  )}
-                </h5>
-              </div>
-            )}
         </div>
       </Card>
 
@@ -106,29 +131,27 @@ const PorkDetails = () => {
           <h4>No hay vacunas aplicadas aún</h4>
         </Card>
       ) : (
-        <div className=" border-2 border-amber-700 rounded">
+        <div className="border-2 border-amber-700 rounded">
           <ButtonCustom
             className="showButton"
             onClick={() => setShowVacunas(!showVacunas)}
           >
             {showVacunas ? "ocultar vacunas" : "ver vacunas"}
           </ButtonCustom>
-          {showVacunas && (
-            <div>
-              {pig?.vacunasAplicadas.map((vacuna) => (
-                <div key={vacuna._id}>
-                  <p>
-                    Fecha:{" "}
-                    {new Date(vacuna.fechaVacunacion).toLocaleDateString()}
-                  </p>
-                  <p>
-                    Hora:{" "}
-                    {new Date(vacuna.fechaVacunacion).toLocaleTimeString()}
-                  </p>
-                </div>
-              ))}
-            </div>
-          )}
+
+          {showVacunas &&
+            pig.vacunasAplicadas.map((vacuna) => (
+              <div key={vacuna._id}>
+                <p>
+                  Fecha:{" "}
+                  {new Date(vacuna.fechaVacunacion).toLocaleDateString()}
+                </p>
+                <p>
+                  Hora:{" "}
+                  {new Date(vacuna.fechaVacunacion).toLocaleTimeString()}
+                </p>
+              </div>
+            ))}
         </div>
       )}
 
@@ -143,8 +166,9 @@ const PorkDetails = () => {
           </ButtonCustom>
         )}
       </div>
+
       {showPariciones &&
-        (pig?.pariciones && pig?.pariciones?.length > 0 ? (
+        (pig.pariciones && pig.pariciones.length > 0 ? (
           <ParicionesList
             pariciones={pig.pariciones}
             pigId={id!}

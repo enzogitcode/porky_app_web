@@ -16,7 +16,7 @@
     "react-dom": "^19.1.1",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.9.6",
-    "sweetalert2": "^11.26.3",
+    "sweetalert2": "^11.26.17",
     "zod": "^4.1.13"
   },
   "devDependencies": {
