@@ -4,6 +4,7 @@ import type { Vacuna } from "../../types/vacunaType";
 import Card from "../../ui/Card";
 import assets from "../../assets/johannes-groll.jpg";
 import ButtonCustom from "../../ui/ButtonCustom";
+import Swal from "sweetalert2";
 
 const CardVacuna: React.FC<Vacuna> = (props) => {
   const creacion = new Date(props.createdAt);
@@ -13,8 +14,36 @@ const CardVacuna: React.FC<Vacuna> = (props) => {
 
   const [deleteVacuna, { isLoading }] = useDeleteVacunaByIdMutation();
 
+  const handleDeleteVacuna = async (id: string) => {
+    if (!id) return;
+
+    const result = await Swal.fire({
+      title: "¿Eliminar vacuna?",
+      text: "⚠️ Esta acción no se puede deshacer.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    });
+    if (!result.isConfirmed) return;
+
+    try {
+      await deleteVacuna(id).unwrap();
+      await Swal.fire(
+        "Eliminada",
+        "La vacuna fue eliminada correctamente",
+        "success"
+      );
+    } catch (error) {
+      Swal.fire("Error", "No se pudo eliminar la vacuna", "error");
+      console.error("Error al eliminar vacuna:", error);
+    }
+  };
+
   return (
-    <Card className="flex flex-col md:grid md:grid-cols-[30%_70%]">
+    <Card className="flex flex-col md:grid md:grid-cols-[30%_70%] text-wrap">
       {/* Imagen */}
       <img
         src={assets}
@@ -31,7 +60,7 @@ const CardVacuna: React.FC<Vacuna> = (props) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-wrap">
           {/* Datos */}
           <div className="space-y-1">
-            <h5 className="font-medium">Id: {props._id}</h5>
+            <p className="text-2xl font-medium text-wrap">Id: {props._id}</p>
             <p>
               <span className="font-medium">Laboratorio:</span>
               {props.laboratorio}
@@ -64,7 +93,7 @@ const CardVacuna: React.FC<Vacuna> = (props) => {
         </div>
 
         {/* Footer con botones centrados */}
-        <div className="flex justify-center gap-4 mt-2">
+        <div className="flex justify-center gap-4 mt-2 flex-wrap">
           <ButtonCustom
             className="px-4 py-2 bg-green-600 text-black hover:text-white rounded-lg hover:bg-green-900"
             to={`/vacunas/vacunar/${props._id}`}
@@ -79,7 +108,7 @@ const CardVacuna: React.FC<Vacuna> = (props) => {
           </ButtonCustom>
 
           <ButtonCustom
-            onClick={() => deleteVacuna(props._id)}
+            onClick={() => handleDeleteVacuna(props._id)}
             className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
           >
             {isLoading ? "Eliminando..." : "Eliminar"}

@@ -150,6 +150,7 @@ const PorkDetails = () => {
                   Hora:{" "}
                   {new Date(vacuna.fechaVacunacion).toLocaleTimeString()}
                 </p>
+                
               </div>
             ))}
         </div>

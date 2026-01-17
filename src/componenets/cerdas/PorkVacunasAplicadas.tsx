@@ -5,7 +5,8 @@ interface VacunaAplicadaProps {
 
 const PorkVacunasAplicadas:React.FC<VacunaAplicadaProps> = (props) => {
   return (
-    <div>PorkVacunasAplicadas</div>
+    <div>
+    </div>
   )
 }
 
