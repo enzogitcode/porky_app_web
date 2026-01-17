@@ -3,6 +3,7 @@ import {
   useGetPigByIdQuery,
   useDeletePigByIdMutation,
   useDeleteParicionMutation,
+  useEliminarVacunaDePigMutation
 } from "../../redux/features/pigSlice";
 import ButtonCustom from "../../ui/ButtonCustom";
 import Card from "../../ui/Card";
@@ -10,6 +11,8 @@ import Container from "../../ui/Container";
 import ParicionesList from "../pariciones/ParicionesListByPig";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import PorkVacunaAplicadaCard from "./PorkVacunaAplicadaCard";
+import PorkVacunaAplicadaDetails from "./PorkVacunaAplicadaDetails";
 
 const PorkDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -21,8 +24,9 @@ const PorkDetails = () => {
     isError,
   } = useGetPigByIdQuery(id!, { skip: !id });
 
-  const [deletePigById, { isLoading: isDeleting }] =
-    useDeletePigByIdMutation();
+  const [eliminarVacuna, {isError:eliminarVacunaError, isLoading:eliminarVacunaLoading, isSuccess:eliminarVacunaSuccess}] = useEliminarVacunaDePigMutation(id!, { skip: !id});
+
+  const [deletePigById, { isLoading: isDeleting }] = useDeletePigByIdMutation();
   const [deleteParicion] = useDeleteParicionMutation();
 
   // 🔴 ELIMINAR CERDO (CONFIRMACIÓN)
@@ -47,7 +51,7 @@ const PorkDetails = () => {
       await Swal.fire(
         "Eliminado",
         "El cerdo fue eliminado correctamente",
-        "success"
+        "success",
       );
       navigate("/pigs");
     } catch (error) {
@@ -78,7 +82,7 @@ const PorkDetails = () => {
       Swal.fire(
         "Eliminada",
         "La parición fue eliminada correctamente",
-        "success"
+        "success",
       );
     } catch (error) {
       Swal.fire("Error", "No se pudo eliminar la parición", "error");
@@ -89,12 +93,47 @@ const PorkDetails = () => {
   const [showVacunas, setShowVacunas] = useState(true);
   const [showPariciones, setShowPariciones] = useState(true);
 
+  const handleDeleteVacunaPork = (vacunaId:string) => {
+    //completar función para eliminar vacuna
+
+    if (!vacunaId) return;
+
+    Swal.fire({
+      title: "¿Eliminar vacuna?",
+      text: "Esta acción no se puede deshacer",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+    }).then(async (result) => {
+      if (!result.isConfirmed) return;
+
+      try {
+        // Aquí deberías llamar a tu mutation para eliminar la vacuna
+        // Por ejemplo: await deleteVacuna({ pigId: pig._id, vacunaId }).unwrap();
+        await eliminarVacuna({ pigId: id!, vacunaId }).unwrap();
+        if (eliminarVacunaError) {
+          Swal.fire("Error", "No se pudo eliminar la vacuna", "error");
+          throw new Error("Error al eliminar la vacuna");
+        }
+        if (eliminarVacunaSuccess) {
+          Swal.fire("Eliminada", "La vacuna fue eliminada correctamente", "success");}
+          
+      } catch (error) {
+        Swal.fire("Error", "No se pudo eliminar la vacuna", "error");
+        console.error("Error al eliminar vacuna:", error);
+      }
+    });
+  }
+
   if (isLoading) return <p>Cargando...</p>;
   if (isError || !pig) return <p>No se encontró el cerdo</p>;
 
   return (
     <Container className="text-center flex-col">
-      <h2 className="text-3xl">Cerdo N° {pig.nroCaravana}</h2>
+      <h1 className="text-5xl">Cerdo N° {pig.nroCaravana}</h1>
 
       <Card>
         <p>ID: {pig._id}</p>
@@ -136,21 +175,15 @@ const PorkDetails = () => {
             className="showButton"
             onClick={() => setShowVacunas(!showVacunas)}
           >
-            {showVacunas ? "ocultar vacunas" : "ver vacunas"}
+            {showVacunas ? "Ocultar vacunas" : "Ver vacunas"}
           </ButtonCustom>
 
           {showVacunas &&
             pig.vacunasAplicadas.map((vacuna) => (
-              <div key={vacuna._id}>
-                <p>
-                  Fecha:{" "}
-                  {new Date(vacuna.fechaVacunacion).toLocaleDateString()}
-                </p>
-                <p>
-                  Hora:{" "}
-                  {new Date(vacuna.fechaVacunacion).toLocaleTimeString()}
-                </p>
-                
+              <div key={vacuna._id} className="flex flex-col border-b-2 border-amber-400 m-2 p-2">
+                <PorkVacunaAplicadaCard {...vacuna} />
+                <PorkVacunaAplicadaDetails vacunaId={vacuna._id} />
+                <ButtonCustom onClick={() => handleDeleteVacunaPork(vacuna._id)}>{eliminarVacunaLoading ? 'Eliminando vacuna...': 'Eliminar Vacuna'}</ButtonCustom>
               </div>
             ))}
         </div>
@@ -163,11 +196,12 @@ const PorkDetails = () => {
             className="m-1 p-1 updateButton"
             onClick={() => setShowPariciones(!showPariciones)}
           >
-            {showPariciones ? "ocultar pariciones" : "mostrar pariciones"}
+            {showPariciones ? "Ocultar pariciones" : "Mostrar pariciones"}
           </ButtonCustom>
         )}
       </div>
 
+      {/* Pariciones container */}
       {showPariciones &&
         (pig.pariciones && pig.pariciones.length > 0 ? (
           <ParicionesList
@@ -176,7 +210,7 @@ const PorkDetails = () => {
             onDeleteParicion={handleDeleteParicion}
           />
         ) : (
-          <h2>No hay pariciones registradas</h2>
+          <h2 className="text-3xl">No hay pariciones registradas</h2>
         ))}
 
       <Container className="flex justify-center items-center gap-2.5 mb-2">
