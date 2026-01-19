@@ -13,7 +13,7 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import PorkVacunaAplicadaCard from "./PorkVacunaAplicadaCard";
 import PorkVacunaAplicadaDetails from "./PorkVacunaAplicadaDetails";
-import type { VacunaAplicada } from "../../types/types";
+import type { VacunaAplicada } from "../../types/pigTypes";
 
 const PorkDetails = () => {
   const { id } = useParams<{ id: string }>();

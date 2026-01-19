@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import Card from "../../ui/Card";
 import ButtonCustom from "../../ui/ButtonCustom";
-import type { Paricion } from "../../types/types";
+import type { Paricion } from "../../types/pigTypes";
 
 type ParicionCardProps = Paricion & {
   pigId: string;

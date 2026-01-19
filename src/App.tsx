@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route, Outlet } from "react-router-dom";
+
 import Home from "./componenets/Home";
 import PorkList from "./componenets/cerdas/PorkList";
 import PorkDetails from "./componenets/cerdas/PorkDetails";
@@ -16,89 +17,65 @@ import IndexHomeVacunas from "./componenets/vacunas/IndexHomeVacunas";
 import PorkVacunar from "./componenets/cerdas/PorkVacunar";
 import Vacunar from "./componenets/vacunas/Vacunar";
 import VacunarConUnaVacuna from "./componenets/vacunas/VacunarConUnaVacuna";
+import ProtectedRoute from "./ProtectedRoute";
+import Login from "./componenets/users/Login";
 
 const App = () => {
-  const user= true
-  console.log(user)
-  /* const dispatch = useDispatch()
-  const darkMode:boolean = useSelector((state: RootState) => state.darkMode.darkMode);
+  const isAuthenticated = true; // luego vendrá de Context / Redux
 
-  console.log(darkMode) */
-  {
-    /* <button onClick={() => dispatch(toggleDarkMode())}>{darkMode ? "Modo claro" : "Modo Oscuro" }</button>
-  <div style={{height:"10px", width: "10px", backgroundColor: darkMode? "#000":"#fff"}}></div> */
-  }
-
-  // Llamada
   return (
-    <>
-      <BrowserRouter> 
-        <Header />
+    <Routes>
+      {/* ===== RUTA PÚBLICA ===== */}
+      <Route path="/login" element={<Login />} />
 
-        <main>
-          <Routes>
-            <Route path="/" element={<Home />} />
-
-            {/* Buscador */}
-            <Route path="/searcher" element={<Searcher />} />
-
-            {/* Listado de todos los cerdos */}
-            <Route path="/pigs" element={<PorkList />} />
-
-            {/* Crear un nuevo cerdo */}
-            <Route path="/pigs/new" element={<Register />} />
-
-            {/* Detalle de un cerdo específico por ID */}
-            <Route path="/pigs/:id" element={<PorkDetails />} />
-
-            {/* Editar un cerdo existente */}
-            <Route path="/pigs/update/:id" element={<Updater />} />
-
-            {/* Agregar pariciones */}
-            <Route path="/pigs/:id/pariciones" element={<ParicionForm />} />
-
-            {/* LISTA DE PARICIONES */}
-
-            {/* Editar pariciones existentes */}
-            <Route
-              path="/pigs/:id/pariciones/update/:paricionId"
-              element={<ParicionUpdate />}
-            />
-
-            {/* Vacunas Home */}
-            <Route path="/vacunas" element={<IndexHomeVacunas />} />
-
-            {/* Vacunas List */}
-            <Route path="/vacunas/list" element={<VacunasList />} />
-
-            {/* Vacunas Register */}
-            <Route path="/vacunas/register" element={<RegisterVacunaForm />} />
-
-            {/* Vacunas Vacunas Updater */}
-            <Route
-              path="/vacunas/updater/:id"
-              element={<UpdaterVacunasForm />}
-            />
-
-            {/* Vacunar cerdas / UNA CERDA - MÚLTIPLES VACUNAS */}
-            <Route path="/pigs/:id/vacunar" element={<PorkVacunar />} />
-
-            {/* VACUNAR UNA VACUNA MÚLTIPLES CERDAS */}
-            <Route
-              path="/vacunas/vacunar/:vacunaId"
-              element={<VacunarConUnaVacuna />}
-            />
-
-            {/* Vacunar con MÚLTIPLES VACUNAS a MÚLTIPLES CERDAS */}
-            <Route path="/vacunas/vacunar" element={<Vacunar />} />
-
-            {/* Ruta comodín */}
-            <Route path="*" element={<ErrorPage />} />
-          </Routes>
-        </main>
-      </BrowserRouter>
-    </>
+      {/* ===== RUTAS PROTEGIDAS ===== */}
+      <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
+        {/* Layout protegido */}
+        <Route element={<ProtectedLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/searcher" element={<Searcher />} />
+          <Route path="/pigs" element={<PorkList />} />
+          <Route path="/pigs/new" element={<Register />} />
+          <Route path="/pigs/:id" element={<PorkDetails />} />
+          <Route path="/pigs/update/:id" element={<Updater />} />
+          <Route path="/pigs/:id/pariciones" element={<ParicionForm />} />
+          <Route
+            path="/pigs/:id/pariciones/update/:paricionId"
+            element={<ParicionUpdate />}
+          />
+          <Route path="/vacunas" element={<IndexHomeVacunas />} />
+          <Route path="/vacunas/list" element={<VacunasList />} />
+          <Route path="/vacunas/register" element={<RegisterVacunaForm />} />
+          <Route
+            path="/vacunas/updater/:id"
+            element={<UpdaterVacunasForm />}
+          />
+          <Route path="/pigs/:id/vacunar" element={<PorkVacunar />} />
+          <Route
+            path="/vacunas/vacunar/:vacunaId"
+            element={<VacunarConUnaVacuna />}
+          />
+          <Route path="/vacunas/vacunar" element={<Vacunar />} />
+          <Route path="*" element={<ErrorPage />} />
+        </Route>
+      </Route>
+    </Routes>
   );
 };
 
 export default App;
+
+/* ============================
+   LAYOUT PROTEGIDO
+   ============================ */
+
+const ProtectedLayout = () => {
+  return (
+    <>
+      <Header />
+      <main>
+        <Outlet />
+      </main>
+    </>
+  );
+};

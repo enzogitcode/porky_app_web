@@ -8,7 +8,7 @@ import {
   usePatchParicionMutation,
 } from "../../redux/features/pigSlice";
 import { paricionSchema } from "../../zodSchemas/paricionSchema";
-import type { Paricion } from "../../types/types";
+import type { Paricion } from "../../types/pigTypes";
 
 const ParicionUpdate: React.FC = () => {
   const { id, paricionId } = useParams<{ id: string; paricionId: string }>();

@@ -1,5 +1,5 @@
 import ParicionCard from "./ParicionCard";
-import type { Paricion } from "../../types/types";
+import type { Paricion } from "../../types/pigTypes";
 import Container from "../../ui/Container";
 
 type ParicionesListProps = {

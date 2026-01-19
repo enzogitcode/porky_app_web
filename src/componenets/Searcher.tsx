@@ -4,7 +4,7 @@ import { useGetAllPigsArrayQuery } from "../redux/features/pigSlice"; // 👈 us
 import Container from "../ui/Container";
 import InputCustom from "../ui/InputCustom";
 import ButtonCustom from "../ui/ButtonCustom";
-import type { Pig } from "../types/types";
+import type { Pig } from "../types/pigTypes";
 
 const Searcher = () => {
   // 👇 pedimos un límite grande para traer todos los registros

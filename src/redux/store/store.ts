@@ -2,16 +2,18 @@ import { configureStore } from "@reduxjs/toolkit";
 import { darkModeSlice } from "../features/darkModeSlice";
 import { pigsApi } from "../features/pigSlice";
 import { vacunasApi } from "../features/vacunaSlice";
+import authSlice from "../features/authSlice";
+
 export const store = configureStore({
   reducer: {
     darkMode:darkModeSlice.reducer,
     [pigsApi.reducerPath]:pigsApi.reducer,
-    [vacunasApi.reducerPath]:vacunasApi.reducer
-
+    [vacunasApi.reducerPath]:vacunasApi.reducer,
+    auth:authSlice,
     
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(pigsApi.middleware, vacunasApi.middleware),
+    getDefaultMiddleware().concat(pigsApi.middleware, vacunasApi.middleware ),
   
 })
 

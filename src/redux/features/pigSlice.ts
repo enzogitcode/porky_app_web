@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { Pig, Paricion } from "../../types/types";
+import type { Pig, Paricion } from "../../types/pigTypes";
 
 export const pigsApi = createApi({
   reducerPath: "pigsApi",

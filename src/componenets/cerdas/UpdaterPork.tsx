@@ -4,7 +4,7 @@ import {
   useGetPigByIdQuery,
   useUpdatePigByIdMutation,
 } from "../../redux/features/pigSlice";
-import type { Situacion } from "../../types/types";
+import type { Situacion } from "../../types/pigTypes";
 import Container from "../../ui/Container";
 import Card from "../../ui/Card";
 import ButtonCustom from "../../ui/ButtonCustom";

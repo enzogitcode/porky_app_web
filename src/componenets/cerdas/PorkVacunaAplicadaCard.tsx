@@ -1,5 +1,5 @@
 import React from 'react'
-import type { VacunaAplicada } from '../../types/types'
+import type { VacunaAplicada } from '../../types/pigTypes'
 
 const PorkVacunaAplicadaCard:React.FC<VacunaAplicada> = (props) => {
   return (

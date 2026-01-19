@@ -4,7 +4,7 @@ import InputCustom from "../../ui/InputCustom";
 import { useAddParicionMutation, useUpdatePigByIdMutation } from "../../redux/features/pigSlice";
 import { useParams } from "react-router-dom";
 import { paricionSchema } from "../../zodSchemas/paricionSchema";
-import type { Paricion } from "../../types/types";
+import type { Paricion } from "../../types/pigTypes";
 
 const ParicionForm: React.FC = () => {
   const { id } = useParams<{ id: string }>();

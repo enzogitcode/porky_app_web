@@ -1,5 +1,5 @@
 import React from "react";
-import type { Pig } from "../../types/types";
+import type { Pig } from "../../types/pigTypes";
 import Card from "../../ui/Card";
 import ButtonCustom from "../../ui/ButtonCustom";
 
