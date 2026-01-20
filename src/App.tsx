@@ -1,9 +1,8 @@
-import { Routes, Route, Outlet } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import Home from "./componenets/Home";
 import PorkList from "./componenets/cerdas/PorkList";
 import PorkDetails from "./componenets/cerdas/PorkDetails";
-import Header from "./ui/Header";
 import Register from "./componenets/cerdas/RegisterPork";
 import Updater from "./componenets/cerdas/UpdaterPork";
 import ParicionForm from "./componenets/pariciones/ParicionForm";
@@ -19,18 +18,16 @@ import Vacunar from "./componenets/vacunas/Vacunar";
 import VacunarConUnaVacuna from "./componenets/vacunas/VacunarConUnaVacuna";
 import ProtectedRoute from "./ProtectedRoute";
 import Login from "./componenets/users/Login";
+import { ProtectedLayout } from "./ProtectedLayout";
 
 const App = () => {
-  const isAuthenticated = true; // luego vendrá de Context / Redux
-
   return (
     <Routes>
       {/* ===== RUTA PÚBLICA ===== */}
       <Route path="/login" element={<Login />} />
 
       {/* ===== RUTAS PROTEGIDAS ===== */}
-      <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
-        {/* Layout protegido */}
+      <Route element={<ProtectedRoute />}>
         <Route element={<ProtectedLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/searcher" element={<Searcher />} />
@@ -39,22 +36,13 @@ const App = () => {
           <Route path="/pigs/:id" element={<PorkDetails />} />
           <Route path="/pigs/update/:id" element={<Updater />} />
           <Route path="/pigs/:id/pariciones" element={<ParicionForm />} />
-          <Route
-            path="/pigs/:id/pariciones/update/:paricionId"
-            element={<ParicionUpdate />}
-          />
+          <Route path="/pigs/:id/pariciones/update/:paricionId" element={<ParicionUpdate />} />
           <Route path="/vacunas" element={<IndexHomeVacunas />} />
           <Route path="/vacunas/list" element={<VacunasList />} />
           <Route path="/vacunas/register" element={<RegisterVacunaForm />} />
-          <Route
-            path="/vacunas/updater/:id"
-            element={<UpdaterVacunasForm />}
-          />
+          <Route path="/vacunas/updater/:id" element={<UpdaterVacunasForm />} />
           <Route path="/pigs/:id/vacunar" element={<PorkVacunar />} />
-          <Route
-            path="/vacunas/vacunar/:vacunaId"
-            element={<VacunarConUnaVacuna />}
-          />
+          <Route path="/vacunas/vacunar/:vacunaId" element={<VacunarConUnaVacuna />} />
           <Route path="/vacunas/vacunar" element={<Vacunar />} />
           <Route path="*" element={<ErrorPage />} />
         </Route>
@@ -64,18 +52,3 @@ const App = () => {
 };
 
 export default App;
-
-/* ============================
-   LAYOUT PROTEGIDO
-   ============================ */
-
-const ProtectedLayout = () => {
-  return (
-    <>
-      <Header />
-      <main>
-        <Outlet />
-      </main>
-    </>
-  );
-};
