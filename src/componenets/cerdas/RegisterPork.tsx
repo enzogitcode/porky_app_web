@@ -53,7 +53,8 @@ const Register: React.FC = () => {
 
       // Solo enviar fechaServicioActual si es servida o gestación confirmada
       if (
-        (form.estadio === "servida" || form.estadio === "gestación confirmada") &&
+        (form.estadio === "servida" ||
+          form.estadio === "gestación confirmada") &&
         form.fechaServicioActual
       ) {
         payload.fechaServicioActual = new Date(form.fechaServicioActual);
@@ -70,7 +71,10 @@ const Register: React.FC = () => {
       // Logueo detallado para depuración: RTK Query devuelve un objeto error
       console.error("ERROR COMPLETO:", err);
       try {
-        console.error("ERROR DETAILS:", JSON.stringify(err, Object.getOwnPropertyNames(err), 2));
+        console.error(
+          "ERROR DETAILS:",
+          JSON.stringify(err, Object.getOwnPropertyNames(err), 2),
+        );
       } catch (e) {
         console.error("No se pudo serializar el error:", e);
       }
@@ -81,8 +85,8 @@ const Register: React.FC = () => {
   };
 
   return (
-    <Container className="flex flex-col items-center">
-      <h2 className="text-3xl font-bold mt-4 mb-6">Registrar Cerdo</h2>
+    <Container className="flex flex-col items-center containerBg min-h-screen py-8">
+      <h1 className="text-3xl font-bold mt-4 mb-6">Registrar Cerdo</h1>
 
       <form
         onSubmit={handleSubmit}
@@ -94,15 +98,15 @@ const Register: React.FC = () => {
           type="number"
           value={form.nroCaravana}
           inputClassName="text-center"
-          onChange={(e) =>
-            setForm({...form, nroCaravana:e.target.value})
-          }
+          onChange={(e) => setForm({ ...form, nroCaravana: e.target.value })}
           required
         />
 
         {/* Estadio */}
         <div className="flex flex-col gap-1">
-          <label htmlFor="estadio" className="font-semibold">Estadio</label>
+          <label htmlFor="estadio" className="font-semibold">
+            Estadio
+          </label>
           <select
             id="estadio"
             value={form.estadio}
@@ -133,7 +137,8 @@ const Register: React.FC = () => {
         )}
 
         {/* Fecha de servicio (solo servida / gestación confirmada) */}
-        {(form.estadio === "servida" || form.estadio === "gestación confirmada") && (
+        {(form.estadio === "servida" ||
+          form.estadio === "gestación confirmada") && (
           <InputCustom
             label="Fecha de servicio"
             type="datetime-local"
@@ -158,13 +163,13 @@ const Register: React.FC = () => {
 
         {/* Descripción */}
         <div className="flex flex-col gap-1">
-          <label htmlFor="descripcion" className="font-semibold">Descripción</label>
+          <label htmlFor="descripcion" className="font-semibold">
+            Descripción
+          </label>
           <textarea
             id="descripcion"
             value={form.descripcion}
-            onChange={(e) =>
-              setForm({ ...form, descripcion: e.target.value })
-            }
+            onChange={(e) => setForm({ ...form, descripcion: e.target.value })}
             className="border rounded-lg p-2 h-28 resize-none"
           />
         </div>
@@ -174,9 +179,7 @@ const Register: React.FC = () => {
           label="Ubicación"
           type="text"
           value={form.ubicacion}
-          onChange={(e) =>
-            setForm({ ...form, ubicacion: e.target.value })
-          }
+          onChange={(e) => setForm({ ...form, ubicacion: e.target.value })}
         />
 
         <ButtonCustom type="submit">
