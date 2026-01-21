@@ -19,6 +19,7 @@ import VacunarConUnaVacuna from "./componenets/vacunas/VacunarConUnaVacuna";
 import ProtectedRoute from "./ProtectedRoute";
 import Login from "./componenets/users/Login";
 import { ProtectedLayout } from "./ProtectedLayout";
+import UsersList from "./componenets/users/UsersList";
 
 const App = () => {
   return (
@@ -35,8 +36,12 @@ const App = () => {
           <Route path="/pigs/new" element={<Register />} />
           <Route path="/pigs/:id" element={<PorkDetails />} />
           <Route path="/pigs/update/:id" element={<Updater />} />
+
+          {/* Pariciones */}
           <Route path="/pigs/:id/pariciones" element={<ParicionForm />} />
           <Route path="/pigs/:id/pariciones/update/:paricionId" element={<ParicionUpdate />} />
+
+          {/* Vacunas */}
           <Route path="/vacunas" element={<IndexHomeVacunas />} />
           <Route path="/vacunas/list" element={<VacunasList />} />
           <Route path="/vacunas/register" element={<RegisterVacunaForm />} />
@@ -44,7 +49,13 @@ const App = () => {
           <Route path="/pigs/:id/vacunar" element={<PorkVacunar />} />
           <Route path="/vacunas/vacunar/:vacunaId" element={<VacunarConUnaVacuna />} />
           <Route path="/vacunas/vacunar" element={<Vacunar />} />
+
+          {/* Users */}
+          <Route path="/users/list" element={<UsersList/>}/>
+
           <Route path="*" element={<ErrorPage />} />
+
+
         </Route>
       </Route>
     </Routes>
