@@ -1,4 +1,3 @@
-// store/slices/authSlice.ts
 import { createSlice, createAsyncThunk, type PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store/store';
 import { baseURL } from '../baseURL';
@@ -20,7 +19,9 @@ const initialState: AuthState = {
   error: null,
 };
 
-// THUNK: login
+// ============================
+// LOGIN THUNK
+// ============================
 interface LoginPayload {
   username: string;
   pin: string;
@@ -43,14 +44,53 @@ export const loginUser = createAsyncThunk<User, LoginPayload, { rejectValue: str
         return rejectWithValue(data.message || 'Login fallido');
       }
 
-      // 🔹 Ajustamos según tu backend: si devuelve { id, username }
-      return data;
+      // 🔹 Ajustamos según tu backend: si devuelve solo { message } y JWT en cookie
+      return { id: payload.username, username: payload.username }; // simulamos user
     } catch (error: any) {
       return rejectWithValue(error.message || 'Error desconocido');
     }
   }
 );
 
+// ============================
+// RESET USER PIN THUNK
+// ============================
+interface ResetPinPayload {
+  username: string;
+  newPin: string;
+}
+
+export const resetUserPin = createAsyncThunk<
+  { tempPin: string },
+  ResetPinPayload,
+  { rejectValue: string }
+>(
+  'auth/resetUserPin',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`${baseURL}users/${payload.username}/reset-pin`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pin: payload.newPin }),
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        return rejectWithValue(data.message || 'Error al resetear el PIN');
+      }
+
+      return data; // { tempPin: string }
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Error desconocido');
+    }
+  }
+);
+
+// ============================
+// SLICE
+// ============================
 const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -62,6 +102,7 @@ const authSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    // LOGIN
     builder
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
@@ -76,12 +117,30 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload || 'Login fallido';
       });
+
+    // RESET USER PIN
+    builder
+      .addCase(resetUserPin.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(resetUserPin.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+        // No guardamos tempPin en estado global; solo mostramos en UI
+      })
+      .addCase(resetUserPin.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Error al resetear el PIN';
+      });
   },
 });
 
 export const { logout } = authSlice.actions;
 
+// ============================
 // SELECTORES
+// ============================
 export const selectUser = (state: RootState) => state.auth.user;
 export const selectLoading = (state: RootState) => state.auth.loading;
 export const selectError = (state: RootState) => state.auth.error;
