@@ -145,7 +145,7 @@ const PorkDetails = () => {
 
   return (
     <Container className="text-center flex-col">
-      <h1 className="text-5xl">Cerdo N° {pig.nroCaravana}</h1>
+      <h1 className="text-5xl mb-3">Cerdo N° {pig.nroCaravana}</h1>
 
       <Card>
         <p>ID: {pig._id}</p>
@@ -193,10 +193,10 @@ const PorkDetails = () => {
             {showVacunas &&
               pig.vacunasAplicadas.map((vacuna:VacunaAplicada) => (
                 <div key={vacuna._id} className="flex flex-col outline-2 outline-amber-400 m-2 p-2 rounded-2xl">
-                  <div className="grid grid-cols-2">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     <PorkVacunaAplicadaCard {...vacuna} />
                     {vacuna?.vacuna && (
-                      <PorkVacunaAplicadaDetails vacunaId={vacuna.vacuna._id} />
+                      <PorkVacunaAplicadaDetails vacunaId={vacuna?.vacuna?._id} />
                     )}
                   </div>
                   <ButtonCustom
@@ -238,20 +238,22 @@ const PorkDetails = () => {
         ))}
 
       <Container className="flex justify-center items-center gap-2.5 mb-2">
-        <ButtonCustom
+        
+        {pig?.estadio !== 'fallecido' && <ButtonCustom
           className="updateButton"
           to={`/pigs/${pig._id}/pariciones`}
         >
           Agregar parición
-        </ButtonCustom>
+        </ButtonCustom>}
 
         <ButtonCustom className="editButton" to={`/pigs/update/${pig._id}`}>
           Editar cerdo
         </ButtonCustom>
 
-        <ButtonCustom className="editButton" to={`/pigs/${pig._id}/vacunar`}>
+{pig.estadio !== "fallecido" && <ButtonCustom className="editButton" to={`/pigs/${pig._id}/vacunar`}>
           Vacuna cerdo
-        </ButtonCustom>
+        </ButtonCustom>}
+        
 
         <ButtonCustom
           onClick={handleDelete}

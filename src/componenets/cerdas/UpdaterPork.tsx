@@ -11,23 +11,20 @@ import ButtonCustom from "../../ui/ButtonCustom";
 import InputCustom from "../../ui/InputCustom";
 import type { InputType } from "../../ui/InputCustom";
 
-const Updater = () => {
+const UpdaterPork = () => {
   const { id } = useParams<{ id: string }>();
 
-  const {
-    data: pig,
-    isLoading,
-    isError,
-  } = useGetPigByIdQuery(id!, { skip: !id });
+  const { data: pig, isLoading, isError } = useGetPigByIdQuery(id!, { skip: !id });
   const [updatePig] = useUpdatePigByIdMutation();
 
   const [formData, setFormData] = useState<{
     nroCaravana: number;
-    estadio: Situacion;
+    estadio: Situacion | "fallecido";
     ubicacion: string;
     descripcion: string;
     enfermedadActual: string;
     fechaServicioActual: string;
+    fechaFallecido: string;
   }>({
     nroCaravana: 0,
     estadio: "nulipara",
@@ -35,6 +32,7 @@ const Updater = () => {
     descripcion: "",
     enfermedadActual: "",
     fechaServicioActual: "",
+    fechaFallecido: "",
   });
 
   const [editing, setEditing] = useState<Record<string, boolean>>({
@@ -44,6 +42,7 @@ const Updater = () => {
     descripcion: false,
     enfermedadActual: false,
     fechaServicioActual: false,
+    fechaFallecido: false,
   });
 
   useEffect(() => {
@@ -55,7 +54,10 @@ const Updater = () => {
         descripcion: pig.descripcion ?? "",
         enfermedadActual: pig.enfermedadActual ?? "",
         fechaServicioActual: pig.fechaServicioActual
-          ? new Date(pig.fechaServicioActual).toISOString().split("T")[0]
+          ? new Date(pig.fechaServicioActual).toISOString().slice(0, 16)
+          : "",
+        fechaFallecido: pig.fechaFallecido
+          ? new Date(pig.fechaFallecido).toISOString().slice(0, 16)
           : "",
       });
     }
@@ -71,15 +73,14 @@ const Updater = () => {
     try {
       const payload: any = { [key]: formData[key] };
 
+      // Validaciones según estadio
       if (key === "enfermedadActual" && formData.estadio !== "descarte") return;
-      if (
-        key === "fechaServicioActual" &&
-        !["servida", "gestación confirmada"].includes(formData.estadio)
-      )
-        return;
+      if (key === "fechaServicioActual" && !["servida", "gestación confirmada"].includes(formData.estadio)) return;
+      if (key === "fechaFallecido" && formData.estadio !== "fallecido") return;
 
-      if (key === "fechaServicioActual")
-        payload[key] = new Date(formData.fechaServicioActual);
+      if (["fechaServicioActual", "fechaFallecido"].includes(key)) {
+        payload[key] = new Date(formData[key]);
+      }
 
       await updatePig({ id, data: payload }).unwrap();
       setEditing((prev) => ({ ...prev, [key]: false }));
@@ -118,10 +119,7 @@ const Updater = () => {
                 <option
                   key={opt.value}
                   value={opt.value}
-                  disabled={
-                    opt.value === "nulipara" &&
-                    (pig?.pariciones?.length ?? 0) > 0
-                  }
+                  disabled={opt.value === "nulipara" && (pig?.pariciones?.length ?? 0) > 0}
                 >
                   {opt.label}
                 </option>
@@ -132,10 +130,7 @@ const Updater = () => {
               type={type}
               value={formData[key]}
               onChange={(e) =>
-                handleChange(
-                  key,
-                  type === "number" ? Number(e.target.value) : e.target.value
-                )
+                handleChange(key, type === "number" ? Number(e.target.value) : e.target.value)
               }
             />
           )
@@ -145,14 +140,10 @@ const Updater = () => {
       </div>
       <ButtonCustom
         onClick={() =>
-          editing[key]
-            ? handleSave(key)
-            : setEditing((prev) => ({ ...prev, [key]: true }))
+          editing[key] ? handleSave(key) : setEditing((prev) => ({ ...prev, [key]: true }))
         }
         className={`py-1 px-3 rounded-lg ${
-          editing[key]
-            ? "bg-green-600 hover:bg-green-700"
-            : "bg-blue-600 hover:bg-blue-700"
+          editing[key] ? "bg-green-600 hover:bg-green-700" : "bg-blue-600 hover:bg-blue-700"
         } text-white transition`}
       >
         {editing[key] ? "Guardar" : "Editar"}
@@ -186,8 +177,14 @@ const Updater = () => {
           <p>
             <strong>Fecha de servicio:</strong>{" "}
             {pig.fechaServicioActual
-              ? new Date(pig.fechaServicioActual).toLocaleDateString()
+              ? new Date(pig.fechaServicioActual).toLocaleString()
               : "-"}
+          </p>
+        )}
+        {pig.estadio === "fallecido" && (
+          <p>
+            <strong>Fecha de fallecido:</strong>{" "}
+            {pig.fechaFallecido ? new Date(pig.fechaFallecido).toLocaleString() : "-"}
           </p>
         )}
       </Card>
@@ -204,11 +201,14 @@ const Updater = () => {
           { label: "Destetada", value: "destetada" },
           { label: "Vacía", value: "vacía" },
           { label: "Descarte", value: "descarte" },
+          { label: "Fallecido", value: "fallecido" },
         ])}
         {formData.estadio === "descarte" &&
           renderField("Enfermedad actual", "enfermedadActual", "text")}
         {["servida", "gestación confirmada"].includes(formData.estadio) &&
           renderField("Fecha de servicio", "fechaServicioActual", "datetime-local")}
+        {formData.estadio === "fallecido" &&
+          renderField("Fecha de fallecido", "fechaFallecido", "datetime-local")}
         {renderField("Ubicación", "ubicacion", "text")}
         {renderField("Descripción", "descripcion", "textarea")}
       </Card>
@@ -216,4 +216,4 @@ const Updater = () => {
   );
 };
 
-export default Updater;
+export default UpdaterPork;

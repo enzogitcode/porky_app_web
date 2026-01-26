@@ -20,42 +20,54 @@ import ProtectedRoute from "./ProtectedRoute";
 import Login from "./componenets/users/Login";
 import { ProtectedLayout } from "./ProtectedLayout";
 import UsersList from "./componenets/users/UsersList";
+import ResetPin from "./componenets/users/ResetPin";
+import ResetMyPin from "./componenets/users/ResetMyPin";
 
 const App = () => {
   return (
     <Routes>
-      {/* ===== RUTA PÚBLICA ===== */}
+      {/* ====================== */}
+      {/* RUTAS PÚBLICAS */}
+      {/* ====================== */}
       <Route path="/login" element={<Login />} />
+      <Route path="/reset-my-pin/:username" element={<ResetMyPin />} />
 
-      {/* ===== RUTAS PROTEGIDAS ===== */}
+      {/* ====================== */}
+      {/* RUTAS PROTEGIDAS */}
+      {/* ====================== */}
       <Route element={<ProtectedRoute />}>
         <Route element={<ProtectedLayout />}>
+          {/* Home */}
           <Route path="/" element={<Home />} />
           <Route path="/searcher" element={<Searcher />} />
+
+          {/* Cerdas */}
           <Route path="/pigs" element={<PorkList />} />
           <Route path="/pigs/new" element={<Register />} />
           <Route path="/pigs/:id" element={<PorkDetails />} />
           <Route path="/pigs/update/:id" element={<Updater />} />
-
-          {/* Pariciones */}
           <Route path="/pigs/:id/pariciones" element={<ParicionForm />} />
           <Route path="/pigs/:id/pariciones/update/:paricionId" element={<ParicionUpdate />} />
+          <Route path="/pigs/:id/vacunar" element={<PorkVacunar />} />
 
           {/* Vacunas */}
           <Route path="/vacunas" element={<IndexHomeVacunas />} />
           <Route path="/vacunas/list" element={<VacunasList />} />
           <Route path="/vacunas/register" element={<RegisterVacunaForm />} />
           <Route path="/vacunas/updater/:id" element={<UpdaterVacunasForm />} />
-          <Route path="/pigs/:id/vacunar" element={<PorkVacunar />} />
-          <Route path="/vacunas/vacunar/:vacunaId" element={<VacunarConUnaVacuna />} />
           <Route path="/vacunas/vacunar" element={<Vacunar />} />
+          <Route path="/vacunas/vacunar/:vacunaId" element={<VacunarConUnaVacuna />} />
 
           {/* Users */}
-          <Route path="/users/list" element={<UsersList/>}/>
+          <Route path="/users/list" element={<UsersList />} />
+          
+          {/* Resetear PIN por admin */}
+          <Route path="/users/reset-pin/:username" element={<ResetPin />} />
 
+          {/* ====================== */}
+          {/* ERROR */}
+          {/* ====================== */}
           <Route path="*" element={<ErrorPage />} />
-
-
         </Route>
       </Route>
     </Routes>

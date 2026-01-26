@@ -81,7 +81,7 @@ const UsersList = () => {
                 <td className="p-2 border">
                   <ButtonCustom
                     className="dangerButton"
-                    to={`/users/reset-pin/${user.username}`}
+                    to={`/users/reset-pin/${user?.username}`}
                   >
                     Reset PIN
                   </ButtonCustom>

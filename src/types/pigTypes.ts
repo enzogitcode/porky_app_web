@@ -46,6 +46,7 @@ export interface Pig {
   _id: string;
   nroCaravana: number;
   estadio: Situacion;
+  fechaFallecido?: Date | string;
   descripcion?: string;
   ubicacion?: string;
   pariciones?: Paricion[];

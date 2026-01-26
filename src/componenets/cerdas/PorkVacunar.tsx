@@ -64,7 +64,7 @@ const PorkVacunar = () => {
   return (
     <div>
       <h2 className="text-2xl text-center">Vacunar Cerdo Id° {id}</h2>
-      <h2 className="text-2xl text-center">Vacunar Cerdo Caravana° {data?.nroCaravana}</h2>
+      <h2 className="text-2xl text-center">Vacunar Cerdo Caravana N° {data?.nroCaravana}</h2>
 
       {vacunas?.map((vacuna) => (
         <div

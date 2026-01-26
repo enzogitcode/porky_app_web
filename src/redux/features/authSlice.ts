@@ -53,7 +53,7 @@ export const loginUser = createAsyncThunk<User, LoginPayload, { rejectValue: str
 );
 
 // ============================
-// RESET USER PIN THUNK
+// RESET USER PIN THUNK (ADMIN)
 // ============================
 interface ResetPinPayload {
   username: string;
@@ -68,7 +68,7 @@ export const resetUserPin = createAsyncThunk<
   'auth/resetUserPin',
   async (payload, { rejectWithValue }) => {
     try {
-      const response = await fetch(`${baseURL}users/${payload.username}/reset-pin`, {
+      const response = await fetch(`${baseURL}users/reset-pin/${payload.username}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ pin: payload.newPin }),
@@ -82,6 +82,37 @@ export const resetUserPin = createAsyncThunk<
       }
 
       return data; // { tempPin: string }
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Error desconocido');
+    }
+  }
+);
+
+// ============================
+// UPDATE MY PIN THUNK (USER)
+// ============================
+export const updateMyPin = createAsyncThunk<
+  { message: string },
+  { pin: string },
+  { rejectValue: string }
+>(
+  'auth/updateMyPin',
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await fetch(`${baseURL}users/me/pin`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pin: payload.pin }),
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        return rejectWithValue(data.message || 'Error al actualizar el PIN');
+      }
+
+      return data;
     } catch (error: any) {
       return rejectWithValue(error.message || 'Error desconocido');
     }
@@ -118,7 +149,7 @@ const authSlice = createSlice({
         state.error = action.payload || 'Login fallido';
       });
 
-    // RESET USER PIN
+    // RESET USER PIN (ADMIN)
     builder
       .addCase(resetUserPin.pending, (state) => {
         state.loading = true;
@@ -127,11 +158,25 @@ const authSlice = createSlice({
       .addCase(resetUserPin.fulfilled, (state) => {
         state.loading = false;
         state.error = null;
-        // No guardamos tempPin en estado global; solo mostramos en UI
       })
       .addCase(resetUserPin.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || 'Error al resetear el PIN';
+      });
+
+    // UPDATE MY PIN (USER)
+    builder
+      .addCase(updateMyPin.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateMyPin.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(updateMyPin.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Error al actualizar el PIN';
       });
   },
 });
